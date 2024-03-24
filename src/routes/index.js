@@ -1,14 +1,15 @@
 import { Outlet, createBrowserRouter } from 'react-router-dom';
+import MainLayout from '../layouts/MainLayout';
 import HomePage from '../pages/HomePage';
 import NotFoundPage from '../pages/NotFoundPage';
-import CateRoute from './category';
-import ProductRoute from './product';
 import AdminPage from '../pages/AdminPage';
+
+import CateRoute from './category';
 import AdminRoute from './admin';
-import MainLayout from '../layouts/MainLayout';
+import ExtraRoute from './extra';
+import UserRoute from './user';
 
 const router = createBrowserRouter([
-	// ...ProductRoute,
 	{
 		path: '/',
 		element: (
@@ -22,6 +23,8 @@ const router = createBrowserRouter([
 				element: <HomePage />,
 			},
 			...CateRoute,
+			...ExtraRoute,
+			UserRoute,
 		],
 	},
 	{

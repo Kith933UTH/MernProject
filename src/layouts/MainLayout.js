@@ -7,7 +7,7 @@ const MainLayout = ({ children }) => {
 	return (
 		<>
 			<Header />
-			{children}
+			<div className="max-w-[1200px] mx-auto">{children}</div>
 			<Footer />
 		</>
 	);

@@ -1,5 +1,4 @@
 import React from 'react';
-import MainLayout from '../layouts/MainLayout';
 import { useParams } from 'react-router-dom';
 
 const ProductDetailPage = () => {
