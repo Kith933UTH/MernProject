@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Navbar_H from './Navbar_H';
+
 import {
 	Navbar,
 	IconButton,
@@ -10,7 +12,9 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { Link, useNavigate } from 'react-router-dom';
 import { HeartIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 
+
 const Header = () => {
+
 	const navigate = useNavigate();
 	const [searchValue, setSearchValue] = useState('');
 
@@ -23,6 +27,7 @@ const Header = () => {
 	};
 
 	return (
+		<>
 		<Navbar className="mx-auto bg-transparent max-w-[1200px] px-0 py-3 shadow-none">
 			<div className="flex flex-wrap items-center justify-between gap-y-4 text-text">
 				<Link
@@ -80,7 +85,10 @@ const Header = () => {
 				</div>
 			</div>
 		</Navbar>
+		<Navbar_H/>
+	</>
 	);
+
 };
 
 export default Header;
