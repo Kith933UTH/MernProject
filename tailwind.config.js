@@ -15,6 +15,19 @@ module.exports = withMT({
 			highlight: '#dfffbf',
 			text: '#d5d5d5',
 		},
+		screens: {
+			tablet: '640px',
+			// => @media (min-width: 640px) { ... }
+
+			laptop: '1024px',
+			// => @media (min-width: 1024px) { ... }
+
+			desktop: '1200px',
+			// => @media (min-width: 1280px) { ... }
+		},
+		fontFamily: {
+			sans: ['Montserrat', 'Poppins', 'sans-serif'],
+		},
 	},
 	plugins: [],
 });

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from './Products/ProductsSlice';
+import { fetchProducts } from '../Products/ProductsSlice';
 
 import { Typography } from '@material-tailwind/react';
 
