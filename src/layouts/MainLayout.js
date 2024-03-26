@@ -8,6 +8,7 @@ const MainLayout = ({ children }) => {
 		<>
 			<Header />
 			<div className="max-w-[1200px] mx-auto">{children}</div>
+
 			<Footer />
 		</>
 	);
