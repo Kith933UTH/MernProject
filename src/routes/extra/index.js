@@ -1,4 +1,7 @@
-import AboutPage from "../../components/Footer/AboutPage";
+import AboutPage from '../../pages/AboutPage';
+import ContactPage from '../../pages/ContactPage';
+import PolicyPage from '../../pages/PolicyPage';
+
 const ExtraRoute = [
 	{
 		path: 'checkout',
@@ -6,11 +9,15 @@ const ExtraRoute = [
 	},
 	{
 		path: 'about',
-		element: <AboutPage/>,
+		element: <AboutPage />,
 	},
 	{
 		path: 'policy',
-		element: <h1>policy page</h1>,
+		element: <PolicyPage />,
+	},
+	{
+		path: 'contact',
+		element: <ContactPage />,
 	},
 	{
 		path: 'search',

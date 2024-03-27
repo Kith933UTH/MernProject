@@ -119,7 +119,7 @@ const HeaderNavbar = ({ open, closeNav }) => {
 	const isMobile = window.innerWidth < 960;
 
 	return (
-		<Navbar className={`flex-1 px-4 py-0 bg-main text-base`}>
+		<Navbar className="flex-1 px-4 py-0 bg-main text-base shadow-md shadow-main">
 			<div className="flex items-center justify-between">
 				<div className="hidden lg:block">
 					<NavList />
