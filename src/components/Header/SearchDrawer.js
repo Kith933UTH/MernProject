@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { IconButton, Drawer } from '@material-tailwind/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -8,7 +8,6 @@ const SearchDrawer = React.forwardRef(function (
 	{ open, closeSearchSection },
 	searchInputRef
 ) {
-	console.log('search rerender');
 	const navigate = useNavigate();
 	const [searchValue, setSearchValue] = useState('');
 	const [isSearchInputFocus, setIsSearchInputFocus] = useState(false);

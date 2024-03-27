@@ -10,7 +10,6 @@ import React from 'react';
 import CartItem from './CartItem';
 
 const Cart = ({ open, closeDrawerRight }) => {
-	console.log('rerender');
 	return (
 		<Drawer
 			placement="right"

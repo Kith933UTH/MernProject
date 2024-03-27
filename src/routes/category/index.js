@@ -1,24 +1,16 @@
 import Category from '../../components/Category/Category';
+import CateList from '../../config/CateList';
 import CategoryPage from '../../pages/CategoryPage';
 import ProductDetailPage from '../../pages/ProductDetailPage';
 
-export const cateList = [
-	'all',
-	'laptop',
-	'phone',
-	'tablet',
-	'smartwatch',
-	'accessories',
-];
-
-const CateRoute = cateList.map((cate) => {
+const CateRoute = CateList.map((cate) => {
 	return {
-		path: cate,
+		path: cate.path,
 		element: <CategoryPage />,
 		children: [
 			{
 				index: true,
-				element: <Category />,
+				element: <Category type={cate} />,
 			},
 			{
 				path: ':productId',
@@ -28,4 +20,13 @@ const CateRoute = cateList.map((cate) => {
 	};
 });
 
-export default CateRoute;
+const SubCateRoute = CateList.filter((cate) => cate.children).map((cate) => {
+	return cate.children.map((subCate) => {
+		return {
+			path: subCate.path,
+			element: <Category type={subCate} />,
+		};
+	});
+});
+
+export default CateRoute.concat(...SubCateRoute);

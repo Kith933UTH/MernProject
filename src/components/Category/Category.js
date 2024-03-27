@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Category = () => {
+const Category = ({ type }) => {
+	console.log(type);
 	return <div>Category</div>;
 };
 
