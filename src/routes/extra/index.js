@@ -1,3 +1,4 @@
+import AboutPage from "../../components/Footer/AboutPage";
 const ExtraRoute = [
 	{
 		path: 'checkout',
@@ -5,7 +6,7 @@ const ExtraRoute = [
 	},
 	{
 		path: 'about',
-		element: <h1>about page</h1>,
+		element: <AboutPage/>,
 	},
 	{
 		path: 'policy',
