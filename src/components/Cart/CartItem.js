@@ -12,7 +12,7 @@ const CartItem = () => {
 	return (
 		<>
 			<ListItem
-				className="p-0 active:bg-transparent focus:bg-transparent hover:bg-transparent  mb-4"
+				className="p-0 active:bg-transparent focus:bg-transparent hover:bg-transparent mb-4"
 				selected={false}
 				ripple={false}
 			>
