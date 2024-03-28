@@ -15,8 +15,8 @@ function Footer() {
 	// console.log(product);
 
 	return (
-		<footer className="bg-main shadow-md shadow-main max-w-[1200px] xl:mx-auto rounded-2xl py-4 px-8 mx-4">
-			<div className="flex flex-row flex-wrap items-center justify-center gap-y-2 gap-x-12 bg-transparent text-center text-text md:justify-between">
+		<footer className="max-w-[1200px] xl:mx-auto py-4 mx-4">
+			<div className="bg-main px-8 py-3 shadow-md shadow-main rounded-2xl flex flex-row flex-wrap items-center justify-center sm:justify-between gap-y-2 gap-x-12 text-center text-text md:justify-between">
 				<Typography
 					variant="h2"
 					className="text-xl font-bold cursor-pointer py-1.5 px-0"
@@ -24,6 +24,7 @@ function Footer() {
 				>
 					TechShop
 				</Typography>
+				<hr className="my-1 border-blue-gray-50 w-[90%] mx-auto sm:hidden" />
 				<ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
 					<li>
 						<Link
@@ -69,8 +70,8 @@ function Footer() {
 					</li>
 				</ul>
 			</div>
-			<hr className="my-2 border-blue-gray-50" />
-			<Typography className="text-text text-center font-normal">
+			<hr className="my-2 border-blue-gray-50 w-[90%] mx-auto hidden sm:block " />
+			<Typography className="text-text text-center font-normal mt-6 -mb-3">
 				&copy; 2023 TechShop
 			</Typography>
 		</footer>
