@@ -48,7 +48,7 @@ function Display(val) {
 							{
 								val.desc.map((d) => (
 									q.key === d.key ?
-										<AccordionBody className="text-text">
+										<AccordionBody key={d.h} className="text-text">
 											{d.h}
 										</AccordionBody>
 										: ""

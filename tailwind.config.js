@@ -16,7 +16,7 @@ module.exports = withMT({
 			text: '#d5d5d5',
 		},
 		screens: {
-			tablet: '640px',
+			tablet: '960px',
 			// => @media (min-width: 640px) { ... }
 
 			laptop: '1024px',

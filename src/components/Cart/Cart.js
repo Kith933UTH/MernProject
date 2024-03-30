@@ -8,6 +8,7 @@ import {
 } from '@material-tailwind/react';
 import React from 'react';
 import CartItem from './CartItem';
+import { CartItemSkeleton } from './CartItemSkeleton';
 
 const Cart = ({ open, closeDrawerRight }) => {
 	return (
@@ -41,12 +42,11 @@ const Cart = ({ open, closeDrawerRight }) => {
 			{/* Cart list  */}
 			<List className="flex-1 overflow-y-scroll scroll-smooth">
 				<CartItem />
+				<CartItemSkeleton />
 				<CartItem />
+				<CartItemSkeleton />
 				<CartItem />
-				<CartItem />
-				<CartItem />
-				<CartItem />
-				<CartItem />
+				<CartItemSkeleton />
 			</List>
 
 			{/* Cart footer */}

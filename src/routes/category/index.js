@@ -29,4 +29,4 @@ const SubCateRoute = CateList.filter((cate) => cate.children).map((cate) => {
 	});
 });
 
-export default CateRoute.concat(...SubCateRoute);
+export default CateRoute.concat(SubCateRoute.flat());
