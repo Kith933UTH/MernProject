@@ -17,7 +17,7 @@ const Category = ({ type }) => {
 							<HomeIcon className="w-5 h-5 text-text hover:opacity-60" />
 						</Link>
 						<Link to={window.location.pathname}>
-							<Typography className="text-text hover:opacity-60">
+							<Typography className="text-highlight hover:opacity-60">
 								{type.title}
 							</Typography>
 						</Link>

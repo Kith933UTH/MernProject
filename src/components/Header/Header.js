@@ -44,7 +44,7 @@ const Header = () => {
 	return (
 		<>
 			<header className="mx-auto relative bg-transparent max-w-[1200px] pt-3 shadow-none px-4 desktop:px-0 overflow-visible">
-				<div className="flex flex-wrap items-center justify-between gap-y-4 text-text overflow-visible mb-2 border-solid border-b-[1px] border-slate-900 tablet:border-none pb-2 px-4">
+				<div className="flex flex-wrap items-center justify-between gap-y-4 text-text overflow-visible mb-2 border-solid border-b-[1px] border-slate-900 tablet:border-none pb-2 px-4 tablet:px-0">
 					{/* Logo link to home page */}
 					<Link
 						to="/"

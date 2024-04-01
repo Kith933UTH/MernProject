@@ -1,5 +1,5 @@
-import AllOrder from '../../components/order/AllOrder';
-import OrderDetail from '../../components/order/OrderDetail';
+import AllOrder from '../../components/Order/AllOrder';
+import OrderDetail from '../../components/Order/OrderDetail';
 import UserPage from '../../pages/UserPage';
 
 const UserRoute = {

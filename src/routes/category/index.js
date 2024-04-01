@@ -14,7 +14,7 @@ const CateRoute = CateList.map((cate) => {
 			},
 			{
 				path: ':productId',
-				element: <ProductDetailPage />,
+				element: <ProductDetailPage cate={cate.title} />,
 			},
 		],
 	};

@@ -1,5 +1,5 @@
-import Dashboard from '../../components/admin/Dashboard';
-import ProductList from '../../components/admin/ProductList';
+import Dashboard from '../../components/Admin/Dashboard';
+import ProductList from '../../components/Admin/ProductList';
 
 const AdminRoute = [
 	{
