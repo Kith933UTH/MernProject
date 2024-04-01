@@ -1,15 +1,13 @@
 import { useState, React } from 'react';
 import {
-  Card,
-  Typography,
-  List,
-  ListItem,
-
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-
-} from "@material-tailwind/react";
+	Typography,
+	Accordion,
+	AccordionHeader,
+	AccordionBody,
+	ListItemPrefix,
+	Radio,
+	Checkbox,
+} from '@material-tailwind/react';
 
 import {
 	BanknotesIcon,
