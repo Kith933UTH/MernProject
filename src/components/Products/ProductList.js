@@ -1,7 +1,7 @@
 import React from 'react';
-import { ProductCard } from './ProductCard';
 import { Pagination } from '../Pagination/Pagination';
-import { ProductCardSkeleton } from './ProductCardSkeleton';
+import { ProductCard } from './ProductCard/ProductCard';
+import { ProductCardSkeleton } from './ProductCard/ProductCardSkeleton';
 
 const ProductList = ({ type }) => {
 	console.log('list render');

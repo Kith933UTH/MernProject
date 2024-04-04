@@ -28,8 +28,8 @@ const CateList = [
 				icon: <TbGridDots />,
 			},
 			{
-				path: 'charging',
-				title: 'Charging',
+				path: 'charger',
+				title: 'Charger',
 				children: null,
 				icon: <TbBatteryCharging />,
 			},

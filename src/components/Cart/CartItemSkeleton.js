@@ -3,7 +3,7 @@ import { Typography } from '@material-tailwind/react';
 export function CartItemSkeleton() {
 	return (
 		<>
-			<div className="flex animate-pulse flex-wrap items-center gap-8 mb-4">
+			<div className="flex animate-pulse items-center mb-4 gap-4">
 				<div className="grid h-20 w-20 place-items-center rounded-lg bg-gray-300">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -20,18 +20,18 @@ export function CartItemSkeleton() {
 						/>
 					</svg>
 				</div>
-				<div className="w-max">
+				<div className="flex-1">
 					<Typography
 						as="div"
 						variant="h1"
-						className="mb-4 h-3 w-56 rounded-full bg-gray-300"
+						className="mb-4 h-3 w-[60%] rounded-full bg-gray-300"
 					>
 						&nbsp;
 					</Typography>
 					<Typography
 						as="div"
 						variant="paragraph"
-						className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+						className="mb-2 h-2 w-full rounded-full bg-gray-300"
 					>
 						&nbsp;
 					</Typography>

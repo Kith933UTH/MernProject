@@ -14,7 +14,7 @@ const CateRoute = CateList.map((cate) => {
 			},
 			{
 				path: ':productId',
-				element: <ProductDetailPage cate={cate.title} />,
+				element: <ProductDetailPage cateName={cate.title} />,
 			},
 		],
 	};
@@ -24,7 +24,17 @@ const SubCateRoute = CateList.filter((cate) => cate.children).map((cate) => {
 	return cate.children.map((subCate) => {
 		return {
 			path: subCate.path,
-			element: <Category type={subCate} />,
+			element: <CategoryPage />,
+			children: [
+				{
+					index: true,
+					element: <Category type={subCate} />,
+				},
+				{
+					path: ':productId',
+					element: <ProductDetailPage cateName={subCate.title} />,
+				},
+			],
 		};
 	});
 });

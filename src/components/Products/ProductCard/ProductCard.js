@@ -9,9 +9,9 @@ import {
 	IconButton,
 } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
-import RatingBar from '../RatingBar/RatingBar';
-import AddToCartDialog from '../AddToCartDialog/AddToCartDialog';
-import OptionList from '../OptionList/OptionList';
+import RatingBar from '../../RatingBar/RatingBar';
+import AddToCartDialog from '../../AddToCartDialog/AddToCartDialog';
+import OptionList from '../../OptionList/OptionList';
 import { useState } from 'react';
 
 export function ProductCard({ detail }) {

@@ -2,12 +2,11 @@ import React from 'react';
 import {
 	Button,
 	Dialog,
-	DialogHeader,
 	DialogBody,
 	DialogFooter,
 	IconButton,
 } from '@material-tailwind/react';
-import { ProductCard } from '../Products/ProductCard';
+import { ProductCard } from '../Products/ProductCard/ProductCard';
 
 const AddToCartDialog = ({ icon, buttonStyle }) => {
 	const [open, setOpen] = React.useState(false);

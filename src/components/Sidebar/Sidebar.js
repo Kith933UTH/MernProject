@@ -62,7 +62,7 @@ const Sidebar = () => {
 					<div className="p-0" selected={openList.includes(1)}>
 						<AccordionHeader
 							onClick={() => handleOpen(1)}
-							className="border-b-0 px-3 py-1 text-highlight hover:text-highlight hover:opacity-60"
+							className="border-b-0 px-2 py-1 text-highlight hover:text-highlight hover:opacity-60"
 						>
 							<ListItemPrefix>
 								<BanknotesIcon className="h-6 w-6" />
@@ -73,52 +73,33 @@ const Sidebar = () => {
 						</AccordionHeader>
 					</div>
 					<AccordionBody className="py-1 pl-2 text-text">
-						<div>
-							<div className="p-0 text-text">
-								<label
-									htmlFor="filter-price-htl"
-									className="flex w-full cursor-pointer items-center px-3 py-2"
-								>
-									<ListItemPrefix className="mr-3">
-										<Radio
-											name="price"
-											id="filter-price-htl"
-											ripple={false}
-											color="light-green"
-											className="hover:before:opacity-0 hover:border-highlight w-4 h-4"
-											containerProps={{
-												className: 'p-0',
-											}}
-										/>
-									</ListItemPrefix>
-									<Typography className="font-medium text-text text-sm hover:text-highlight hover:opacity-60">
-										High to low
-									</Typography>
-								</label>
-							</div>
-							<div className="p-0 text-text">
-								<label
-									htmlFor="filter-price-lth"
-									className="flex w-full cursor-pointer items-center px-3 py-2"
-								>
-									<ListItemPrefix className="mr-3">
-										<Radio
-											name="price"
-											id="filter-price-lth"
-											ripple={false}
-											color="light-green"
-											className="hover:before:opacity-0 hover:border-highlight  w-4 h-4"
-											containerProps={{
-												className: 'p-0',
-											}}
-										/>
-									</ListItemPrefix>
-									<Typography className="font-medium text-text text-sm hover:text-highlight hover:opacity-60">
-										Low to high
-									</Typography>
-								</label>
-							</div>
-						</div>
+						<Radio
+							name="price"
+							label="Low to high"
+							color="light-green"
+							className="hover:before:opacity-0 hover:border-highlight w-4 h-4"
+							containerProps={{
+								className: 'p-3',
+							}}
+							labelProps={{
+								className:
+									'font-medium text-text text-sm hover:text-highlight hover:opacity-60',
+							}}
+							defaultChecked
+						/>
+						<Radio
+							name="price"
+							label="High to low"
+							color="light-green"
+							className="hover:before:opacity-0 hover:border-highlight w-4 h-4"
+							containerProps={{
+								className: 'p-3',
+							}}
+							labelProps={{
+								className:
+									'font-medium text-text text-sm hover:text-highlight hover:opacity-60',
+							}}
+						/>
 					</AccordionBody>
 				</Accordion>
 
@@ -138,7 +119,7 @@ const Sidebar = () => {
 					<div className="p-0" selected={openList.includes(2)}>
 						<AccordionHeader
 							onClick={() => handleOpen(2)}
-							className="border-b-0 px-3 py-1 text-highlight hover:text-highlight hover:opacity-60"
+							className="border-b-0 px-2 py-1 text-highlight hover:text-highlight hover:opacity-60"
 						>
 							<ListItemPrefix>
 								<ChatBubbleOvalLeftIcon className="h-6 w-6" />
@@ -148,24 +129,19 @@ const Sidebar = () => {
 							</Typography>
 						</AccordionHeader>
 					</div>
+
 					<AccordionBody className="py-1 pl-2 text-text">
-						<div className="p-0 text-text">
-							<label
-								htmlFor="filter-rate-1"
-								className="flex w-full cursor-pointer items-center px-3 py-2"
-							>
-								<ListItemPrefix className="mr-3">
-									<Checkbox
-										name="price"
-										id="filter-rate-1"
-										ripple={false}
-										color="light-green"
-										className="hover:before:opacity-0 hover:border-highlight  w-4 h-4"
-										containerProps={{
-											className: 'p-0',
-										}}
-									/>
-								</ListItemPrefix>
+						<Checkbox
+							name="rate"
+							color="light-green"
+							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
+							containerProps={{
+								className: 'p-3',
+							}}
+							labelProps={{
+								className: 'mb-1',
+							}}
+							label={
 								<RatingBar
 									value={1}
 									relatedStyle={
@@ -175,28 +151,23 @@ const Sidebar = () => {
 										'text-text text-sm w-4 h-4 '
 									}
 									wrapperStyle={
-										'flex flex-row gap-1 hover:opacity-60'
+										'h-full flex flex-row gap-1 hover:opacity-60'
 									}
 								/>
-							</label>
-						</div>
-						<div className="p-0 text-text">
-							<label
-								htmlFor="filter-rate-2"
-								className="flex w-full cursor-pointer items-center px-3 py-2"
-							>
-								<ListItemPrefix className="mr-3">
-									<Checkbox
-										name="price"
-										id="filter-rate-2"
-										ripple={false}
-										color="light-green"
-										className="hover:before:opacity-0 hover:border-highlight  w-4 h-4"
-										containerProps={{
-											className: 'p-0',
-										}}
-									/>
-								</ListItemPrefix>
+							}
+						/>
+
+						<Checkbox
+							name="rate"
+							color="light-green"
+							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
+							containerProps={{
+								className: 'p-3',
+							}}
+							labelProps={{
+								className: 'mb-1',
+							}}
+							label={
 								<RatingBar
 									value={2}
 									relatedStyle={
@@ -206,28 +177,23 @@ const Sidebar = () => {
 										'text-text text-sm w-4 h-4 '
 									}
 									wrapperStyle={
-										'flex flex-row gap-1 hover:opacity-60'
+										'h-full flex flex-row gap-1 hover:opacity-60'
 									}
 								/>
-							</label>
-						</div>
-						<div className="p-0 text-text">
-							<label
-								htmlFor="filter-rate-3"
-								className="flex w-full cursor-pointer items-center px-3 py-2"
-							>
-								<ListItemPrefix className="mr-3">
-									<Checkbox
-										name="price"
-										id="filter-rate-3"
-										ripple={false}
-										color="light-green"
-										className="hover:before:opacity-0 hover:border-highlight  w-4 h-4"
-										containerProps={{
-											className: 'p-0',
-										}}
-									/>
-								</ListItemPrefix>
+							}
+						/>
+
+						<Checkbox
+							name="rate"
+							color="light-green"
+							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
+							containerProps={{
+								className: 'p-3',
+							}}
+							labelProps={{
+								className: 'mb-1',
+							}}
+							label={
 								<RatingBar
 									value={3}
 									relatedStyle={
@@ -237,28 +203,23 @@ const Sidebar = () => {
 										'text-text text-sm w-4 h-4 '
 									}
 									wrapperStyle={
-										'flex flex-row gap-1 hover:opacity-60'
+										'h-full flex flex-row gap-1 hover:opacity-60'
 									}
 								/>
-							</label>
-						</div>
-						<div className="p-0 text-text">
-							<label
-								htmlFor="filter-rate-4"
-								className="flex w-full cursor-pointer items-center px-3 py-2"
-							>
-								<ListItemPrefix className="mr-3">
-									<Checkbox
-										name="price"
-										id="filter-rate-4"
-										ripple={false}
-										color="light-green"
-										className="hover:before:opacity-0 hover:border-highlight  w-4 h-4"
-										containerProps={{
-											className: 'p-0',
-										}}
-									/>
-								</ListItemPrefix>
+							}
+						/>
+
+						<Checkbox
+							name="rate"
+							color="light-green"
+							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
+							containerProps={{
+								className: 'p-3',
+							}}
+							labelProps={{
+								className: 'mb-1',
+							}}
+							label={
 								<RatingBar
 									value={4}
 									relatedStyle={
@@ -268,28 +229,23 @@ const Sidebar = () => {
 										'text-text text-sm w-4 h-4 '
 									}
 									wrapperStyle={
-										'flex flex-row gap-1 hover:opacity-60'
+										'h-full flex flex-row gap-1 hover:opacity-60'
 									}
 								/>
-							</label>
-						</div>
-						<div className="p-0 text-text">
-							<label
-								htmlFor="filter-rate-5"
-								className="flex w-full cursor-pointer items-center px-3 py-2"
-							>
-								<ListItemPrefix className="mr-3">
-									<Checkbox
-										name="price"
-										id="filter-rate-5"
-										ripple={false}
-										color="light-green"
-										className="hover:before:opacity-0 hover:border-highlight  w-4 h-4"
-										containerProps={{
-											className: 'p-0',
-										}}
-									/>
-								</ListItemPrefix>
+							}
+						/>
+
+						<Checkbox
+							name="rate"
+							color="light-green"
+							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
+							containerProps={{
+								className: 'p-3',
+							}}
+							labelProps={{
+								className: 'mb-1',
+							}}
+							label={
 								<RatingBar
 									value={5}
 									relatedStyle={
@@ -299,11 +255,11 @@ const Sidebar = () => {
 										'text-text text-sm w-4 h-4 '
 									}
 									wrapperStyle={
-										'flex flex-row gap-1 hover:opacity-60'
+										'h-full flex flex-row gap-1 hover:opacity-60'
 									}
 								/>
-							</label>
-						</div>
+							}
+						/>
 					</AccordionBody>
 				</Accordion>
 			</div>

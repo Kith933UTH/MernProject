@@ -1,6 +1,6 @@
 import { Carousel } from '@material-tailwind/react';
 
-export function ProductCarousel({ imgList }) {
+const ProductCarousel = ({ imgList }) => {
 	return (
 		<Carousel
 			className="rounded-xl"
@@ -36,4 +36,6 @@ export function ProductCarousel({ imgList }) {
 				})}
 		</Carousel>
 	);
-}
+};
+
+export default ProductCarousel;
