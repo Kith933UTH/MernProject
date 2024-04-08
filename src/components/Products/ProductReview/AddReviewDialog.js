@@ -93,7 +93,7 @@ const AddReviewDialog = () => {
 					mount: { scale: 1, y: 0 },
 					unmount: { scale: 0.9, y: -100 },
 				}}
-				className="bg-main h-min overflow-y-scroll overflow-x-hidden flex flex-col"
+				className="bg-main h-min overflow-y-scroll overflow-x-hidden flex flex-col shadow-md shadow-gray-800 *:selection:!text-gray-900 *:selection:!bg-highlight"
 			>
 				<DialogHeader className="justify-center py-0">
 					<Typography className="text-text font-semibold px-8 pb-4 pt-8 text-2xl border-solid border-b-[2px] border-gray-700">

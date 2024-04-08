@@ -2,8 +2,10 @@ import React from 'react';
 
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import useScrollTop from '../hooks/useScrollTop';
 
 const MainLayout = ({ children }) => {
+	useScrollTop();
 	return (
 		<>
 			<Header />

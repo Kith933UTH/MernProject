@@ -21,7 +21,7 @@ const AddToCartDialog = ({ icon, buttonStyle }) => {
 			<Dialog
 				open={open}
 				handler={handleOpen}
-				className="bg-main shadow-md shadow-main"
+				className="bg-main shadow-md shadow-gray-800 *:selection:!text-gray-900 *:selection:!bg-highlight"
 			>
 				<DialogBody>
 					<ProductCard detail={true} />

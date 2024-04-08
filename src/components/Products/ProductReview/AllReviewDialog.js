@@ -31,7 +31,7 @@ const AllReviewDialog = ({ data }) => {
 					mount: { scale: 1, y: 0 },
 					unmount: { scale: 0.9, y: -100 },
 				}}
-				className="bg-main"
+				className="bg-main shadow-md shadow-gray-800 *:selection:!text-gray-900 *:selection:!bg-highlight"
 			>
 				<DialogBody className=" h-[80vh] overflow-y-scroll">
 					{data?.map((item) => {
