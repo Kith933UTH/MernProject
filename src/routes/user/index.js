@@ -1,5 +1,6 @@
-import AllOrder from '../../components/Order/AllOrder';
-import OrderDetail from '../../components/Order/OrderDetail';
+import AllOrder from '../../components/Users/Order/AllOrder';
+import OrderDetail from '../../components/Users/Order/OrderDetail';
+import Profile from '../../components/Users/Profile/Profile';
 import UserPage from '../../pages/UserPage';
 
 const UserRoute = {
@@ -8,7 +9,7 @@ const UserRoute = {
 	children: [
 		{
 			index: true,
-			element: <h1>User home</h1>,
+			element: <Profile />,
 		},
 		{
 			path: 'order',

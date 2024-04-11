@@ -17,6 +17,7 @@ import {
 } from '@heroicons/react/24/solid';
 
 const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const phoneNumberRegex = /^0\d{9}$/;
 
 const SignInDialog = ({ open, handler }) => {
 	const [isEmail, setIsEmail] = useState(true);
@@ -152,6 +153,7 @@ const SignInDialog = ({ open, handler }) => {
 
 const SignUpDialog = ({ open, handler }) => {
 	const [isValidName, setIsValidName] = useState(true);
+	const [isValidPhone, setIsValidPhone] = useState(true);
 	const [isValidEmail, setIsValidEmail] = useState(true);
 	const [isValidPass, setIsValidPass] = useState(true);
 	const [isValidRePass, setIsValidRePass] = useState(true);
@@ -159,6 +161,7 @@ const SignUpDialog = ({ open, handler }) => {
 
 	const [inputValue, setInputValue] = useState({
 		name: '',
+		phone: '',
 		email: '',
 		pass: '',
 		rePass: '',
@@ -170,6 +173,23 @@ const SignUpDialog = ({ open, handler }) => {
 			name: e.target.value,
 		});
 		setIsValidName(e.target.value !== '');
+	};
+	const handleCheckPhone = (e) => {
+		if (e.target.value === '') {
+			setInputValue({
+				...inputValue,
+				phone: '',
+			});
+		}
+		if (Number.isInteger(parseInt(e.target.value.at(-1)))) {
+			setInputValue({
+				...inputValue,
+				phone: e.target.value,
+			});
+			setIsValidPhone(phoneNumberRegex.test(e.target.value));
+		} else {
+			setIsValidPhone(phoneNumberRegex.test(inputValue.phone));
+		}
 	};
 
 	const handleCheckEmail = (e) => {
@@ -234,6 +254,28 @@ const SignUpDialog = ({ open, handler }) => {
 						{!isValidName && (
 							<Typography className="text-sm text-red-600 font-medium mt-1">
 								Please type full name
+							</Typography>
+						)}
+
+						{/* phone  */}
+						<input
+							name="text"
+							required={true}
+							spellCheck="false"
+							className={`rounded-lg mt-6 text-text font-medium p-2 w-full bg-transparent border-solid border-[1px] border-gray-700 focus:outline-none ${
+								inputValue.phone !== '' && 'border-highlight'
+							} ${
+								!isValidPhone &&
+								'border-red-700 selection:bg-red-700 placeholder:text-red-700 !text-red-700'
+							}`}
+							placeholder="Phone number"
+							value={inputValue.phone}
+							onChange={handleCheckPhone}
+						/>
+						{!isValidPhone && (
+							<Typography className="text-sm text-red-600 font-medium mt-1">
+								The phone number must start with 0 and have 10
+								digits
 							</Typography>
 						)}
 
@@ -312,7 +354,7 @@ const SignUpDialog = ({ open, handler }) => {
 								containerProps={{
 									className: 'p-1',
 								}}
-								checked={isAcceptTerm}
+								defaultChecked={isAcceptTerm}
 								onClick={() => setIsAcceptTerm(!isAcceptTerm)}
 							/>
 							<div className="flex">
@@ -333,6 +375,7 @@ const SignUpDialog = ({ open, handler }) => {
 							type="submit"
 							className={`bg-highlight text-main text-base mt-6  flex justify-center items-center gap-2 pointer-events-none opacity-50 ${
 								isValidName &&
+								isValidPhone &&
 								isValidEmail &&
 								isValidPass &&
 								isValidRePass &&

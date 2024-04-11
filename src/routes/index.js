@@ -9,6 +9,10 @@ import AdminRoute from './admin';
 import ExtraRoute from './extra';
 import UserRoute from './user';
 
+const isLogin = true;
+
+const user = isLogin ? UserRoute : {};
+
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -24,7 +28,7 @@ const router = createBrowserRouter([
 			},
 			...CateRoute,
 			...ExtraRoute,
-			UserRoute,
+			user,
 		],
 	},
 	{

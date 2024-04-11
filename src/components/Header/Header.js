@@ -1,13 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
-import { Bars3Icon, HeartIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+	Bars3Icon,
+	HeartIcon,
+	XMarkIcon,
+	ClipboardDocumentListIcon,
+} from '@heroicons/react/24/outline';
 import SearchDrawer from './SearchDrawer';
 import Cart from '../Cart/Cart';
 import HeaderNavbar from '../Navbar/HeaderNavbar';
 import AuthForm from '../Users/AuthForm';
 
 const Header = () => {
+	const isLogin = false;
+
 	//Nav handler
 	const [openNav, setOpenNav] = useState(false);
 	const closeNavMobileSection = useCallback(() => setOpenNav(false), []);
@@ -50,7 +57,21 @@ const Header = () => {
 						<Cart />
 
 						{/* user  */}
-						<AuthForm />
+						{!isLogin ? (
+							<AuthForm />
+						) : (
+							<Link to="/user/order">
+								<Tooltip
+									content="Your order"
+									placement="bottom"
+									className="bg-main"
+								>
+									<IconButton variant="text" color="white">
+										<ClipboardDocumentListIcon className="h-6 w-6" />
+									</IconButton>
+								</Tooltip>
+							</Link>
+						)}
 
 						{/* nav mobile  */}
 						<IconButton
