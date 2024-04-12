@@ -17,7 +17,7 @@ import ProductReview from './ProductReview/ProductReview.js';
 import ProductReviewSkeleton from './ProductReview/ProductReviewSkeleton.js';
 import ProductComment from './ProductComment/ProductComment.js';
 
-const ProductDetail = ({ data, cateName }) => {
+const ProductDetail = ({ data, cateName, catePath }) => {
 	console.log(data, cateName);
 
 	const navigate = useNavigate();
@@ -356,14 +356,14 @@ const ProductDetail = ({ data, cateName }) => {
 						<HomeIcon className="w-5 h-5 mb-1 text-text hover:opacity-60" />
 					</Typography>
 				</Link>
-				{/* <Link to={catePath}> */}
-				<Typography
-					className="text-text hover:opacity-60"
-					onClick={() => navigate(-1)}
-				>
-					{cateName}
-				</Typography>
-				{/* </Link> */}
+				<Link to={'/' + catePath}>
+					<Typography
+						className="text-text hover:opacity-60"
+						// onClick={() => navigate(-1)}
+					>
+						{cateName}
+					</Typography>
+				</Link>
 				<Link to={window.location.pathname}>
 					<Typography className="text-highlight text-lg hover:opacity-60">
 						{data?.name || 'Fake name'}

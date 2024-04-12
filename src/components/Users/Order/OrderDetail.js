@@ -9,6 +9,7 @@ import {
 	ShoppingBagIcon,
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
+import { FormatNumber } from '../../../utils';
 
 const OrderDetail = () => {
 	const data = {
@@ -27,15 +28,19 @@ const OrderDetail = () => {
 				img: 'https://cdn.tgdd.vn/Products/Images/42/316075/samsung-galaxy-a15-4g-den-thumb-200x200.jpg',
 				name: 'Samsung Galaxy A15 A155F (8G+256G) Black',
 				quantity: 1,
-				oldPrice: '5.590.000',
-				price: '4.990.000',
+				discount: 20,
+				price: 4990000,
+				color: 'Red',
+				variant: '8GB - 256GB',
 			},
 			{
 				img: 'https://cdn.tgdd.vn/Products/Images/9499/318156/adapter-sac-type-c-pd-25w-samsung-ep-t2510n-den-1-180x125.jpg',
 				name: 'Type C PD 25W Charger Adapter Samsung EP-T2510NB Black',
 				quantity: 1,
-				oldPrice: '550.000',
-				price: '275.000',
+				discount: 10,
+				price: 275000,
+				color: 'Red',
+				variant: '8GB - 256GB',
 			},
 		],
 	};
@@ -143,7 +148,7 @@ const OrderDetail = () => {
 							<div className="flex justify-between flex-1 gap-4">
 								<Typography className="inline-block text-text text-base">
 									<span className="block font-medium mb-2">
-										{item.name}
+										{`${item.name} (${item.color}, ${item.variant})`}
 									</span>
 									<span className="block text-sm">
 										Quantity: {item.quantity}
@@ -151,10 +156,15 @@ const OrderDetail = () => {
 								</Typography>
 								<Typography className="inline-block text-text text-base text-right">
 									<span className="block font-medium mb-1">
-										{item.price} VND
+										{FormatNumber(
+											(item.price *
+												(100 - item.discount)) /
+												100
+										)}{' '}
+										VND
 									</span>
 									<span className="block text-sm line-through ">
-										{item.oldPrice} VND
+										{FormatNumber(item.price)} VND
 									</span>
 								</Typography>
 							</div>

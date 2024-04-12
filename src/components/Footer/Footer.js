@@ -1,22 +1,10 @@
-// import React, { useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchProducts } from '../Products/ProductsSlice';
 import { Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 
 function Footer() {
-	// const dispatch = useDispatch();
-	// useEffect(() => {
-	// 	dispatch(fetchProducts());
-	// }, [dispatch]);
-
-	// const product = useSelector((state) => state.products);
-
-	// console.log(product);
-
 	return (
 		<footer className="max-w-[1200px] xl:mx-auto py-4 mx-4">
-			<div className="bg-main px-8 py-3 shadow-md shadow-main rounded-2xl flex flex-row flex-wrap items-center justify-center sm:justify-between gap-y-2 gap-x-12 text-center text-text md:justify-between">
+			<div className="bg-main px-3 md:px-8 py-3 shadow-md shadow-main rounded-2xl flex flex-row flex-wrap items-center justify-center sm:justify-between gap-y-2 gap-x-12 text-center text-text ">
 				<Typography
 					variant="h2"
 					className="text-xl font-bold cursor-pointer py-1.5 px-0"
@@ -25,7 +13,7 @@ function Footer() {
 					TechShop
 				</Typography>
 				<hr className="my-1 border-blue-gray-50 w-[90%] mx-auto sm:hidden" />
-				<ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
+				<ul className="flex flex-wrap items-center gap-2 sm:gap-x-8 flex-1 justify-between px-2 sm:px-0 sm:justify-end">
 					<li>
 						<Link
 							to="about"
@@ -33,7 +21,7 @@ function Footer() {
 						>
 							<Typography
 								variant="paragraph"
-								className="text-base font-bold cursor-pointer"
+								className="text-sm md:text-base font-bold cursor-pointer"
 								onClick={() => window.scrollTo(0, 0)}
 							>
 								About Us
@@ -47,7 +35,7 @@ function Footer() {
 						>
 							<Typography
 								variant="paragraph"
-								className="text-base font-bold cursor-pointer"
+								className="text-sm md:text-base font-bold cursor-pointer"
 								onClick={() => window.scrollTo(0, 0)}
 							>
 								Policy
@@ -61,7 +49,7 @@ function Footer() {
 						>
 							<Typography
 								variant="paragraph"
-								className="text-base font-bold cursor-pointer"
+								className="text-sm md:text-base font-bold cursor-pointer"
 								onClick={() => window.scrollTo(0, 0)}
 							>
 								Contact Us

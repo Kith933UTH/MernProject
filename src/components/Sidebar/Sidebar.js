@@ -15,8 +15,11 @@ import {
 	ChatBubbleOvalLeftIcon,
 } from '@heroicons/react/24/outline';
 import RatingBar from '../RatingBar/RatingBar';
+import { useDispatch } from 'react-redux';
+import productsSlice from '../Products/ProductsSlice';
 
-const Sidebar = () => {
+const Sidebar = ({ filters }) => {
+	const dispatch = useDispatch();
 	const [openList, setOpenList] = useState([1, 2]);
 
 	const handleOpen = (value) => {
@@ -27,7 +30,6 @@ const Sidebar = () => {
 		} else {
 			newList.push(value);
 		}
-
 		setOpenList(newList);
 	};
 
@@ -73,33 +75,30 @@ const Sidebar = () => {
 						</AccordionHeader>
 					</div>
 					<AccordionBody className="py-1 pl-2 text-text">
-						<Radio
-							name="price"
-							label="Low to high"
-							color="light-green"
-							className="hover:before:opacity-0 hover:border-highlight w-4 h-4"
-							containerProps={{
-								className: 'p-3',
-							}}
-							labelProps={{
-								className:
-									'font-medium text-text text-sm hover:text-highlight hover:opacity-60',
-							}}
-							defaultChecked
-						/>
-						<Radio
-							name="price"
-							label="High to low"
-							color="light-green"
-							className="hover:before:opacity-0 hover:border-highlight w-4 h-4"
-							containerProps={{
-								className: 'p-3',
-							}}
-							labelProps={{
-								className:
-									'font-medium text-text text-sm hover:text-highlight hover:opacity-60',
-							}}
-						/>
+						{filters?.price.map((price) => (
+							<Radio
+								key={price.value}
+								name="price"
+								label={price.value}
+								color="light-green"
+								className="hover:before:opacity-0 hover:border-highlight w-4 h-4"
+								containerProps={{
+									className: 'p-3',
+								}}
+								labelProps={{
+									className:
+										'font-medium text-text text-sm hover:text-highlight hover:opacity-60',
+								}}
+								checked={price.choose}
+								onChange={() =>
+									dispatch(
+										productsSlice.actions.changeFilterPrice(
+											price.value
+										)
+									)
+								}
+							/>
+						))}
 					</AccordionBody>
 				</Accordion>
 
@@ -131,135 +130,42 @@ const Sidebar = () => {
 					</div>
 
 					<AccordionBody className="py-1 pl-2 text-text">
-						<Checkbox
-							name="rate"
-							color="light-green"
-							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
-							containerProps={{
-								className: 'p-3',
-							}}
-							labelProps={{
-								className: 'mb-1',
-							}}
-							label={
-								<RatingBar
-									value={1}
-									relatedStyle={
-										'text-highlight text-sm w-4 h-4 '
-									}
-									unrelatedStyle={
-										'text-text text-sm w-4 h-4 '
-									}
-									wrapperStyle={
-										'h-full flex flex-row gap-1 hover:opacity-60'
-									}
-								/>
-							}
-						/>
-
-						<Checkbox
-							name="rate"
-							color="light-green"
-							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
-							containerProps={{
-								className: 'p-3',
-							}}
-							labelProps={{
-								className: 'mb-1',
-							}}
-							label={
-								<RatingBar
-									value={2}
-									relatedStyle={
-										'text-highlight text-sm w-4 h-4 '
-									}
-									unrelatedStyle={
-										'text-text text-sm w-4 h-4 '
-									}
-									wrapperStyle={
-										'h-full flex flex-row gap-1 hover:opacity-60'
-									}
-								/>
-							}
-						/>
-
-						<Checkbox
-							name="rate"
-							color="light-green"
-							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
-							containerProps={{
-								className: 'p-3',
-							}}
-							labelProps={{
-								className: 'mb-1',
-							}}
-							label={
-								<RatingBar
-									value={3}
-									relatedStyle={
-										'text-highlight text-sm w-4 h-4 '
-									}
-									unrelatedStyle={
-										'text-text text-sm w-4 h-4 '
-									}
-									wrapperStyle={
-										'h-full flex flex-row gap-1 hover:opacity-60'
-									}
-								/>
-							}
-						/>
-
-						<Checkbox
-							name="rate"
-							color="light-green"
-							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
-							containerProps={{
-								className: 'p-3',
-							}}
-							labelProps={{
-								className: 'mb-1',
-							}}
-							label={
-								<RatingBar
-									value={4}
-									relatedStyle={
-										'text-highlight text-sm w-4 h-4 '
-									}
-									unrelatedStyle={
-										'text-text text-sm w-4 h-4 '
-									}
-									wrapperStyle={
-										'h-full flex flex-row gap-1 hover:opacity-60'
-									}
-								/>
-							}
-						/>
-
-						<Checkbox
-							name="rate"
-							color="light-green"
-							className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
-							containerProps={{
-								className: 'p-3',
-							}}
-							labelProps={{
-								className: 'mb-1',
-							}}
-							label={
-								<RatingBar
-									value={5}
-									relatedStyle={
-										'text-highlight text-sm w-4 h-4 '
-									}
-									unrelatedStyle={
-										'text-text text-sm w-4 h-4 '
-									}
-									wrapperStyle={
-										'h-full flex flex-row gap-1 hover:opacity-60'
-									}
-								/>
-							}
-						/>
+						{filters?.rate.map((rate) => (
+							<Checkbox
+								key={'rate-' + rate.value}
+								name="rate"
+								color="light-green"
+								className="hover:before:opacity-0 hover:border-highlight w-4 h-4 "
+								containerProps={{
+									className: 'p-3',
+								}}
+								labelProps={{
+									className: 'mb-1',
+								}}
+								label={
+									<RatingBar
+										value={rate.value}
+										relatedStyle={
+											'text-highlight text-sm w-4 h-4 '
+										}
+										unrelatedStyle={
+											'text-text text-sm w-4 h-4 '
+										}
+										wrapperStyle={
+											'h-full flex flex-row gap-1 hover:opacity-60'
+										}
+									/>
+								}
+								checked={rate.choose}
+								onChange={() =>
+									dispatch(
+										productsSlice.actions.changeFilterRate(
+											rate.value
+										)
+									)
+								}
+							/>
+						))}
 					</AccordionBody>
 				</Accordion>
 			</div>

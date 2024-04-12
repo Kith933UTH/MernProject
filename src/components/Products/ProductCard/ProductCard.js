@@ -11,55 +11,14 @@ import {
 import { Link } from 'react-router-dom';
 import RatingBar from '../../RatingBar/RatingBar';
 import AddToCartDialog from '../../AddToCartDialog/AddToCartDialog';
-import OptionList from '../../OptionList/OptionList';
-import { useState } from 'react';
+import { FormatNumber } from '../../../utils';
 
-export function ProductCard({ detail }) {
-	const fakeId = '123';
-
-	const [colorList, setColorList] = useState([
-		{ title: 'Red', choose: true },
-		{ title: 'Green', choose: false },
-		{ title: 'Yellow', choose: false },
-		{ title: 'Blue', choose: false },
-	]);
-
-	const [variantList, setVariantList] = useState([
-		{ title: '8GB - 128GB', choose: true },
-		{ title: '8GB - 256GB', choose: false },
-		{ title: '8GB - 512GB', choose: false },
-	]);
-
-	const handleChooseColor = (value) => {
-		setColorList((prev) => {
-			return prev.map((option) => {
-				if (option.title === value) {
-					option.choose = true;
-				} else {
-					option.choose = false;
-				}
-				return option;
-			});
-		});
-	};
-
-	const handleChooseVariant = (value) => {
-		setVariantList((prev) => {
-			return prev.map((option) => {
-				if (option.title === value) {
-					option.choose = true;
-				} else {
-					option.choose = false;
-				}
-				return option;
-			});
-		});
-	};
-
+export function ProductCard(props) {
+	const currentPrice = (props.data.price * (100 - props.data.discount)) / 100;
 	return (
 		<Card className="w-full bg-main shadow-md shadow-main">
 			<Link
-				to={fakeId}
+				to={props.data.id}
 				className="[&_p]:hover:text-highlight [&>*:first-child]:hover:scale-105 "
 			>
 				<CardHeader
@@ -68,7 +27,7 @@ export function ProductCard({ detail }) {
 					className="h-48 mb-4 duration-500"
 				>
 					<img
-						src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+						src={props.data.image}
 						alt="card"
 						className="h-full w-full object-cover "
 					/>
@@ -76,11 +35,11 @@ export function ProductCard({ detail }) {
 				<div className="px-4 flex items-baseline justify-between gap-2">
 					<Typography
 						variant="paragraph"
-						className={`font-medium text-text hover:text-highlight ${
-							detail ? 'text-2xl' : ''
+						className={`font-medium text-text text-lg hover:text-highlight ${
+							props.detail ? 'text-2xl' : ''
 						}`}
 					>
-						Apple AirPods Pro 2024
+						{props.data.name}
 					</Typography>
 					<div className="flex flex-row">
 						<span className="w-4 h-4 rounded-full bg-red-400 border-solid border-white border-[1px] -ml-1" />
@@ -90,26 +49,36 @@ export function ProductCard({ detail }) {
 					</div>
 				</div>
 			</Link>
-			<CardBody className="px-4 pt-2 pb-4">
+			<CardBody className="px-4 pt-2 pb-4 flex flex-col flex-1 justify-between">
 				<Typography
-					variant="small"
-					className="font-normal opacity-75 text-text"
+					variant="paragraph"
+					className="font-normal mt-auto text-sm mb-2 opacity-75 text-text !line-clamp-2"
 				>
-					With plenty of talk and
+					{props.data.description}
 				</Typography>
-				<Typography className="font-medium text-highlight">
-					1.999.000 VND
-				</Typography>
-				<RatingBar
-					value={3}
-					relatedStyle={'text-highlight text-sm w-4 h-4'}
-					unrelatedStyle={'text-text text-sm w-4 h-4 '}
-					wrapperStyle={'flex flex-row gap-1 hover:opacity-60 mt-1'}
-				/>
+				<div>
+					<Typography className="font-medium text-highlight">
+						{FormatNumber(currentPrice)} VND
+					</Typography>
+					<Typography className="text-text">
+						<span className="line-through">
+							{FormatNumber(props.data.price)} VND
+						</span>{' '}
+						<span className="text-sm">-{props.data.discount}%</span>
+					</Typography>
+					<RatingBar
+						value={props.data.rate}
+						relatedStyle={'text-highlight text-sm w-4 h-4'}
+						unrelatedStyle={'text-text text-sm w-4 h-4 '}
+						wrapperStyle={
+							'flex flex-row gap-1 hover:opacity-60 mt-1'
+						}
+					/>
+				</div>
 			</CardBody>
-			{!detail && (
+			{!props.detail && (
 				<CardFooter className="pt-0 px-4 flex flex-row gap-1 justify-between items-center">
-					<Link to={fakeId}>
+					<Link to={props.data.id}>
 						<Button
 							ripple={true}
 							className="bg-highlight py-1 rounded-3xl border-text border-solid border-[1px] text-main shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
@@ -125,6 +94,7 @@ export function ProductCard({ detail }) {
 							buttonStyle={
 								'h-8 w-8 rounded-3xl bg-main border-text border-solid border-[1px] shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100'
 							}
+							data={props.data}
 						/>
 						<IconButton
 							ripple={true}
@@ -136,20 +106,7 @@ export function ProductCard({ detail }) {
 				</CardFooter>
 			)}
 
-			{detail && (
-				<>
-					<OptionList
-						wrapperStyle={'px-4 flex flex-row gap-1 mb-4'}
-						data={variantList}
-						handleChoose={handleChooseVariant}
-					/>
-					<OptionList
-						wrapperStyle={'px-4 flex flex-row gap-1'}
-						data={colorList}
-						handleChoose={handleChooseColor}
-					/>
-				</>
-			)}
+			{props.detail && props.children}
 		</Card>
 	);
 }

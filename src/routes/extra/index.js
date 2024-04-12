@@ -1,11 +1,13 @@
 import AboutPage from '../../pages/AboutPage';
+import CheckoutPage from '../../pages/CheckoutPage';
 import ContactPage from '../../pages/ContactPage';
 import PolicyPage from '../../pages/PolicyPage';
+import SearchPage from '../../pages/SearchPage';
 
 const ExtraRoute = [
 	{
 		path: 'checkout',
-		element: <h1>checkout page</h1>,
+		element: <CheckoutPage />,
 	},
 	{
 		path: 'about',
@@ -21,7 +23,7 @@ const ExtraRoute = [
 	},
 	{
 		path: 'search',
-		element: <h1>search page</h1>,
+		element: <SearchPage />,
 	},
 ];
 

@@ -3,9 +3,12 @@ import { IconButton, Drawer, Tooltip } from '@material-tailwind/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import productsSlice from '../Products/ProductsSlice';
 
 const SearchDrawer = function () {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const searchInputRef = useRef();
 	const [openSearch, setOpenSearch] = useState(false);
 	const [searchValue, setSearchValue] = useState('');
@@ -26,8 +29,8 @@ const SearchDrawer = function () {
 	//submit search
 	const handleSubmitSearchAction = () => {
 		if (searchValue !== '') {
-			setSearchValue('');
 			closeSearchSection();
+			dispatch(productsSlice.actions.changeSearchKey(searchValue));
 			navigate(`/search?key=${searchValue}`);
 		}
 	};

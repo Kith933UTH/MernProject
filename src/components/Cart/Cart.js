@@ -1,4 +1,11 @@
-import { TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	TrashIcon,
+	XMarkIcon,
+	ShoppingCartIcon,
+} from '@heroicons/react/24/outline';
+import { BsCartX } from 'react-icons/bs';
 import {
 	Badge,
 	Button,
@@ -8,12 +15,29 @@ import {
 	Tooltip,
 	Typography,
 } from '@material-tailwind/react';
-import React, { useState } from 'react';
+
 import CartItem from './CartItem';
 import { CartItemSkeleton } from './CartItemSkeleton';
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
+import { FormatNumber } from '../../utils';
+import cartSlice from './CartSlice';
 
 const Cart = () => {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		// dispatch(fetchProducts());
+	}, [dispatch]);
+
+	const cartList = useSelector((state) => state.cart);
+	const total = useMemo(() => {
+		return cartList.data.reduce((total, cur) => {
+			return (
+				total +
+				((cur.price * (100 - cur.discount)) / 100) * cur.quantity
+			);
+		}, 0);
+	}, [cartList]);
+
 	//Cart handler
 	const [openCart, setOpenCart] = useState(false);
 	const openCartSection = () => {
@@ -22,7 +46,10 @@ const Cart = () => {
 	const closeCartSection = () => setOpenCart(false);
 	return (
 		<>
-			<Badge content="5" className="min-w-5 min-h-5 hover:opacity-80">
+			<Badge
+				content={cartList.data.length}
+				className="min-w-5 min-h-5 hover:opacity-80"
+			>
 				<Tooltip
 					content="Shopping cart"
 					placement="bottom"
@@ -55,7 +82,7 @@ const Cart = () => {
 						variant="paragraph"
 						className="font-semibold text-sm text-main"
 					>
-						{'SHOPPING CART (5)'}
+						{`SHOPPING CART (${cartList.data.length})`}
 					</Typography>
 
 					{/* close button  */}
@@ -65,14 +92,30 @@ const Cart = () => {
 				</div>
 
 				{/* Cart list  */}
-				<List className="flex-1 overflow-y-scroll scroll-smooth">
-					<CartItem />
-					<CartItemSkeleton />
-					<CartItem />
-					<CartItemSkeleton />
-					<CartItem />
-					<CartItemSkeleton />
-				</List>
+				{cartList.data.length > 0 ? (
+					<List className="flex-1 overflow-y-scroll scroll-smooth">
+						{cartList.isLoading ? (
+							<>
+								<CartItemSkeleton />
+								<CartItemSkeleton />
+								<CartItemSkeleton />
+								<CartItemSkeleton />
+								<CartItemSkeleton />
+							</>
+						) : (
+							cartList.data.map((item) => (
+								<CartItem key={item.id} data={item} />
+							))
+						)}
+					</List>
+				) : (
+					<div className="flex flex-col items-center gap-4">
+						<BsCartX className="w-24 h-24 text-main" />
+						<Typography className="text-lg uppercase font-semibold text-main">
+							Your cart is empty
+						</Typography>
+					</div>
+				)}
 
 				{/* Cart footer */}
 				<div>
@@ -81,15 +124,36 @@ const Cart = () => {
 							variant="paragraph"
 							className="text-main text-lg font-semibold"
 						>
-							Subtotal: 1.253.252 VND
+							Subtotal: {FormatNumber(total)} VND
 						</Typography>
-						<IconButton color="red" className="">
+						<IconButton
+							color="red"
+							onClick={() =>
+								dispatch(cartSlice.actions.removeEntireCart())
+							}
+						>
 							<TrashIcon className="w-6 h6"></TrashIcon>
 						</IconButton>
 					</div>
-					<Button fullWidth className="text-sm">
-						Check out
-					</Button>
+					<Link
+						to="/checkout"
+						onClick={closeCartSection}
+						className={
+							cartList.data.length <= 0
+								? 'pointer-events-none'
+								: ''
+						}
+					>
+						{cartList.data.length <= 0 ? (
+							<Button fullWidth className="text-sm" disabled>
+								Check out
+							</Button>
+						) : (
+							<Button fullWidth className="text-sm">
+								Check out
+							</Button>
+						)}
+					</Link>
 				</div>
 			</Drawer>
 		</>

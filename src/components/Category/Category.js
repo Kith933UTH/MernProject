@@ -5,9 +5,12 @@ import { Breadcrumbs, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { HomeIcon } from '@heroicons/react/24/outline';
 import ProductList from '../Products/ProductList';
+import { useSelector } from 'react-redux';
+import { productFilterSelector } from '../../redux/Selector/ProductSelector';
 
 const Category = ({ type }) => {
-	console.log(type);
+	const filters = useSelector(productFilterSelector);
+
 	return (
 		<>
 			<div className="w-full flex flex-col gap-4">
@@ -29,13 +32,13 @@ const Category = ({ type }) => {
 							</Typography>
 						</div>
 						<div className="tablet:hidden">
-							<DrawerSideBar />
+							<DrawerSideBar filters={filters} />
 						</div>
 					</div>
 				</div>
 				<div className="w-full flex flex-row gap-4">
 					<div className="w-full tablet:w-1/6 tablet:block hidden">
-						<Sidebar />
+						<Sidebar filters={filters} />
 					</div>
 					<div className="w-full tablet:w-5/6">
 						<ProductList type={type.path} />

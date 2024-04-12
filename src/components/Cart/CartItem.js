@@ -1,3 +1,5 @@
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import {
 	ButtonGroup,
@@ -6,9 +8,12 @@ import {
 	ListItemPrefix,
 	Typography,
 } from '@material-tailwind/react';
-import React from 'react';
+import { FormatNumber } from '../../utils';
+import cartSlice from '../Cart/CartSlice';
 
-const CartItem = () => {
+const CartItem = ({ data }) => {
+	const dispatch = useDispatch();
+
 	return (
 		<>
 			<ListItem
@@ -20,26 +25,42 @@ const CartItem = () => {
 				<ListItemPrefix>
 					<img
 						className="h-20 w-20 rounded-lg object-cover object-center shadow-xl shadow-blue-gray-900/50"
-						src={
-							'https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80'
-						}
-						alt="nature"
+						src={data.image}
+						alt={data.name}
 					/>
 				</ListItemPrefix>
 
 				{/* Cart item body  */}
-				<div>
-					<div className="flex flex-row justify-start gap-2">
-						<Typography
-							variant="paragraph"
-							className="uppercase font-medium text-sm text-main mb-3 cursor-default hover:underline"
-						>
-							MENS CASUAL PREMIUM SLIM FIT T-SHIRTS
-						</Typography>
+				<div className="flex-1">
+					<div className="flex flex-row justify-between gap-2">
+						<div>
+							<Typography
+								variant="paragraph"
+								className="uppercase font-medium text-sm text-main mb-3 cursor-default hover:underline"
+							>
+								{data.name}
+							</Typography>
+							<Typography
+								variant="paragraph"
+								className="uppercase text-xs font-semibold text-main mb-3 cursor-default flex gap-2"
+							>
+								<span className="border-solid border-[1px] border-main p-1 rounded">
+									{data.color}
+								</span>
+								<span className="border-solid border-[1px] border-main p-1 rounded">
+									{data.variant}
+								</span>
+							</Typography>
+						</div>
 						{/* Cart item remove button  */}
 						<IconButton
 							variant="text"
 							className="py-0 px-4 w-5 h-5 hover:bg-transparent hover:opacity-80"
+							onClick={() =>
+								dispatch(
+									cartSlice.actions.removeFromCart(data.id)
+								)
+							}
 						>
 							<TrashIcon className="w-5 h-5 text-red-800" />
 						</IconButton>
@@ -54,17 +75,31 @@ const CartItem = () => {
 							<IconButton
 								variant="text"
 								className="hover:bg-black/10"
+								onClick={() =>
+									dispatch(
+										cartSlice.actions.decreaseQuantity(
+											data.id
+										)
+									)
+								}
 							>
 								<MinusIcon className="w-4 h-4 text-main" />
 							</IconButton>
 
 							<IconButton className="font-md text-main text-base pointer-events-none">
-								{9}
+								{data.quantity}
 							</IconButton>
 
 							<IconButton
 								variant="text"
 								className="hover:bg-black/10"
+								onClick={() =>
+									dispatch(
+										cartSlice.actions.increaseQuantity(
+											data.id
+										)
+									)
+								}
 							>
 								<PlusIcon className="w-4 h-4 text-main" />
 							</IconButton>
@@ -73,13 +108,19 @@ const CartItem = () => {
 							variant="paragraph"
 							className="text-main text-sm opacity-80 mr-4"
 						>
-							149.000
+							{FormatNumber(
+								(data.price * (100 - data.discount)) / 100
+							)}
 						</Typography>
 						<Typography
 							variant="paragraph"
 							className="text-main text-sm font-semibold"
 						>
-							999.000 VND
+							{FormatNumber(
+								((data.price * (100 - data.discount)) / 100) *
+									data.quantity
+							)}{' '}
+							<span className="hidden md:inline">VND</span>
 						</Typography>
 					</div>
 				</div>

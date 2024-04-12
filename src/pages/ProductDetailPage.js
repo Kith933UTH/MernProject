@@ -2,9 +2,15 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import ProductDetail from '../components/Products/ProductDetail';
 
-const ProductDetailPage = ({ cateName }) => {
-	let { productId } = useParams();
-	return <ProductDetail data={productId} cateName={cateName} />;
+const ProductDetailPage = ({ cateName, catePath }) => {
+	const { productId } = useParams();
+	return (
+		<ProductDetail
+			data={productId}
+			cateName={cateName}
+			catePath={catePath}
+		/>
+	);
 };
 
 export default ProductDetailPage;

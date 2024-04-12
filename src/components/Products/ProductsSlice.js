@@ -3,12 +3,66 @@ import { getData } from '../../api';
 
 const productsSlice = createSlice({
 	name: 'products',
-	initialState: { isLoading: false, isError: false, data: [] },
-	reducers: {},
+	initialState: {
+		isLoading: false,
+		isError: false,
+		filters: {
+			price: [
+				{
+					value: 'Low to high',
+					choose: true,
+					callback: (a, b) => a - b,
+				},
+				{
+					value: 'High to low',
+					choose: false,
+					callback: (a, b) => b - a,
+				},
+			],
+			rate: [
+				{ value: 1, choose: false },
+				{ value: 2, choose: false },
+				{ value: 3, choose: false },
+				{ value: 4, choose: false },
+				{ value: 5, choose: false },
+			],
+		},
+		searchKey: '',
+		data: [],
+	},
+	reducers: {
+		changeFilterPrice: (state, action) => {
+			state.filters.price = state.filters.price.map((price) => {
+				if (price.value === action.payload)
+					return { ...price, choose: true };
+				else {
+					return { ...price, choose: false };
+				}
+			});
+		},
+		changeFilterRate: (state, action) => {
+			state.filters.rate = state.filters.rate.map((rate) => {
+				if (rate.value === action.payload)
+					return { ...rate, choose: !rate.choose };
+				else {
+					return rate;
+				}
+			});
+		},
+		changeSearchKey: (state, action) => {
+			state.searchKey = action.payload;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchProducts.fulfilled, (state, action) => {
-				state.data = action.payload;
+				state.data = action.payload.map((pro) => {
+					return {
+						...pro,
+						rate: Math.ceil(Math.random() * 5),
+						discount: Math.ceil(Math.random() * 5) * 10,
+					};
+				});
 				state.isLoading = false;
 			})
 			.addCase(fetchProducts.pending, (state) => {
@@ -24,7 +78,7 @@ const productsSlice = createSlice({
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
 	async () => {
-		const data = await getData('react-tours-project');
+		const data = await getData('react-store-products');
 		return data;
 	}
 );

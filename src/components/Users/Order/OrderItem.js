@@ -46,7 +46,9 @@ const OrderItem = ({ data }) => {
 					/>
 					<Link to={data.id}>
 						<Typography className="text-text text-base">
-							{data.products[0].name}{' '}
+							{`${data.products[0].name} (
+								${data.products[0].color},  
+								${data.products[0].variant})`}{' '}
 							{productLen > 1 ? (
 								<span className="block">
 									and{' '}

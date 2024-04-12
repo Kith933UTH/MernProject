@@ -6,7 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Sidebar from './Sidebar';
 
-export function DrawerSideBar() {
+export function DrawerSideBar({ filters }) {
 	const [openLeft, setOpenLeft] = React.useState(false);
 
 	const openDrawerLeft = () => setOpenLeft(true);
@@ -35,7 +35,7 @@ export function DrawerSideBar() {
 						<XMarkIcon className="w-4 h-4 text-text" />
 					</IconButton>
 				</div>
-				<Sidebar />
+				<Sidebar filters={filters} />
 			</Drawer>
 		</div>
 	);

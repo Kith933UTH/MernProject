@@ -9,7 +9,7 @@ export function Pagination({ active, lengthOfPage, next, prev }) {
 				size="sm"
 				variant="outlined"
 				onClick={prev}
-				disabled={active === lengthOfPage}
+				disabled={active === 1}
 				className="border-highlight disabled:border-text focus:ring-transparent"
 			>
 				<ArrowLeftIcon
@@ -19,7 +19,7 @@ export function Pagination({ active, lengthOfPage, next, prev }) {
 			</IconButton>
 			<Typography className="font-normal text-text">
 				Page <strong className="text-highlight">{active}</strong> of{' '}
-				<strong className="text-highlight">10</strong>
+				<strong className="text-highlight">{lengthOfPage}</strong>
 			</Typography>
 			<IconButton
 				size="sm"
