@@ -33,7 +33,7 @@ const Header = () => {
 					{/* Logo link to home page */}
 					<Link
 						to="/"
-						className="text-2xl font-bold cursor-pointer py-1.5 px-0"
+						className="text-2xl font-bold cursor-pointer py-1.5 px-0 font-sans"
 					>
 						TechShop
 					</Link>

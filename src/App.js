@@ -10,7 +10,7 @@ function App() {
 		dispatch(fetchProducts());
 	}, [dispatch]);
 	return (
-		<div className="bg-background relative w-full min-h-screen text-text font-body pb-4 *:selection:!text-gray-900 *:selection:!bg-highlight">
+		<div className="bg-background relative w-full min-h-screen text-text font-body *:selection:!text-gray-900 *:selection:!bg-highlight">
 			<RouterProvider router={router} />
 		</div>
 	);

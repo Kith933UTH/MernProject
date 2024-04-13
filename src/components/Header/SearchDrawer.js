@@ -72,7 +72,7 @@ const SearchDrawer = function () {
 							<input
 								type="text"
 								placeholder="Search..."
-								className="h-min flex-1 transition-all text-lg leading-5 outline-none  shadow-none bg-main py-3 text-text placeholder:text-text placeholder:opacity-40"
+								className="h-min font-sans flex-1 transition-all text-lg leading-5 outline-none  shadow-none bg-main py-3 text-text placeholder:text-text placeholder:opacity-40"
 								value={searchValue}
 								onFocus={handleSearchInputFocus}
 								ref={searchInputRef}

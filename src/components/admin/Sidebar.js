@@ -1,186 +1,157 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Typography } from '@material-tailwind/react';
 import {
-	Card,
-	Typography,
-	List,
-	ListItem,
-	ListItemPrefix,
-	ListItemSuffix,
-	Chip,
-	Accordion,
-	AccordionHeader,
-	AccordionBody,
-} from '@material-tailwind/react';
-import {
-	PresentationChartBarIcon,
-	ShoppingBagIcon,
-	UserCircleIcon,
-	Cog6ToothIcon,
-	InboxIcon,
-	PowerIcon,
+	HomeIcon,
+	FolderPlusIcon,
+	HashtagIcon,
+	UsersIcon,
+	ClipboardDocumentIcon,
 } from '@heroicons/react/24/solid';
-import { ChevronRightIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import {
+	BsFillMouseFill,
+	BsFillPhoneFill,
+	BsFillTabletFill,
+	BsKeyboardFill,
+	BsLaptopFill,
+} from 'react-icons/bs';
+import { PiHeadphonesFill } from 'react-icons/pi';
+import { TiBatteryCharge } from 'react-icons/ti';
+import { IoWatch } from 'react-icons/io5';
+import { MdCable } from 'react-icons/md';
+
+const adminNavigateList = [
+	{
+		title: 'Quick Links',
+		list: [
+			{
+				title: 'Dashboard',
+				path: '/admin',
+				icon: <HomeIcon className="w-4 h-4" />,
+				end: true,
+			},
+			{
+				title: 'New product',
+				path: '/admin/products',
+				icon: <FolderPlusIcon className="w-4 h-4" />,
+				end: true,
+			},
+			{
+				title: 'New attribute',
+				path: '/admin/attributes',
+				icon: <HashtagIcon className="w-4 h-4" />,
+				end: true,
+			},
+		],
+	},
+	{
+		title: 'Products',
+		list: [
+			{
+				title: 'Laptop',
+				path: '/admin/products/laptop',
+				icon: <BsLaptopFill />,
+			},
+			{
+				title: 'Phone',
+				path: '/admin/products/phone',
+				icon: <BsFillPhoneFill />,
+			},
+			{
+				title: 'Tablet',
+				path: '/admin/products/tablet',
+				icon: <BsFillTabletFill />,
+			},
+			{
+				title: 'Smart watch',
+				path: '/admin/products/smartwatch',
+				icon: <IoWatch />,
+			},
+			{
+				title: 'Charger',
+				path: '/admin/products/charger',
+				icon: <TiBatteryCharge />,
+			},
+			{
+				title: 'Cable',
+				path: '/admin/products/cable',
+				icon: <MdCable />,
+			},
+			{
+				title: 'Headphone',
+				path: '/admin/products/headphone',
+				icon: <PiHeadphonesFill />,
+			},
+			{
+				title: 'Mouse',
+				path: '/admin/products/mouse',
+				icon: <BsFillMouseFill />,
+			},
+			{
+				title: 'Keyboard',
+				path: '/admin/products/keyboard',
+				icon: <BsKeyboardFill />,
+			},
+		],
+	},
+	{
+		title: 'Sale',
+		list: [
+			{
+				title: 'Orders',
+				path: '/admin/orders',
+				icon: <ClipboardDocumentIcon className="w-4 h-4" />,
+			},
+		],
+	},
+	{
+		title: 'Customers',
+		list: [
+			{
+				title: 'Customers',
+				path: '/admin/customers',
+				icon: <UsersIcon className="w-4 h-4" />,
+			},
+		],
+	},
+];
 
 const Sidebar = () => {
-	const [open, setOpen] = React.useState(0);
-
-	const handleOpen = (value) => {
-		setOpen(open === value ? 0 : value);
-	};
-
 	return (
-		<Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-			<div className="mb-2 p-4">
-				<Typography variant="h5" color="blue-gray">
-					Sidebar
-				</Typography>
+		<div className="w-full h-full bg-white shadow-xl text-main shadow-blue-gray-900/5 rounded-r-md flex flex-col">
+			<div className="flex flex-col text-main overflow-y-scroll flex-1 admin-navigation pb-8 pt-1">
+				{adminNavigateList.map((navigateItem) => (
+					<div
+						key={'navigate' + navigateItem.title}
+						className="flex flex-col"
+					>
+						<Typography className="text-[11px] uppercase font-semibold pt-3 pb-3 pl-4">
+							{navigateItem.title}
+						</Typography>
+						<div className="flex flex-col gap-1">
+							{navigateItem.list.map((item) => (
+								<NavLink
+									key={'navigate-item-' + item.title}
+									to={item.path}
+									className={({ isActive }) =>
+										`flex gap-3 ml-2 mr-1 pl-6 py-3 rounded-md hover:bg-gray-300 relative ${
+											isActive &&
+											'bg-gray-200 text-admin before:contents-[""] before:absolute before:h-full before:w-1 before:bg-admin before:left-0 before:top-0 before:rounded-md'
+										}`
+									}
+									end={item?.end}
+								>
+									{item.icon}
+									<Typography className="text-sm font-semibold">
+										{item.title}
+									</Typography>
+								</NavLink>
+							))}
+						</div>
+					</div>
+				))}
 			</div>
-			<List>
-				<Accordion
-					open={open === 1}
-					icon={
-						<ChevronDownIcon
-							strokeWidth={2.5}
-							className={`mx-auto h-4 w-4 transition-transform ${
-								open === 1 ? 'rotate-180' : ''
-							}`}
-						/>
-					}
-				>
-					<ListItem className="p-0" selected={open === 1}>
-						<AccordionHeader
-							onClick={() => handleOpen(1)}
-							className="border-b-0 p-3"
-						>
-							<ListItemPrefix>
-								<PresentationChartBarIcon className="h-5 w-5" />
-							</ListItemPrefix>
-							<Typography
-								color="blue-gray"
-								className="mr-auto font-normal"
-							>
-								Dashboard
-							</Typography>
-						</AccordionHeader>
-					</ListItem>
-					<AccordionBody className="py-1">
-						<List className="p-0">
-							<ListItem>
-								<ListItemPrefix>
-									<ChevronRightIcon
-										strokeWidth={3}
-										className="h-3 w-5"
-									/>
-								</ListItemPrefix>
-								Analytics
-							</ListItem>
-							<ListItem>
-								<ListItemPrefix>
-									<ChevronRightIcon
-										strokeWidth={3}
-										className="h-3 w-5"
-									/>
-								</ListItemPrefix>
-								Reporting
-							</ListItem>
-							<ListItem>
-								<ListItemPrefix>
-									<ChevronRightIcon
-										strokeWidth={3}
-										className="h-3 w-5"
-									/>
-								</ListItemPrefix>
-								Projects
-							</ListItem>
-						</List>
-					</AccordionBody>
-				</Accordion>
-				<Accordion
-					open={open === 2}
-					icon={
-						<ChevronDownIcon
-							strokeWidth={2.5}
-							className={`mx-auto h-4 w-4 transition-transform ${
-								open === 2 ? 'rotate-180' : ''
-							}`}
-						/>
-					}
-				>
-					<ListItem className="p-0" selected={open === 2}>
-						<AccordionHeader
-							onClick={() => handleOpen(2)}
-							className="border-b-0 p-3"
-						>
-							<ListItemPrefix>
-								<ShoppingBagIcon className="h-5 w-5" />
-							</ListItemPrefix>
-							<Typography
-								color="blue-gray"
-								className="mr-auto font-normal"
-							>
-								E-Commerce
-							</Typography>
-						</AccordionHeader>
-					</ListItem>
-					<AccordionBody className="py-1">
-						<List className="p-0">
-							<ListItem>
-								<ListItemPrefix>
-									<ChevronRightIcon
-										strokeWidth={3}
-										className="h-3 w-5"
-									/>
-								</ListItemPrefix>
-								Orders
-							</ListItem>
-							<ListItem>
-								<ListItemPrefix>
-									<ChevronRightIcon
-										strokeWidth={3}
-										className="h-3 w-5"
-									/>
-								</ListItemPrefix>
-								Products
-							</ListItem>
-						</List>
-					</AccordionBody>
-				</Accordion>
-				<hr className="my-2 border-blue-gray-50" />
-				<ListItem>
-					<ListItemPrefix>
-						<InboxIcon className="h-5 w-5" />
-					</ListItemPrefix>
-					Inbox
-					<ListItemSuffix>
-						<Chip
-							value="14"
-							size="sm"
-							variant="ghost"
-							color="blue-gray"
-							className="rounded-full"
-						/>
-					</ListItemSuffix>
-				</ListItem>
-				<ListItem>
-					<ListItemPrefix>
-						<UserCircleIcon className="h-5 w-5" />
-					</ListItemPrefix>
-					Profile
-				</ListItem>
-				<ListItem>
-					<ListItemPrefix>
-						<Cog6ToothIcon className="h-5 w-5" />
-					</ListItemPrefix>
-					Settings
-				</ListItem>
-				<ListItem>
-					<ListItemPrefix>
-						<PowerIcon className="h-5 w-5" />
-					</ListItemPrefix>
-					Log Out
-				</ListItem>
-			</List>
-		</Card>
+		</div>
 	);
 };
 

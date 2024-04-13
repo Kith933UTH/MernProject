@@ -14,6 +14,7 @@ module.exports = withMT({
 			main: '#2f2f2f',
 			highlight: '#dfffbf',
 			text: '#d5d5d5',
+			admin: '#008060',
 		},
 		screens: {
 			tablet: '960px',
