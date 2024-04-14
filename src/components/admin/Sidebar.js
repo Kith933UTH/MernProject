@@ -63,7 +63,7 @@ const adminNavigateList = [
 				icon: <BsFillTabletFill />,
 			},
 			{
-				title: 'Smart watch',
+				title: 'Smartwatch',
 				path: '/admin/products/smartwatch',
 				icon: <IoWatch />,
 			},

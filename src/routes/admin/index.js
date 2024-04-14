@@ -1,3 +1,4 @@
+import ChooseNewAttribute from '../../components/Admin/Attributes/ChooseNewAttribute';
 import Dashboard from '../../components/Admin/Dashboard';
 import ChooseNewProduct from '../../components/Admin/Products/ChooseNewProduct';
 
@@ -18,6 +19,10 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all laptop' },
 					{ path: 'new', element: <div>new laptop</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
 					{ path: ':productId', element: <div>laptop detail</div> },
 				],
 			},
@@ -26,6 +31,11 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all phone' },
 					{ path: 'new', element: <div>new phone</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
 					{ path: ':productId', element: <div>phone detail</div> },
 				],
 			},
@@ -34,6 +44,11 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all tablet' },
 					{ path: 'new', element: <div>new tablet</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
 					{ path: ':productId', element: <div>tablet detail</div> },
 				],
 			},
@@ -42,6 +57,11 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all smartwatch' },
 					{ path: 'new', element: <div>new smartwatch</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
 					{
 						path: ':productId',
 						element: <div>smartwatch detail</div>,
@@ -53,6 +73,11 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all charger' },
 					{ path: 'new', element: <div>new charger</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
 					{ path: ':productId', element: <div>charger detail</div> },
 				],
 			},
@@ -61,6 +86,11 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all cable' },
 					{ path: 'new', element: <div>new cable</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
 					{ path: ':productId', element: <div>cable detail</div> },
 				],
 			},
@@ -69,6 +99,11 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all headphone' },
 					{ path: 'new', element: <div>new headphone</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
 					{
 						path: ':productId',
 						element: <div>headphone detail</div>,
@@ -81,6 +116,11 @@ const AdminRoute = [
 					{ index: true, element: 'all mouse' },
 					{ path: 'new', element: <div>new mouse</div> },
 					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
+					{
 						path: ':productId',
 						element: <div>mouse detail</div>,
 					},
@@ -91,6 +131,11 @@ const AdminRoute = [
 				children: [
 					{ index: true, element: 'all keyboard' },
 					{ path: 'new', element: <div>new keyboard</div> },
+					{
+						path: 'attributes',
+						element: <div>new laptop attribute</div>,
+					},
+
 					{
 						path: ':productId',
 						element: <div>keyboard detail</div>,
@@ -104,91 +149,7 @@ const AdminRoute = [
 		children: [
 			{
 				index: true,
-				element: <div>new attribute</div>,
-			},
-			{
-				path: 'laptop',
-				children: [
-					{ index: true, element: 'all laptop' },
-					{ path: 'new', element: <div>new laptop</div> },
-					{ path: ':productId', element: <div>laptop detail</div> },
-				],
-			},
-			{
-				path: 'phone',
-				children: [
-					{ index: true, element: 'all phone' },
-					{ path: 'new', element: <div>new phone</div> },
-					{ path: ':productId', element: <div>phone detail</div> },
-				],
-			},
-			{
-				path: 'tablet',
-				children: [
-					{ index: true, element: 'all tablet' },
-					{ path: 'new', element: <div>new tablet</div> },
-					{ path: ':productId', element: <div>tablet detail</div> },
-				],
-			},
-			{
-				path: 'smartwatch',
-				children: [
-					{ index: true, element: 'all smartwatch' },
-					{ path: 'new', element: <div>new smartwatch</div> },
-					{
-						path: ':productId',
-						element: <div>smartwatch detail</div>,
-					},
-				],
-			},
-			{
-				path: 'charger',
-				children: [
-					{ index: true, element: 'all charger' },
-					{ path: 'new', element: <div>new charger</div> },
-					{ path: ':productId', element: <div>charger detail</div> },
-				],
-			},
-			{
-				path: 'cable',
-				children: [
-					{ index: true, element: 'all cable' },
-					{ path: 'new', element: <div>new cable</div> },
-					{ path: ':productId', element: <div>cable detail</div> },
-				],
-			},
-			{
-				path: 'headphone',
-				children: [
-					{ index: true, element: 'all headphone' },
-					{ path: 'new', element: <div>new headphone</div> },
-					{
-						path: ':productId',
-						element: <div>headphone detail</div>,
-					},
-				],
-			},
-			{
-				path: 'mouse',
-				children: [
-					{ index: true, element: 'all mouse' },
-					{ path: 'new', element: <div>new mouse</div> },
-					{
-						path: ':productId',
-						element: <div>mouse detail</div>,
-					},
-				],
-			},
-			{
-				path: 'keyboard',
-				children: [
-					{ index: true, element: 'all keyboard' },
-					{ path: 'new', element: <div>new keyboard</div> },
-					{
-						path: ':productId',
-						element: <div>keyboard detail</div>,
-					},
-				],
+				element: <ChooseNewAttribute />,
 			},
 		],
 	},

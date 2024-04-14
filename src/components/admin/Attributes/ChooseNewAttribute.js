@@ -13,51 +13,51 @@ import headphoneImg from '../../../assets/img/headphone-img.png';
 import mouseImg from '../../../assets/img/mouse-img.png';
 import keyboardImg from '../../../assets/img/keyboard-img.png';
 
-const ChooseNewProduct = () => {
+const ChooseNewAttribute = () => {
 	const cateList = [
 		{
 			title: 'Laptop',
-			path: '/admin/products/laptop/new',
+			path: '/admin/products/laptop/attributes',
 			img: laptopImg,
 		},
 		{
 			title: 'Phone',
-			path: '/admin/products/phone/new',
+			path: '/admin/products/phone/attributes',
 			img: phoneImg,
 		},
 		{
 			title: 'Tablet',
-			path: '/admin/products/tablet/new',
+			path: '/admin/products/tablet/attributes',
 			img: tabletImg,
 		},
 		{
 			title: 'Smartwatch',
-			path: '/admin/products/smartwatch/new',
+			path: '/admin/products/smartwatch/attributes',
 			img: smartwatchImg,
 		},
 		{
 			title: 'Charger',
-			path: '/admin/products/charger/new',
+			path: '/admin/products/charger/attributes',
 			img: chargerImg,
 		},
 		{
 			title: 'Cable',
-			path: '/admin/products/cable/new',
+			path: '/admin/products/cable/attributes',
 			img: cableImg,
 		},
 		{
 			title: 'Headphone',
-			path: '/admin/products/headphone/new',
+			path: '/admin/products/headphone/attributes',
 			img: headphoneImg,
 		},
 		{
 			title: 'Mouse',
-			path: '/admin/products/mouse/new',
+			path: '/admin/products/mouse/attributes',
 			img: mouseImg,
 		},
 		{
 			title: 'Keyboard',
-			path: '/admin/products/keyboard/new',
+			path: '/admin/products/keyboard/attributes',
 			img: keyboardImg,
 		},
 	];
@@ -66,7 +66,8 @@ const ChooseNewProduct = () => {
 		<AdminLayout>
 			<div className="text-main">
 				<Typography className="text-xl font-semibold my-4">
-					Create A New <span className="text-admin">Product (+)</span>
+					Create A New{' '}
+					<span className="text-admin">Attribute (#)</span>
 				</Typography>
 				<div className="grid grid-cols-3 gap-6">
 					{cateList.map((cate) => (
@@ -89,4 +90,4 @@ const ChooseNewProduct = () => {
 	);
 };
 
-export default ChooseNewProduct;
+export default ChooseNewAttribute;
