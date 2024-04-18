@@ -1,6 +1,38 @@
-import ChooseNewAttribute from '../../components/Admin/Attributes/ChooseNewAttribute';
 import Dashboard from '../../components/Admin/Dashboard';
 import ChooseNewProduct from '../../components/Admin/Products/ChooseNewProduct';
+import ChooseNewAttribute from '../../components/Admin/Attributes/ChooseNewAttribute';
+import ProductsList from '../../components/Admin/Products/ProductsList';
+import NewProduct from '../../components/Admin/Products/NewProduct';
+
+//edit
+import EditLaptop from '../../components/Admin/Products/Laptop/EditLaptop';
+import EditPhone from '../../components/Admin/Products/Phone/EditPhone';
+import EditTablet from '../../components/Admin/Products/Tablet/EditPhone';
+import EditSmartwatch from '../../components/Admin/Products/Smartwatch/EditSmartwatch';
+import EditCharger from '../../components/Admin/Products/Charger/EditCharger';
+import EditCable from '../../components/Admin/Products/Cable/EditCable';
+import EditHeadphone from '../../components/Admin/Products/Headphone/EditHeadphone';
+import EditMouse from '../../components/Admin/Products/Mouse/EditMouse';
+import EditKeyboard from '../../components/Admin/Products/Keyboard/EditKeyboard';
+
+//attributes
+import LaptopAttributes from '../../components/Admin/Attributes/LaptopAttributes';
+import PhoneAttributes from '../../components/Admin/Attributes/PhoneAttributes';
+import TabletAttributes from '../../components/Admin/Attributes/TabletAttributes';
+import SmartwatchAttributes from '../../components/Admin/Attributes/SmartwatchAttributes';
+import ChargerAttributes from '../../components/Admin/Attributes/ChargerAttributes';
+import CableAttributes from '../../components/Admin/Attributes/CableAttributes';
+import HeadphoneAttributes from '../../components/Admin/Attributes/HeadphoneAttributes';
+import MouseAttributes from '../../components/Admin/Attributes/MouseAttributes';
+import KeyboardAttributes from '../../components/Admin/Attributes/KeyboardAttributes';
+
+//orders
+import OrderList from '../../components/Admin/Orders/OrderList';
+import OrderDetail from '../../components/Admin/Orders/OrderDetail';
+
+//customers
+import CustomerList from '../../components/Admin/Customers/CustomerList';
+import CustomerDetail from '../../components/Admin/Customers/CustomerDetail';
 
 const AdminRoute = [
 	{
@@ -15,130 +47,190 @@ const AdminRoute = [
 				element: <ChooseNewProduct />,
 			},
 			{
-				path: 'laptop',
+				path: 'laptops',
 				children: [
-					{ index: true, element: 'all laptop' },
-					{ path: 'new', element: <div>new laptop</div> },
+					{
+						index: true,
+						element: (
+							<ProductsList title={'Laptop'} url={'laptops'} />
+						),
+					},
+					{ path: 'new', element: <NewProduct title={'Laptop'} /> },
 					{
 						path: 'attributes',
-						element: <div>new laptop attribute</div>,
+						element: <LaptopAttributes />,
 					},
-					{ path: ':productId', element: <div>laptop detail</div> },
+					{ path: ':productId', element: <EditLaptop /> },
 				],
 			},
 			{
-				path: 'phone',
+				path: 'phones',
 				children: [
-					{ index: true, element: 'all phone' },
-					{ path: 'new', element: <div>new phone</div> },
+					{
+						index: true,
+						element: (
+							<ProductsList title={'Phone'} url={'phones'} />
+						),
+					},
+					{ path: 'new', element: <NewProduct title={'Phone'} /> },
 					{
 						path: 'attributes',
-						element: <div>new laptop attribute</div>,
+						element: <PhoneAttributes />,
 					},
 
-					{ path: ':productId', element: <div>phone detail</div> },
+					{ path: ':productId', element: <EditPhone /> },
 				],
 			},
 			{
-				path: 'tablet',
+				path: 'tablets',
 				children: [
-					{ index: true, element: 'all tablet' },
-					{ path: 'new', element: <div>new tablet</div> },
+					{
+						index: true,
+						element: (
+							<ProductsList title={'Tablet'} url={'tablets'} />
+						),
+					},
+					{ path: 'new', element: <NewProduct title={'Tablet'} /> },
 					{
 						path: 'attributes',
-						element: <div>new laptop attribute</div>,
+						element: <TabletAttributes />,
 					},
 
-					{ path: ':productId', element: <div>tablet detail</div> },
+					{ path: ':productId', element: <EditTablet /> },
 				],
 			},
 			{
-				path: 'smartwatch',
+				path: 'smartwatches',
 				children: [
-					{ index: true, element: 'all smartwatch' },
-					{ path: 'new', element: <div>new smartwatch</div> },
+					{
+						index: true,
+						element: (
+							<ProductsList
+								title={'Smartwatch'}
+								url={'smartwatches'}
+							/>
+						),
+					},
+					{
+						path: 'new',
+						element: <NewProduct title={'Smartwatch'} />,
+					},
 					{
 						path: 'attributes',
-						element: <div>new laptop attribute</div>,
-					},
-
-					{
-						path: ':productId',
-						element: <div>smartwatch detail</div>,
-					},
-				],
-			},
-			{
-				path: 'charger',
-				children: [
-					{ index: true, element: 'all charger' },
-					{ path: 'new', element: <div>new charger</div> },
-					{
-						path: 'attributes',
-						element: <div>new laptop attribute</div>,
-					},
-
-					{ path: ':productId', element: <div>charger detail</div> },
-				],
-			},
-			{
-				path: 'cable',
-				children: [
-					{ index: true, element: 'all cable' },
-					{ path: 'new', element: <div>new cable</div> },
-					{
-						path: 'attributes',
-						element: <div>new laptop attribute</div>,
-					},
-
-					{ path: ':productId', element: <div>cable detail</div> },
-				],
-			},
-			{
-				path: 'headphone',
-				children: [
-					{ index: true, element: 'all headphone' },
-					{ path: 'new', element: <div>new headphone</div> },
-					{
-						path: 'attributes',
-						element: <div>new laptop attribute</div>,
+						element: <SmartwatchAttributes />,
 					},
 
 					{
 						path: ':productId',
-						element: <div>headphone detail</div>,
+						element: <EditSmartwatch />,
 					},
 				],
 			},
 			{
-				path: 'mouse',
+				path: 'chargers',
 				children: [
-					{ index: true, element: 'all mouse' },
-					{ path: 'new', element: <div>new mouse</div> },
+					{
+						index: true,
+						element: (
+							<ProductsList title={'Charger'} url={'chargers'} />
+						),
+					},
+					{ path: 'new', element: <NewProduct title={'Charger'} /> },
 					{
 						path: 'attributes',
-						element: <div>new laptop attribute</div>,
+						element: <ChargerAttributes />,
+					},
+
+					{ path: ':productId', element: <EditCharger /> },
+				],
+			},
+			{
+				path: 'cables',
+				children: [
+					{
+						index: true,
+						element: (
+							<ProductsList title={'Cable'} url={'cables'} />
+						),
+					},
+					{ path: 'new', element: <NewProduct title={'Cable'} /> },
+					{
+						path: 'attributes',
+						element: <CableAttributes />,
+					},
+
+					{ path: ':productId', element: <EditCable /> },
+				],
+			},
+			{
+				path: 'headphones',
+				children: [
+					{
+						index: true,
+						element: (
+							<ProductsList
+								title={'Headphone'}
+								url={'headphones'}
+							/>
+						),
+					},
+					{
+						path: 'new',
+						element: <NewProduct title={'Headphone'} />,
+					},
+					{
+						path: 'attributes',
+						element: <HeadphoneAttributes />,
 					},
 
 					{
 						path: ':productId',
-						element: <div>mouse detail</div>,
+						element: <EditHeadphone />,
 					},
 				],
 			},
 			{
-				path: 'keyboard',
+				path: 'mouses',
 				children: [
-					{ index: true, element: 'all keyboard' },
-					{ path: 'new', element: <div>new keyboard</div> },
+					{
+						index: true,
+						element: (
+							<ProductsList title={'Mouse'} url={'mouses'} />
+						),
+					},
+					{ path: 'new', element: <NewProduct title={'Mouse'} /> },
 					{
 						path: 'attributes',
-						element: <div>new laptop attribute</div>,
+						element: <MouseAttributes />,
 					},
 
 					{
 						path: ':productId',
-						element: <div>keyboard detail</div>,
+						element: <EditMouse />,
+					},
+				],
+			},
+			{
+				path: 'keyboards',
+				children: [
+					{
+						index: true,
+						element: (
+							<ProductsList
+								title={'Keyboard'}
+								url={'keyboards'}
+							/>
+						),
+					},
+					{ path: 'new', element: <NewProduct title={'Keyboard'} /> },
+					{
+						path: 'attributes',
+						element: <KeyboardAttributes />,
+					},
+
+					{
+						path: ':productId',
+						element: <EditKeyboard />,
 					},
 				],
 			},
@@ -156,15 +248,15 @@ const AdminRoute = [
 	{
 		path: 'customers',
 		children: [
-			{ index: true, element: <div>all customers</div> },
-			{ path: ':customerId', element: <div>customer page</div> },
+			{ index: true, element: <CustomerList /> },
+			{ path: ':customerId', element: <CustomerDetail /> },
 		],
 	},
 	{
 		path: 'orders',
 		children: [
-			{ index: true, element: <div>all orders</div> },
-			{ path: ':orderId', element: <div>order page</div> },
+			{ index: true, element: <OrderList /> },
+			{ path: ':orderId', element: <OrderDetail /> },
 		],
 	},
 ];

@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import { DrawerSideBar } from '../Sidebar/DrawerSideBar';
 import { Breadcrumbs, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { HomeIcon } from '@heroicons/react/24/outline';
 import ProductList from '../Products/ProductList';
-import { useSelector } from 'react-redux';
-import { productFilterSelector } from '../../redux/Selector/ProductSelector';
 
 const Category = ({ type }) => {
-	const filters = useSelector(productFilterSelector);
+	const [isMobile, setIsMobile] = useState(window.innerWidth <= 960);
+	window.onresize = () => {
+		if (window.innerWidth <= 960) setIsMobile(true);
+		else setIsMobile(false);
+	};
 
 	return (
 		<>
@@ -31,15 +33,19 @@ const Category = ({ type }) => {
 								{type.title}
 							</Typography>
 						</div>
-						<div className="tablet:hidden">
-							<DrawerSideBar filters={filters} />
-						</div>
+						{isMobile && (
+							<div className="tablet:hidden">
+								<DrawerSideBar />
+							</div>
+						)}
 					</div>
 				</div>
 				<div className="w-full flex flex-row gap-4">
-					<div className="w-full tablet:w-1/6 tablet:block hidden">
-						<Sidebar filters={filters} />
-					</div>
+					{!isMobile && (
+						<div className="w-full tablet:w-1/6 tablet:block hidden">
+							<Sidebar />
+						</div>
+					)}
 					<div className="w-full tablet:w-5/6">
 						<ProductList type={type.path} />
 					</div>

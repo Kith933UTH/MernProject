@@ -17,47 +17,47 @@ const ChooseNewProduct = () => {
 	const cateList = [
 		{
 			title: 'Laptop',
-			path: '/admin/products/laptop/new',
+			path: '/admin/products/laptops/new',
 			img: laptopImg,
 		},
 		{
 			title: 'Phone',
-			path: '/admin/products/phone/new',
+			path: '/admin/products/phones/new',
 			img: phoneImg,
 		},
 		{
 			title: 'Tablet',
-			path: '/admin/products/tablet/new',
+			path: '/admin/products/tablets/new',
 			img: tabletImg,
 		},
 		{
 			title: 'Smartwatch',
-			path: '/admin/products/smartwatch/new',
+			path: '/admin/products/smartwatches/new',
 			img: smartwatchImg,
 		},
 		{
 			title: 'Charger',
-			path: '/admin/products/charger/new',
+			path: '/admin/products/chargers/new',
 			img: chargerImg,
 		},
 		{
 			title: 'Cable',
-			path: '/admin/products/cable/new',
+			path: '/admin/products/cables/new',
 			img: cableImg,
 		},
 		{
 			title: 'Headphone',
-			path: '/admin/products/headphone/new',
+			path: '/admin/products/headphones/new',
 			img: headphoneImg,
 		},
 		{
 			title: 'Mouse',
-			path: '/admin/products/mouse/new',
+			path: '/admin/products/mouses/new',
 			img: mouseImg,
 		},
 		{
 			title: 'Keyboard',
-			path: '/admin/products/keyboard/new',
+			path: '/admin/products/keyboards/new',
 			img: keyboardImg,
 		},
 	];

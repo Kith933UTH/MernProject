@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Pagination } from '../Pagination/Pagination';
 import { ProductCard } from './ProductCard/ProductCard';
@@ -9,11 +9,13 @@ import { remainProductListSelector } from '../../redux/Selector/ProductSelector'
 const perPage = 12;
 
 const ProductList = ({ type }) => {
-	console.log(type);
 	const products = useSelector(remainProductListSelector);
 
-	const [active, setActive] = React.useState(1);
+	const [active, setActive] = useState(1);
 	const lengthOfPage = Math.ceil(products.data.length / perPage);
+
+	useEffect(() => setActive(1), [products]);
+
 	const next = () => {
 		if (active === lengthOfPage) return;
 		setActive(active + 1);

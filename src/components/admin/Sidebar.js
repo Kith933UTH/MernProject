@@ -49,47 +49,47 @@ const adminNavigateList = [
 		list: [
 			{
 				title: 'Laptop',
-				path: '/admin/products/laptop',
+				path: '/admin/products/laptops',
 				icon: <BsLaptopFill />,
 			},
 			{
 				title: 'Phone',
-				path: '/admin/products/phone',
+				path: '/admin/products/phones',
 				icon: <BsFillPhoneFill />,
 			},
 			{
 				title: 'Tablet',
-				path: '/admin/products/tablet',
+				path: '/admin/products/tablets',
 				icon: <BsFillTabletFill />,
 			},
 			{
 				title: 'Smartwatch',
-				path: '/admin/products/smartwatch',
+				path: '/admin/products/smartwatches',
 				icon: <IoWatch />,
 			},
 			{
 				title: 'Charger',
-				path: '/admin/products/charger',
+				path: '/admin/products/chargers',
 				icon: <TiBatteryCharge />,
 			},
 			{
 				title: 'Cable',
-				path: '/admin/products/cable',
+				path: '/admin/products/cables',
 				icon: <MdCable />,
 			},
 			{
 				title: 'Headphone',
-				path: '/admin/products/headphone',
+				path: '/admin/products/headphones',
 				icon: <PiHeadphonesFill />,
 			},
 			{
 				title: 'Mouse',
-				path: '/admin/products/mouse',
+				path: '/admin/products/mouses',
 				icon: <BsFillMouseFill />,
 			},
 			{
 				title: 'Keyboard',
-				path: '/admin/products/keyboard',
+				path: '/admin/products/keyboards',
 				icon: <BsKeyboardFill />,
 			},
 		],

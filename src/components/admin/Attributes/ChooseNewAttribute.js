@@ -17,47 +17,47 @@ const ChooseNewAttribute = () => {
 	const cateList = [
 		{
 			title: 'Laptop',
-			path: '/admin/products/laptop/attributes',
+			path: '/admin/products/laptops/attributes',
 			img: laptopImg,
 		},
 		{
 			title: 'Phone',
-			path: '/admin/products/phone/attributes',
+			path: '/admin/products/phones/attributes',
 			img: phoneImg,
 		},
 		{
 			title: 'Tablet',
-			path: '/admin/products/tablet/attributes',
+			path: '/admin/products/tablets/attributes',
 			img: tabletImg,
 		},
 		{
 			title: 'Smartwatch',
-			path: '/admin/products/smartwatch/attributes',
+			path: '/admin/products/smartwatches/attributes',
 			img: smartwatchImg,
 		},
 		{
 			title: 'Charger',
-			path: '/admin/products/charger/attributes',
+			path: '/admin/products/chargers/attributes',
 			img: chargerImg,
 		},
 		{
 			title: 'Cable',
-			path: '/admin/products/cable/attributes',
+			path: '/admin/products/cables/attributes',
 			img: cableImg,
 		},
 		{
 			title: 'Headphone',
-			path: '/admin/products/headphone/attributes',
+			path: '/admin/products/headphones/attributes',
 			img: headphoneImg,
 		},
 		{
 			title: 'Mouse',
-			path: '/admin/products/mouse/attributes',
+			path: '/admin/products/mouses/attributes',
 			img: mouseImg,
 		},
 		{
 			title: 'Keyboard',
-			path: '/admin/products/keyboard/attributes',
+			path: '/admin/products/keyboards/attributes',
 			img: keyboardImg,
 		},
 	];

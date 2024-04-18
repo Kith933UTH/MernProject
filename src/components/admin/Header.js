@@ -61,6 +61,7 @@ const Header = () => {
 					<input
 						type="text"
 						placeholder="Search"
+						spellCheck="false"
 						className="h-min flex-1 font-sans transition-all text-sm leading-4 outline-none shadow-none bg-transparent py-2 text-main placeholder:text-gray-700"
 						value={searchValue}
 						onFocus={handleSearchInputFocus}

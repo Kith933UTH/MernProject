@@ -15,10 +15,12 @@ import {
 	ChatBubbleOvalLeftIcon,
 } from '@heroicons/react/24/outline';
 import RatingBar from '../RatingBar/RatingBar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import productsSlice from '../Products/ProductsSlice';
+import { productFilterSelector } from '../../redux/Selector/ProductSelector';
 
-const Sidebar = ({ filters }) => {
+const Sidebar = () => {
+	const filters = useSelector(productFilterSelector);
 	const dispatch = useDispatch();
 	const [openList, setOpenList] = useState([1, 2]);
 

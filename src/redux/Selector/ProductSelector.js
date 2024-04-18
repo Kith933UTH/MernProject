@@ -36,7 +36,10 @@ export const remainProductListSelector = createSelector(
 				.sort((a, b) =>
 					filtersList.price
 						.find((price) => price.choose)
-						.callback(a.price, b.price)
+						.callback(
+							a.price * (100 - a.discount),
+							b.price * (100 - b.discount)
+						)
 				),
 		};
 	}

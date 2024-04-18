@@ -78,7 +78,12 @@ const productsSlice = createSlice({
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
 	async () => {
-		const data = await getData('react-store-products');
+		// const data = await getData('react-store-products');
+		const data = await fetch(
+			'https://www.course-api.com/react-store-products'
+		).then(
+			(resp) => resp.json() // this returns a promise
+		);
 		return data;
 	}
 );
