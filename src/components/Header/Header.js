@@ -28,8 +28,8 @@ const Header = () => {
 
 	return (
 		<>
-			<header className="mx-auto bg-transparent max-w-[1200px] pt-3 shadow-none px-4 desktop:px-0 overflow-visible">
-				<div className="flex flex-wrap items-center justify-between gap-y-4 text-text overflow-visible mb-2 border-solid border-b-[1px] border-slate-900 tablet:border-none pb-2 px-4 tablet:px-0">
+			<header className="mx-auto bg-main pt-3 shadow-none px-4 pb-2 rounded-b-[40px] md:rounded-b-[50px] desktop:rounded-b-full desktop:px-0 overflow-visible">
+				<div className="flex flex-wrap max-w-[1200px] mx-auto items-center justify-between gap-y-4 text-text overflow-visible pb-1 px-4 ">
 					{/* Logo link to home page */}
 					<Link
 						to="/"
@@ -76,7 +76,7 @@ const Header = () => {
 						{/* nav mobile  */}
 						<IconButton
 							variant="text"
-							className="lg:hidden text-text"
+							className="text-text"
 							onClick={() => setOpenNav(!openNav)}
 						>
 							{openNav ? (
@@ -93,8 +93,10 @@ const Header = () => {
 						</IconButton>
 					</div>
 				</div>
-				<HeaderNavbar open={openNav} closeNav={closeNavMobileSection} />
 			</header>
+			<div className="w-full">
+				<HeaderNavbar open={openNav} closeNav={closeNavMobileSection} />
+			</div>
 		</>
 	);
 };

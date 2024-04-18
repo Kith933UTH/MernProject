@@ -3,6 +3,9 @@ import { createSelector } from '@reduxjs/toolkit';
 export const productSelector = (state) => state.products;
 export const productFilterSelector = (state) => state.products.filters;
 export const searchKeySelector = (state) => state.products.searchKey;
+export const highlightProductsSelector = (state) => {
+	return { ...state.products, data: state.products.data.slice(0, 5) };
+};
 
 export const searchProductSelector = createSelector(
 	productSelector,

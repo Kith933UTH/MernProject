@@ -24,12 +24,9 @@ function NavItemWithMenu({ data, isMobile, closeNav }) {
 				isMobile && closeNav();
 				isMobileMenuOpen && setIsMobileMenuOpen(false);
 			}}
-			className="text-base flex items-center gap-2 py-1 pr-4 font-medium text-text hover:opacity-60"
 		>
-			<div className="flex items-center gap-3 rounded-lg">
-				<div className="flex items-center justify-center rounded-lg p-2 ">
-					{icon}
-				</div>
+			<div className="flex items-center text-sm md:text-base gap-2 p-2 px-4 md:px-6 shadow-sm shadow-gray-700 font-medium bg-main rounded-xl text-text hover:bg-gray-700">
+				{icon}
 				<div>{title}</div>
 			</div>
 		</Link>
@@ -51,7 +48,7 @@ function NavItemWithMenu({ data, isMobile, closeNav }) {
 						className="font-medium"
 					>
 						<Typography
-							className="text-base flex items-center gap-2 py-1 pr-4 font-medium text-text cursor-pointer"
+							className="flex items-center text-sm md:text-base gap-2 font-medium text-text cursor-pointer p-2 px-4 md:px-6 shadow-sm shadow-gray-700 bg-main rounded-3xl rounded-t-none"
 							selected={isMenuOpen || isMobileMenuOpen}
 							onClick={() => setIsMobileMenuOpen((cur) => !cur)}
 						>
@@ -73,22 +70,29 @@ function NavItemWithMenu({ data, isMobile, closeNav }) {
 						</Typography>
 					</Typography>
 				</MenuHandler>
-				<MenuList className="bg-main hidden max-w-screen-xl rounded-xl lg:block">
-					<ul className="grid grid-cols-3 gap-y-2 outline-none outline-0">
+				<MenuList className="bg-transparent backdrop-blur-none p-0 border-none shadow-none hidden max-w-screen-xl rounded-xl lg:block">
+					<ul className="grid grid-cols-3 gap-3 outline-none outline-0">
 						{renderItems}
 					</ul>
 				</MenuList>
+				<div className="block lg:hidden text-text">
+					<Collapse
+						className={`flex flex-wrap gap-2 justify-center ${
+							isMobileMenuOpen && 'overflow-visible'
+						}`}
+						open={isMobileMenuOpen}
+					>
+						{renderItems}
+					</Collapse>
+				</div>
 			</Menu>
-			<div className="block lg:hidden text-text">
-				<Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
-			</div>
 		</>
 	);
 }
 
 function NavList({ isMobile, closeNav }) {
 	return (
-		<List className="p-0 py-2 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
+		<List className="p-0 py-2 lg:mt-0 lg:mb-0 flex-row flex-wrap gap-4 lg:p-1 justify-center max-w-none min-w-none">
 			{CateList.map((cate) => {
 				if (cate.children)
 					return (
@@ -104,7 +108,7 @@ function NavList({ isMobile, closeNav }) {
 						key={cate.path}
 						to={cate.path}
 						onClick={() => isMobile && closeNav()}
-						className="flex items-center gap-2 py-1 pr-4 font-medium text-text hover:opacity-60"
+						className="flex items-center text-sm md:text-base gap-2 p-2 px-4 md:px-6 shadow-sm shadow-gray-700 font-medium bg-main rounded-3xl rounded-t-none text-text hover:opacity-60"
 					>
 						{cate.icon}
 						{cate.title}
@@ -119,12 +123,7 @@ const HeaderNavbar = ({ open, closeNav }) => {
 	const isMobile = window.innerWidth < 960;
 
 	return (
-		<Navbar className="flex-1 px-4 py-0 bg-main text-base shadow-md shadow-main">
-			<div className="flex items-center justify-between">
-				<div className="hidden lg:block">
-					<NavList />
-				</div>
-			</div>
+		<Navbar className="flex-1 w-full max-w-none min-w-none px-4 py-0 bg-transparent border-none text-base shadow-none rounded-none backdrop-blur-none">
 			<Collapse open={open}>
 				<NavList isMobile={isMobile} closeNav={closeNav} />
 			</Collapse>

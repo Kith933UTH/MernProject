@@ -29,7 +29,7 @@ const Category = ({ type }) => {
 					</Breadcrumbs>
 					<div className="flex flex-row gap-1 items-end">
 						<div>
-							<Typography className="text-2xl tablet:text-3xl font-semibold">
+							<Typography className="text-xl tablet:text-3xl font-semibold">
 								{type.title}
 							</Typography>
 						</div>

@@ -22,12 +22,6 @@ const CateList = [
 		icon: <TbGridDots />,
 		children: [
 			{
-				path: 'all-accessories',
-				title: 'All Accessories',
-				children: null,
-				icon: <TbGridDots />,
-			},
-			{
 				path: 'charger',
 				title: 'Charger',
 				children: null,

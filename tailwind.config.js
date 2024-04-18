@@ -8,6 +8,15 @@ module.exports = withMT({
 			width: {
 				1200: '1200px',
 			},
+			keyframes: {
+				float: {
+					'0%, 100%': { transform: 'translateY(2%)' },
+					'50%': { transform: ' translateY(0%)' },
+				},
+			},
+			animation: {
+				float: 'float 3s infinite',
+			},
 		},
 		colors: {
 			background: '#1a1a1a',
