@@ -58,6 +58,7 @@ const productsSlice = createSlice({
 			.addCase(fetchProducts.fulfilled, (state, action) => {
 				state.data = action.payload;
 				state.isLoading = false;
+				state.isError = false;
 			})
 			.addCase(fetchProducts.pending, (state) => {
 				state.isLoading = true;
