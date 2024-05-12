@@ -8,15 +8,18 @@ const Infor = ({ data }) => {
 				Shipping information
 			</Typography>
 			<Typography className="text-base">
-				{data.gender === 'male' ? 'Mr.' : 'Ms.'}{' '}
-				<span className="text-highlight">{data.name}</span>
+				{/* {data.gender === 'male' ? 'Mr.' : 'Ms.'}{' '} */}
+				Name: <span className="text-highlight">{data.username}</span>
 			</Typography>
 			<Typography className="text-base">
-				Phone: <span className="text-highlight">{data.phone}</span>
+				Email: <span className="text-highlight">{data.email}</span>
 			</Typography>
-			<Typography className="text-base">
-				Email: <span className="text-highlight">{data.mail}</span>
-			</Typography>
+			{data?.phoneNumber && (
+				<Typography className="text-base">
+					Phone:{' '}
+					<span className="text-highlight">{data.phoneNumber}</span>
+				</Typography>
+			)}
 		</div>
 	);
 };

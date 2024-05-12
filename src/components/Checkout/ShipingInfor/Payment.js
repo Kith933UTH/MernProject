@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 const Payment = () => {
 	const [paymentMethodList, setPaymentMethodList] = useState([
 		{ name: 'Payment on delivery', choose: true },
-		{ name: 'Online payment', choose: false },
+		// { name: 'Online payment', choose: false },
 	]);
 	const handleChangePaymentMethod = (value) => {
 		setPaymentMethodList((prev) => {
@@ -25,7 +25,11 @@ const Payment = () => {
 			</Typography>
 			{paymentMethodList?.map((method, index) => (
 				<div
-					className="border-solid border-b-[1px] border-gray-700"
+					className={`${
+						index !== paymentMethodList.length - 1
+							? 'border-solid border-b-[1px] border-gray-700'
+							: ''
+					}`}
 					key={method.name}
 				>
 					<Radio

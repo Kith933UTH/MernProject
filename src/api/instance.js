@@ -2,7 +2,9 @@ import axios from 'axios';
 
 // Tạo một instance với các đối số truyền vào riêng biệt
 const baseURL = axios.create({
-	baseURL: 'https://course-api.com/', //API dùng chung cho toàn bộ dự án
+	baseURL: 'http://localhost:3500', //API dùng chung cho toàn bộ dự án
+	credentials: 'include',
+	withCredentials: true,
 	headers: {
 		'Content-Type': 'application/json',
 	},

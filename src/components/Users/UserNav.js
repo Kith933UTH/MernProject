@@ -2,21 +2,26 @@ import { Typography, Card, Button } from '@material-tailwind/react';
 import { ShoppingBagIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { logOut } from './UsersSlice';
 
 const UserNav = () => {
-	const user = {
-		name: 'Kith',
-		gender: 'male',
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const username = useSelector((state) => state.users.userInfo.username);
+	const handleLogout = () => {
+		dispatch(logOut());
+		navigate('/');
 	};
 	return (
 		<Card className="w-full shadow-none bg-transparent">
 			<div className="mb-4 md:px-4 border-solid border-b-[1px] border-slate-900 pb-4 flex justify-between items-center">
 				<div className="text-text bg-main md:bg-transparent py-1 px-2 md:p-0 rounded-md md:rounded-none">
 					<Typography className="text-lg">
-						{user.gender === 'male' ? 'Mr.' : 'Ms.'}{' '}
+						{/* {user.gender === 'male' ? 'Mr.' : 'Ms.'}{' '} */}
 						<span className="text-xl font-semibold">
-							{user.name}
+							{username}
 						</span>
 					</Typography>
 				</div>
@@ -50,7 +55,10 @@ const UserNav = () => {
 					Profile
 				</NavLink>
 
-				<Button className="mt-4 hidden md:flex items-center justify-center text-red-700 text-base font-semibold p-2 border-solid rounded border-[1px] border-red-700 normal-case hover:opacity-60">
+				<Button
+					onClick={handleLogout}
+					className="mt-4 hidden md:flex items-center justify-center text-red-700 text-base font-semibold p-2 border-solid rounded border-[1px] border-red-700 normal-case hover:opacity-60"
+				>
 					Log out
 				</Button>
 			</div>

@@ -3,7 +3,7 @@ import React from 'react';
 
 const ProductPolicySkeleton = () => {
 	return (
-		<div className="w-full h-max grid grid-cols-1 gap-x-8 md:grid-cols-2 border-solid border-[1px] border-gray-700 px-4 rounded-xl">
+		<div className="w-full h-max grid grid-cols-1 gap-x-8 md:grid-cols-2 border-solid border-[1px] border-gray-700 px-4 rounded-xl mb-4">
 			<div className="p-4 animate-pulse">
 				<Typography
 					as="div"

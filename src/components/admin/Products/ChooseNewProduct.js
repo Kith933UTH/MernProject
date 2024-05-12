@@ -65,7 +65,7 @@ const ChooseNewProduct = () => {
 	return (
 		<AdminLayout>
 			<div className="text-main">
-				<Typography className="text-xl font-semibold my-4">
+				<Typography className="text-xl font-semibold my-6">
 					Create A New <span className="text-admin">Product (+)</span>
 				</Typography>
 				<div className="grid grid-cols-3 gap-6">

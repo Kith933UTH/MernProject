@@ -1,7 +1,7 @@
 import React from 'react';
 import DetailItem from './DetailItem';
 
-const TabletDetail = ({ detailList }) => {
+const TabletDetail = ({ detailList, subData }) => {
 	return (
 		<>
 			<div>
@@ -9,35 +9,39 @@ const TabletDetail = ({ detailList }) => {
 				{detailList.screen && (
 					<DetailItem list={detailList.screen} title={'Screen'} />
 				)}
-
-				{/* selfieCamera  */}
-				{detailList.selfieCamera && (
+				{/* osAndCpu */}
+				{detailList.operatingSystemAndCPU && (
 					<DetailItem
-						list={detailList.selfieCamera}
-						title={'Selfie camera'}
+						list={detailList.operatingSystemAndCPU}
+						title={'Operating System, CPU'}
 					/>
 				)}
 
-				{/* mainCamera */}
-				{detailList.mainCamera && (
+				{/* ramRom  */}
+				{detailList.ramRom && (
 					<DetailItem
-						list={detailList.mainCamera}
+						list={
+							subData && subData.length > 0
+								? subData.concat(detailList.ramRom)
+								: detailList.ramRom
+						}
+						title={'Memory, Storage'}
+					/>
+				)}
+
+				{/* camera */}
+				{detailList.camera && (
+					<DetailItem
+						list={detailList.camera}
 						title={'Main camera'}
 					/>
 				)}
 
-				{/* osAndCpu */}
-				{detailList.osAndCpu && (
+				{/* selfie */}
+				{detailList.selfie && (
 					<DetailItem
-						list={detailList.osAndCpu}
-						title={'Operating System, CPU'}
-					/>
-				)}
-				{/* memoryAndStorage */}
-				{detailList.memoryAndStorage && (
-					<DetailItem
-						list={detailList.memoryAndStorage}
-						title={'Memory, Storage'}
+						list={detailList.selfie}
+						title={'Selfie camera'}
 					/>
 				)}
 
@@ -49,18 +53,18 @@ const TabletDetail = ({ detailList }) => {
 					/>
 				)}
 
-				{/* battery */}
-				{detailList.battery && (
-					<DetailItem list={detailList.battery} title={'Battery'} />
+				{/* utility */}
+				{detailList.utility && (
+					<DetailItem list={detailList.utility} title={'Utilities'} />
 				)}
-
-				{/* utilities */}
-				{detailList.utilities && (
+				{/* batteryAndCharger */}
+				{detailList.batteryAndCharger && (
 					<DetailItem
-						list={detailList.utilities}
-						title={'Utilities'}
+						list={detailList.batteryAndCharger}
+						title={'Battery'}
 					/>
 				)}
+
 				{/* generalInformation */}
 				{detailList.generalInformation && (
 					<DetailItem

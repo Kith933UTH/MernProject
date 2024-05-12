@@ -12,25 +12,24 @@ import PhoneDetail from './PhoneDetail';
 import TabletDetail from './TabletDetail';
 import SmartWatchDetail from './SmartWatchDetail';
 
-const DetailedConfiguration = ({ data, type }) => {
+const DetailedConfiguration = ({ data, type, subData }) => {
 	const [open, setOpen] = React.useState(false);
 
 	const openDrawer = () => setOpen(true);
 	const closeDrawer = () => setOpen(false);
 
 	let renderDetail = null;
-
 	switch (type) {
 		case 'Laptop': {
-			renderDetail = <LaptopDetail detailList={data} />;
+			renderDetail = <LaptopDetail detailList={data} subData={subData} />;
 			break;
 		}
 		case 'Phone': {
-			renderDetail = <PhoneDetail detailList={data} />;
+			renderDetail = <PhoneDetail detailList={data} subData={subData} />;
 			break;
 		}
 		case 'Tablet': {
-			renderDetail = <TabletDetail detailList={data} />;
+			renderDetail = <TabletDetail detailList={data} subData={subData} />;
 			break;
 		}
 		case 'Smart Watch': {

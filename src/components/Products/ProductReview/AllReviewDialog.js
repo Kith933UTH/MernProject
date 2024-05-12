@@ -8,6 +8,7 @@ import {
 } from '@material-tailwind/react';
 import { CheckBadgeIcon } from '@heroicons/react/24/outline';
 import RatingBar from '../../RatingBar/RatingBar';
+import { convertTimestampToRelativeTime } from '../../../utils';
 
 const AllReviewDialog = ({ data }) => {
 	const [open, setOpen] = React.useState(false);
@@ -25,7 +26,7 @@ const AllReviewDialog = ({ data }) => {
 			</Button>
 			<Dialog
 				open={open}
-				size="lg"
+				size="sm"
 				handler={handleOpen}
 				animate={{
 					mount: { scale: 1, y: 0 },
@@ -34,23 +35,28 @@ const AllReviewDialog = ({ data }) => {
 				className="bg-main shadow-md shadow-gray-800 *:selection:!text-gray-900 *:selection:!bg-highlight"
 			>
 				<DialogBody className=" h-[80vh] overflow-y-scroll">
-					{data?.map((item) => {
+					{data?.map((item, index, arr) => {
 						return (
 							<div
-								key={'reviews-' + item.userName}
-								className="py-4 md:px-2 border-solid border-b-[1px] border-gray-700"
+								key={item._id}
+								className={`py-4 md:px-2 ${
+									index !== arr.length - 1 &&
+									'border-solid border-b-[1px] border-gray-700'
+								}`}
 							>
 								<div className="flex gap-1 items-center">
 									<Typography className="text-text font-semibold text-lg ">
-										{item.userName}
+										{item.user.username}
 									</Typography>
 									<CheckBadgeIcon className="w-5 h-5 text-highlight" />
 									<Typography className="text-text text-sm ml-2 italic">
-										{item.time}
+										{convertTimestampToRelativeTime(
+											item.createdAt
+										)}
 									</Typography>
 								</div>
 								<RatingBar
-									value={Math.floor(item.rate)}
+									value={Math.floor(item.ratingStar)}
 									relatedStyle={
 										'text-highlight text-sm w-4 h-4'
 									}
@@ -61,14 +67,14 @@ const AllReviewDialog = ({ data }) => {
 								/>
 
 								<Typography className="text-text text-sm">
-									{item.comment}
+									{item.content}
 								</Typography>
 								<div className="flex gap-4 mt-4">
-									{item?.img.map((imgLink) => (
-										<div key={imgLink}>
+									{item?.images.map((img) => (
+										<div key={img.imageName}>
 											<img
-												className="h-20 w-20 rounded-lg object-cover object-center"
-												src={imgLink}
+												className="h-20 w-20 md:h-40 md:w-40 rounded-lg object-cover object-center"
+												src={img.imageUrl}
 												alt="reviews"
 											/>
 										</div>
@@ -78,12 +84,12 @@ const AllReviewDialog = ({ data }) => {
 						);
 					})}
 				</DialogBody>
-				<DialogFooter>
+				<DialogFooter className="border-solid border-t-[1px] border-gray-700 py-2">
 					<Button
 						variant="text"
 						color="red"
 						onClick={handleOpen}
-						className="text-base"
+						className="text-sm"
 					>
 						<span>Close</span>
 					</Button>

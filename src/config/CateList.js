@@ -7,11 +7,11 @@ import { BiHeadphone } from 'react-icons/bi';
 import { CiDesktopMouse2 } from 'react-icons/ci';
 
 const CateList = [
-	{ path: 'laptop', title: 'Laptop', children: null, icon: <BsPhone /> },
-	{ path: 'phone', title: 'Phone', children: null, icon: <BsLaptop /> },
-	{ path: 'tablet', title: 'Tablet', children: null, icon: <ImTablet /> },
+	{ path: 'laptops', title: 'Laptop', children: null, icon: <BsPhone /> },
+	{ path: 'smartPhones', title: 'Phone', children: null, icon: <BsLaptop /> },
+	{ path: 'tablets', title: 'Tablet', children: null, icon: <ImTablet /> },
 	{
-		path: 'smartwatch',
+		path: 'smartWatches',
 		title: 'Smart Watch',
 		children: null,
 		icon: <IoWatch />,
@@ -22,31 +22,31 @@ const CateList = [
 		icon: <TbGridDots />,
 		children: [
 			{
-				path: 'charger',
+				path: 'chargers',
 				title: 'Charger',
 				children: null,
 				icon: <TbBatteryCharging />,
 			},
 			{
-				path: 'cable',
+				path: 'cables',
 				title: 'Cable',
 				children: null,
 				icon: <MdCable />,
 			},
 			{
-				path: 'headphone',
+				path: 'headphones',
 				title: 'Headphone',
 				children: null,
 				icon: <BiHeadphone />,
 			},
 			{
-				path: 'mouse',
+				path: 'mouses',
 				title: 'Mouse',
 				children: null,
 				icon: <CiDesktopMouse2 />,
 			},
 			{
-				path: 'keyboard',
+				path: 'keyboards',
 				title: 'Keyboard',
 				children: null,
 				icon: <BsKeyboard />,

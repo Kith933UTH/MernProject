@@ -1,22 +1,22 @@
 import { Button } from '@material-tailwind/react';
 import React from 'react';
 
-const OptionList = ({ data, handleChoose, wrapperStyle }) => {
+const OptionList = ({ data, choose, handleChoose, wrapperStyle }) => {
 	return (
 		<div className={wrapperStyle}>
 			{data?.map((item) => {
 				return (
 					<Button
-						key={item.title}
+						key={item}
 						className={`p-2 focus:ring-2 focus:ring-highlight ${
-							item.choose
+							item === choose
 								? 'bg-highlight text-main ring-2 ring-highlight'
 								: 'text-main bg-text '
 						} `}
 						variant="outlined"
-						onClick={() => handleChoose(item.title)}
+						onClick={() => handleChoose(item)}
 					>
-						{item.title}
+						{item}
 					</Button>
 				);
 			})}

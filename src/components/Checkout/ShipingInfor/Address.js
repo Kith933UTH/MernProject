@@ -9,10 +9,17 @@ import {
 	MenuList,
 	MenuItem,
 	Radio,
+	Checkbox,
 } from '@material-tailwind/react';
 import React, { useMemo, useState } from 'react';
 import { Commune, District, Province } from '../../../resources/AddressVN';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { useDispatch, useSelector } from 'react-redux';
+import { getData, updateData } from '../../../api';
+import notificationSlice from '../../Notification/NotificationSlice';
+import usersSlice from '../../Users/UsersSlice';
+import useSWR from 'swr';
+import SWRconfig from '../../../api/SWRconfig';
 
 const AddressSelect = ({ title, value, data, handler, disabled }) => {
 	return (
@@ -47,12 +54,25 @@ const AddressSelect = ({ title, value, data, handler, disabled }) => {
 };
 
 const AddAddressDialog = ({ open, handler }) => {
+	const loggedUser = useSelector((state) => state.users);
+	const userFetcher = (url) =>
+		getData(url, {
+			headers: { Authorization: 'Bearer ' + loggedUser.accessToken },
+		});
+
+	const { data, mutate } = useSWR(
+		'/users/' + loggedUser.userInfo.id,
+		userFetcher,
+		SWRconfig
+	);
+
+	const dispatch = useDispatch();
 	const [address, setAddress] = useState({
 		province: { name: '' },
 		district: { name: '' },
 		commune: { name: '' },
 		street: '',
-		defaultAddress: true,
+		defaultAddress: false,
 	});
 	const [isValidStreet, setIsValidStreet] = useState(true);
 
@@ -93,7 +113,55 @@ const AddAddressDialog = ({ open, handler }) => {
 		setIsValidStreet(e.target.value !== '' && e.target.value.length >= 10);
 	};
 
-	const handleSubmitSignIn = () => {};
+	const handleSubmitCreateAddress = (e) => {
+		e.preventDefault();
+		const newAddress = `${address.street}, ${address.commune.name}, ${address.district.name}, ${address.province.name}`;
+
+		updateData(
+			'users/' + data._id,
+			{
+				username: data.username,
+				email: data.email,
+				phoneNumber: data.phoneNumber,
+				address: address.defaultAddress
+					? [
+							...data.address.map((item) => {
+								return { ...item, defaultAddress: false };
+							}),
+							{ address: newAddress, defaultAddress: true },
+					  ]
+					: [
+							...data.address,
+							{ address: newAddress, defaultAddress: false },
+					  ],
+			},
+			{
+				headers: {
+					Authorization: 'Bearer ' + loggedUser.accessToken,
+				},
+			}
+		)
+			.then((results) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'success',
+						message: 'Updated success',
+					})
+				);
+				dispatch(usersSlice.actions.setToken(results));
+				mutate();
+				handler();
+				// dispatch(refreshToken());
+			})
+			.catch((error) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: error?.response.data.message || 'Error',
+					})
+				);
+			});
+	};
 
 	return (
 		<>
@@ -171,6 +239,27 @@ const AddAddressDialog = ({ open, handler }) => {
 										10 characters.
 									</Typography>
 								)}
+								<Checkbox
+									name="rate"
+									color="light-green"
+									className="hover:before:opacity-0 border-highlight w-4 h-4"
+									containerProps={{
+										className: 'p-1',
+									}}
+									label={
+										<Typography className="text-highlight text-base ml-2">
+											Set as default address
+										</Typography>
+									}
+									checked={address.defaultAddress}
+									onChange={() =>
+										setAddress({
+											...address,
+											defaultAddress:
+												!address.defaultAddress,
+										})
+									}
+								/>
 							</div>
 							<div className="flex gap-4 mt-6 justify-end">
 								<Button
@@ -182,12 +271,13 @@ const AddAddressDialog = ({ open, handler }) => {
 									<span>Cancel</span>
 								</Button>
 								<Button
-									onClick={handleSubmitSignIn}
+									onClick={handleSubmitCreateAddress}
 									type="submit"
 									className={`bg-highlight px-4 py-2 text-main flex justify-center items-center gap-2 pointer-events-none hover:opacity-50 opacity-50 ${
 										address.province.name !== '' &&
 										address.district.name !== '' &&
 										address.commune.name !== '' &&
+										address.street !== '' &&
 										isValidStreet &&
 										'pointer-events-auto opacity-100'
 									} `}
@@ -203,50 +293,9 @@ const AddAddressDialog = ({ open, handler }) => {
 	);
 };
 
-const AddressItem = ({ address }) => {
-	const province = Province.find(
-		(item) => item.idProvince === address.provinceId
-	);
-	const district = District.find(
-		(item) => item.idDistrict === address.districtId
-	);
-	const commune = Commune.find(
-		(item) => item.idCommune === address.communeId
-	);
-
-	return (
-		<div className="flex justify-between py-4 ">
-			<Typography className="text-base">
-				{address.street +
-					', ' +
-					commune.name +
-					', ' +
-					district.name +
-					', ' +
-					province.name}
-			</Typography>
-		</div>
-	);
-};
-
-const Address = ({ data }) => {
-	const [addressList, setAddressList] = useState(
-		data.map((address) => {
-			return { ...address, choose: address.defaultAddress };
-		})
-	);
-	const handleChangeAddress = (value) => {
-		setAddressList((prev) => {
-			return prev.map((address, index) => {
-				if (index === value) {
-					address.choose = true;
-				} else {
-					address.choose = false;
-				}
-				return address;
-			});
-		});
-	};
+const Address = ({ data, chooseAddress, handler }) => {
+	// if (!chooseAddress)
+	// 	handler(data.filter((item) => item.defaultAddress)[0].address);
 	const [openAddAddress, setOpenAddAddress] = useState(false);
 	const handleOpenAddAddress = () => setOpenAddAddress(!openAddAddress);
 	return (
@@ -254,28 +303,26 @@ const Address = ({ data }) => {
 			<Typography className="text-text text-base font-semibold uppercase mb-2">
 				DELIVERY ADDRESS
 			</Typography>
-			{addressList?.map((address, index) => (
+			{data?.map((address) => (
 				<div
 					className="border-solid border-b-[1px] border-gray-700"
-					key={
-						'address' +
-						address.provinceId +
-						address.districtId +
-						address.communeId +
-						address.street
-					}
+					key={address.address}
 				>
 					<Radio
 						name="delivery-address"
 						color="light-green"
-						className="hover:before:opacity-0 hover:border-highlight w-4 h-4"
+						className="hover:before:opacity-0 w-4 h-4 hover:border-highlight"
 						containerProps={{
-							className: 'p-3 ',
+							className: '',
 						}}
-						label={<AddressItem address={address} />}
-						defaultChecked={address.choose}
-						onChange={() => handleChangeAddress(index)}
-						labelProps={{ className: 'text-text' }}
+						label={
+							<Typography className="text-base block text-wrap ml-2">
+								{address.address}
+							</Typography>
+						}
+						checked={address.address === chooseAddress}
+						onChange={() => handler(address.address)}
+						labelProps={{ className: 'text-text py-4' }}
 					/>
 				</div>
 			))}

@@ -1,12 +1,8 @@
 import React from 'react';
-import SearchProductList from '../components/Products/SearchProductList';
+import { Outlet } from 'react-router-dom';
 
 const SearchPage = () => {
-	return (
-		<div>
-			<SearchProductList />
-		</div>
-	);
+	return <Outlet />;
 };
 
 export default SearchPage;

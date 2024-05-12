@@ -7,16 +7,21 @@ import {
 	Typography,
 } from '@material-tailwind/react';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/headericon.png';
 import {
 	ArrowRightStartOnRectangleIcon,
-	Cog8ToothIcon,
+	HomeIcon,
 	MagnifyingGlassIcon,
-	UserCircleIcon,
+	// Cog8ToothIcon,
+	// UserCircleIcon,
 } from '@heroicons/react/24/solid';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../Users/UsersSlice';
 
 const Header = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const searchInputRef = useRef();
 	const [searchValue, setSearchValue] = useState('');
 	const [isSearchInputFocus, setIsSearchInputFocus] = useState(false);
@@ -35,6 +40,11 @@ const Header = () => {
 	//focus
 	const handleSearchInputFocus = () => {
 		setIsSearchInputFocus(!isSearchInputFocus);
+	};
+
+	const handleLogout = () => {
+		dispatch(logOut());
+		navigate('/');
 	};
 	return (
 		<div className="flex justify-between w-full h-full px-4 bg-white">
@@ -98,23 +108,32 @@ const Header = () => {
 							Hello <span className="text-admin">Admin!</span>
 						</Typography>
 						<hr className="my-2 border-blue-gray-50 pointer-events-none" />
-						<MenuItem className="flex items-center gap-2">
+						{/* <MenuItem className="flex items-center gap-2">
 							<UserCircleIcon className="w-5 h-5" />
 
 							<Typography variant="small" className="font-medium">
 								My Profile
 							</Typography>
-						</MenuItem>
-						<MenuItem className="flex items-center gap-2">
-							<Cog8ToothIcon className="w-5 h-5" />
+						</MenuItem> */}
+						<Link to="/">
+							<MenuItem className="flex items-center gap-2">
+								<HomeIcon className="w-5 h-5" />
 
-							<Typography variant="small" className="font-medium">
-								Edit Profile
-							</Typography>
-						</MenuItem>
+								<Typography
+									variant="small"
+									className="font-medium"
+								>
+									Front Page
+								</Typography>
+							</MenuItem>
+						</Link>
 
 						<hr className="my-2 border-blue-gray-50 pointer-events-none" />
-						<MenuItem className="flex items-center gap-2 ">
+
+						<MenuItem
+							className="flex items-center gap-2"
+							onClick={handleLogout}
+						>
 							<ArrowRightStartOnRectangleIcon className="w-5 h-5" />
 							<Typography variant="small" className="font-medium">
 								Sign Out

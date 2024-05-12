@@ -16,11 +16,8 @@ const SmartWatchDetail = ({ detailList }) => {
 				)}
 
 				{/* utilities */}
-				{detailList.utilities && (
-					<DetailItem
-						list={detailList.utilities}
-						title={'Utilities'}
-					/>
+				{detailList.utility && (
+					<DetailItem list={detailList.utility} title={'Utilities'} />
 				)}
 
 				{/* battery */}
@@ -35,10 +32,10 @@ const SmartWatchDetail = ({ detailList }) => {
 					/>
 				)}
 
-				{/* otherInformation */}
-				{detailList.otherInformation && (
+				{/* additionalInformation */}
+				{detailList.additionalInformation && (
 					<DetailItem
-						list={detailList.otherInformation}
+						list={detailList.additionalInformation}
 						title={'Other information'}
 					/>
 				)}

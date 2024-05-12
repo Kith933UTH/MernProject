@@ -19,9 +19,14 @@ import {
 } from '@heroicons/react/24/outline';
 
 import { FileUploader } from 'react-drag-drop-files';
+import { postFormData } from '../../../api';
+import { useDispatch } from 'react-redux';
+import notificationSlice from '../../Notification/NotificationSlice';
+import Loading from '../../Loading/Loading';
 const fileTypes = ['JPG', 'PNG', 'GIF'];
 
-const AddReviewDialog = () => {
+const AddReviewDialog = ({ productId, token, mutate }) => {
+	const dispatch = useDispatch();
 	//open dialog
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => setOpen(!open);
@@ -35,7 +40,6 @@ const AddReviewDialog = () => {
 		setRatingLevel({ ...ratingLevel, choose: value });
 	};
 
-	//handle file upload
 	const [selectedFile, setSelectedFile] = useState([]);
 	const [preview, setPreview] = useState([]);
 
@@ -59,7 +63,7 @@ const AddReviewDialog = () => {
 	}, [selectedFile]);
 
 	const handleChange = (file) => {
-		setSelectedFile([...selectedFile, file]);
+		setSelectedFile([...selectedFile, ...file].slice(0, 3));
 	};
 
 	const handleDeletePreviewImg = (value, url) => {
@@ -72,9 +76,61 @@ const AddReviewDialog = () => {
 	//input value
 	const [inputValue, setInputValue] = useState({
 		comment: '',
-		name: '',
-		phone: '',
+		// email: '',
+		// phone: '',
 	});
+
+	const [loading, setLoading] = useState(false);
+
+	const clearReviewData = () => {
+		setInputValue((prev) => {
+			return { ...prev, comment: '' };
+		});
+		setRatingLevel({ ...ratingLevel, choose: 5 });
+		preview.forEach((item) => URL.revokeObjectURL(item));
+		setSelectedFile([]);
+	};
+
+	const handleAddReview = () => {
+		setLoading(true);
+		const formData = new FormData();
+		formData.append('content', inputValue.comment);
+		formData.append('productId', productId);
+		formData.append('ratingStar', ratingLevel.choose);
+		if (selectedFile.length > 0) {
+			selectedFile.forEach((file) => {
+				formData.append('images', file);
+			});
+		}
+
+		postFormData('reviews', formData, {
+			headers: {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'multipart/form-data;',
+			},
+		})
+			.then(() => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'success',
+						message: 'Add review success',
+					})
+				);
+				mutate[0]();
+				mutate[1]();
+				handleOpen();
+				clearReviewData();
+			})
+			.catch((err) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: err.response.data.message || 'Error',
+					})
+				);
+			})
+			.finally(() => setLoading(false));
+	};
 
 	return (
 		<>
@@ -146,9 +202,9 @@ const AddReviewDialog = () => {
 									comment: e.target.value,
 								})
 							}
-							className="rounded-lg text-text p-2 w-full bg-transparent border-solid border-[1px] border-gray-700"
+							className="rounded-lg text-text p-2 px-4 w-full bg-transparent border-solid border-[1px] border-gray-700"
 						></textarea>
-						<div className="w-full grid md:grid-cols-2 gap-4 mt-2">
+						{/* <div className="w-full grid md:grid-cols-2 gap-4 mt-2">
 							<input
 								name="name"
 								required={true}
@@ -176,7 +232,7 @@ const AddReviewDialog = () => {
 									})
 								}
 							/>
-						</div>
+						</div> */}
 						<div className="flex gap-2 items-center mt-2">
 							<ShieldCheckIcon className="w-6 h-6 text-highlight" />
 							<Typography className="text-text text-sm">
@@ -190,6 +246,8 @@ const AddReviewDialog = () => {
 									handleChange={handleChange}
 									name="reviewFiles"
 									types={fileTypes}
+									multiple={true}
+									maxSize={3}
 									children={
 										<div className="w-full mt-2 h-20 bg-main rounded-md border-dashed border-[3px] border-gray-700 flex flex-col justify-center items-center p-3">
 											<div className="flex gap-2 items-center">
@@ -246,12 +304,20 @@ const AddReviewDialog = () => {
 								variant="gradient"
 								color="green"
 								disabled={
-									inputValue.name === '' ||
-									inputValue.phone === ''
+									// inputValue.name === '' ||
+									// inputValue.phone === ''
+									inputValue.comment === ''
 								}
-								onClick={handleOpen}
+								onClick={handleAddReview}
 							>
-								<span>Send</span>
+								{loading ? (
+									<Loading
+										customStyle={'!min-h-4 !w-14 !p-0'}
+										sizeStyle={'h-6 w-6'}
+									/>
+								) : (
+									<span>Send</span>
+								)}
 							</Button>
 						</div>
 					</form>

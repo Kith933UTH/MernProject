@@ -2,97 +2,24 @@ import { Typography } from '@material-tailwind/react';
 import React from 'react';
 import OrderItem from './OrderItem';
 import OrderItemSkeleton from './OrderItemSkeleton';
+import { useSelector } from 'react-redux';
+import { getData } from '../../../api';
+import useSWR from 'swr';
+import SWRconfig from '../../../api/SWRconfig';
 
 const AllOrder = () => {
-	const orders = [
-		{
-			id: '01840SH24020736918',
-			status: 'received',
-			total: '5.265.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			receivedAt: '09:55 Thursday, 15/02/2024',
-			address:
-				'Supermarket Quarter 1, Binh Dai town, Binh Dai district, Ben Tre province (Next to Binh Dai hospital)',
-			receiver: 'Kith',
-			phone: '0829751569',
-			payment: 'COD',
-			products: [
-				{
-					img: 'https://cdn.tgdd.vn/Products/Images/42/316075/samsung-galaxy-a15-4g-den-thumb-200x200.jpg',
-					name: 'Samsung Galaxy A15 A155F (8G+256G) Black',
-					quantity: 1,
-					discount: '10',
-					price: '4.990.000',
-					color: 'Red',
-					variant: '8GB - 256GB',
-				},
-				{
-					img: 'https://cdn.tgdd.vn/Products/Images/9499/318156/adapter-sac-type-c-pd-25w-samsung-ep-t2510n-den-1-180x125.jpg',
-					name: 'Type C PD 25W Charger Adapter Samsung EP-T2510NB Black',
-					quantity: 1,
-					discount: '10',
-					price: '275.000',
-					color: 'Red',
-					variant: '8GB - 256GB',
-				},
-			],
-		},
-		{
-			id: '00047SH23020695187',
-			status: 'spending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			receivedAt: '09:55 Thursday, 15/02/2024',
-			address:
-				'Supermarket Quarter 1, Binh Dai town, Binh Dai district, Ben Tre province (Next to Binh Dai hospital)',
-			receiver: 'Kith',
-			phone: '0829751569',
-			payment: 'COD',
-			products: [
-				{
-					img: 'https://cdn.tgdd.vn/Products/Images/42/234621/Xiaomi-12-tim-thumb-mau-600x600.jpg',
-					name: 'Xiaomi 12 (8+256G) Tím',
-					quantity: 1,
-					discount: '10',
-					price: '19.490.000',
-					color: 'Red',
-					variant: '8GB - 256GB',
-				},
-				{
-					img: 'https://cdn.tgdd.vn/Products/Images/9499/318156/adapter-sac-type-c-pd-25w-samsung-ep-t2510n-den-1-180x125.jpg',
-					name: 'Type C PD 25W Charger Adapter Samsung EP-T2510NB Black',
-					quantity: 1,
-					discount: '10',
-					price: '275.000',
-					color: 'Red',
-					variant: '8GB - 256GB',
-				},
-			],
-		},
-		{
-			id: '00047SH23020695367',
-			status: 'cancel',
-			total: '5.265.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			receivedAt: '09:55 Thursday, 15/02/2024',
-			address:
-				'Supermarket Quarter 1, Binh Dai town, Binh Dai district, Ben Tre province (Next to Binh Dai hospital)',
-			receiver: 'Kith',
-			phone: '0829751569',
-			payment: 'COD',
-			products: [
-				{
-					img: 'https://cdn.tgdd.vn/Products/Images/58/245494/cap-type-c-20cm-ava-ds06cb-tb-trang-2-180x125.jpg',
-					name: 'Cáp Type C 20cm AVA+ DS06CW-TB Trắng',
-					quantity: 1,
-					discount: '10',
-					price: '4.990.000',
-					color: 'Red',
-					variant: '8GB - 256GB',
-				},
-			],
-		},
-	];
+	const loggedUser = useSelector((state) => state.users);
+	const userFetcher = (url) =>
+		getData(url, {
+			headers: { Authorization: 'Bearer ' + loggedUser.accessToken },
+		});
+
+	const { data, error, isLoading } = useSWR(
+		'/orders',
+		userFetcher,
+		SWRconfig
+	);
+
 	return (
 		<div className="w-full">
 			<div className="text-text pb-2">
@@ -101,10 +28,26 @@ const AllOrder = () => {
 				</Typography>
 			</div>
 			<div className="w-full flex flex-col gap-4">
-				{orders.map((item) => (
-					<OrderItem key={item.id} data={item} />
-				))}
-				<OrderItemSkeleton />
+				{isLoading && (
+					<>
+						<OrderItemSkeleton />
+						<OrderItemSkeleton />
+						<OrderItemSkeleton />
+					</>
+				)}
+				{!isLoading && !error && data && (
+					<>
+						{data.length > 0 ? (
+							data.map((item) => (
+								<OrderItem key={item._id} data={item} />
+							))
+						) : (
+							<Typography className="text-text text-xl font-semibold text-center w-full bg-main rounded-md py-4 px-5">
+								You have no orders yet.
+							</Typography>
+						)}
+					</>
+				)}
 			</div>
 		</div>
 	);

@@ -8,38 +8,48 @@ import CateRoute from './category';
 import AdminRoute from './admin';
 import ExtraRoute from './extra';
 import UserRoute from './user';
+import { useSelector } from 'react-redux';
 
-const isLogin = true;
+const RouterComponent = () => {
+	const token = useSelector((state) => state.users.accessToken);
+	const role = useSelector((state) => state.users.userInfo.role);
 
-const user = isLogin ? UserRoute : {};
+	const user = token !== '' ? UserRoute : {};
+	const admin =
+		role === 'Admin'
+			? {
+					path: 'admin',
+					element: <AdminPage />,
+					children: [...AdminRoute],
+			  }
+			: {};
 
-const router = createBrowserRouter([
-	{
-		path: '/',
-		element: (
-			<MainLayout>
-				<Outlet />
-			</MainLayout>
-		),
-		children: [
-			{
-				index: true,
-				element: <HomePage />,
-			},
-			...CateRoute,
-			...ExtraRoute,
-			user,
-		],
-	},
-	{
-		path: 'admin',
-		element: <AdminPage />,
-		children: [...AdminRoute],
-	},
-	{
-		path: '*',
-		element: <NotFoundPage />,
-	},
-]);
+	const router = createBrowserRouter([
+		{
+			path: '/',
+			element: (
+				<MainLayout>
+					<Outlet />
+				</MainLayout>
+			),
+			children: [
+				{
+					index: true,
+					element: <HomePage />,
+				},
+				...CateRoute,
+				...ExtraRoute,
+				user,
+			],
+		},
 
-export default router;
+		{
+			path: '*',
+			element: <NotFoundPage />,
+		},
+		admin,
+	]);
+	return router;
+};
+
+export default RouterComponent;

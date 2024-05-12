@@ -27,7 +27,7 @@ const productsSlice = createSlice({
 				{ value: 5, choose: false },
 			],
 		},
-		searchKey: '',
+		// searchKey: '',
 		data: [],
 	},
 	reducers: {
@@ -49,26 +49,21 @@ const productsSlice = createSlice({
 				}
 			});
 		},
-		changeSearchKey: (state, action) => {
-			state.searchKey = action.payload;
-		},
+		// changeSearchKey: (state, action) => {
+		// 	state.searchKey = action.payload;
+		// },
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchProducts.fulfilled, (state, action) => {
-				state.data = action.payload.map((pro) => {
-					return {
-						...pro,
-						rate: Math.ceil(Math.random() * 5),
-						discount: Math.ceil(Math.random() * 5) * 10,
-					};
-				});
+				state.data = action.payload;
 				state.isLoading = false;
 			})
 			.addCase(fetchProducts.pending, (state) => {
 				state.isLoading = true;
 			})
 			.addCase(fetchProducts.rejected, (state) => {
+				state.data = [];
 				state.isLoading = false;
 				state.isError = true;
 			});
@@ -77,13 +72,8 @@ const productsSlice = createSlice({
 
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
-	async () => {
-		// const data = await getData('react-store-products');
-		const data = await fetch(
-			'https://www.course-api.com/react-store-products'
-		).then(
-			(resp) => resp.json() // this returns a promise
-		);
+	async (type) => {
+		const data = await getData('products/list/' + type);
 		return data;
 	}
 );

@@ -9,6 +9,10 @@ import { BsCartX } from 'react-icons/bs';
 import {
 	Badge,
 	Button,
+	Dialog,
+	DialogBody,
+	DialogFooter,
+	DialogHeader,
 	Drawer,
 	IconButton,
 	List,
@@ -20,21 +24,34 @@ import CartItem from './CartItem';
 import { CartItemSkeleton } from './CartItemSkeleton';
 import { Link } from 'react-router-dom';
 import { FormatNumber } from '../../utils';
-import cartSlice from './CartSlice';
+import { fetchCart, removeEntireCart, removeFromCart } from './CartSlice';
 
 const Cart = () => {
+	const user = useSelector((state) => state.users);
+
 	const dispatch = useDispatch();
 	useEffect(() => {
-		// dispatch(fetchProducts());
-	}, [dispatch]);
-
+		dispatch(fetchCart({ token: user.accessToken, id: user.userInfo.id }));
+	}, [dispatch, user]);
 	const cartList = useSelector((state) => state.cart);
+
+	//calculate total
 	const total = useMemo(() => {
 		return cartList.data.reduce((total, cur) => {
 			return (
 				total +
-				((cur.price * (100 - cur.discount)) / 100) * cur.quantity
+				((cur.product.price *
+					(100 - cur.product.discount.discountPercentage)) /
+					100) *
+					cur.quantity
 			);
+		}, 0);
+	}, [cartList]);
+
+	//calculate quantity
+	const cartQuantity = useMemo(() => {
+		return cartList.data.reduce((total, cur) => {
+			return total + cur.quantity;
 		}, 0);
 	}, [cartList]);
 
@@ -44,10 +61,46 @@ const Cart = () => {
 		setOpenCart(true);
 	};
 	const closeCartSection = () => setOpenCart(false);
+
+	//confirm delete dialog
+	const [dataDelete, setDataDelete] = useState({ id: '', name: '' });
+	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+	const toggleConfirmDialog = () => {
+		setOpenConfirmDialog(!openConfirmDialog);
+	};
+
+	const handleOpenDeleteDialog = (data) => {
+		setDataDelete(data);
+		toggleConfirmDialog();
+	};
+
+	const handleDeleteFromCart = () => {
+		if (dataDelete.id === 'all') {
+			dispatch(
+				removeEntireCart({
+					token: user.accessToken,
+					id: user.userInfo.id,
+				})
+			);
+		} else if (
+			cartList.data.filter((item) => item._id === dataDelete.id).length >
+			0
+		) {
+			dispatch(
+				removeFromCart({
+					token: user.accessToken,
+					id: user.userInfo.id,
+					idRemove: dataDelete.id,
+				})
+			);
+		}
+		toggleConfirmDialog();
+	};
+
 	return (
 		<>
 			<Badge
-				content={cartList.data.length}
+				content={cartQuantity}
 				className="min-w-5 min-h-5 hover:opacity-80"
 			>
 				<Tooltip
@@ -94,7 +147,7 @@ const Cart = () => {
 				{/* Cart list  */}
 				{cartList.data.length > 0 ? (
 					<List className="flex-1 overflow-y-scroll scroll-smooth">
-						{cartList.isLoading ? (
+						{cartList.isLoading && cartList.data.length === 0 ? (
 							<>
 								<CartItemSkeleton />
 								<CartItemSkeleton />
@@ -104,7 +157,16 @@ const Cart = () => {
 							</>
 						) : (
 							cartList.data.map((item) => (
-								<CartItem key={item.id} data={item} />
+								<CartItem
+									key={item._id}
+									data={item}
+									user={{
+										token: user.accessToken,
+										id: user.userInfo.id,
+									}}
+									deleteHandler={handleOpenDeleteDialog}
+									isLoading={cartList.isLoading}
+								/>
 							))
 						)}
 					</List>
@@ -128,8 +190,12 @@ const Cart = () => {
 						</Typography>
 						<IconButton
 							color="red"
+							disabled={cartList.data.length <= 0}
 							onClick={() =>
-								dispatch(cartSlice.actions.removeEntireCart())
+								handleOpenDeleteDialog({
+									id: 'all',
+									name: 'entire products',
+								})
 							}
 						>
 							<TrashIcon className="w-6 h6"></TrashIcon>
@@ -144,17 +210,47 @@ const Cart = () => {
 								: ''
 						}
 					>
-						{cartList.data.length <= 0 ? (
-							<Button fullWidth className="text-sm" disabled>
-								Check out
-							</Button>
-						) : (
-							<Button fullWidth className="text-sm">
-								Check out
-							</Button>
-						)}
+						<Button
+							fullWidth
+							className="text-sm"
+							disabled={cartList.data.length <= 0}
+						>
+							Check out
+						</Button>
 					</Link>
 				</div>
+				{/*confirm delete dialog  */}
+				<Dialog
+					size="xs"
+					open={openConfirmDialog}
+					handler={toggleConfirmDialog}
+				>
+					<DialogHeader className="justify-center">
+						Are you sure?
+					</DialogHeader>
+					<DialogBody className="text-center font-normal text-lg">
+						Remove{' '}
+						<span className="text-red-600">{dataDelete.name}</span>{' '}
+						from your cart ?
+					</DialogBody>
+					<DialogFooter>
+						<Button
+							variant="text"
+							color="gray"
+							onClick={toggleConfirmDialog}
+							className="mr-1"
+						>
+							<span>Cancel</span>
+						</Button>
+						<Button
+							variant="gradient"
+							color="red"
+							onClick={handleDeleteFromCart}
+						>
+							<span>Continue</span>
+						</Button>
+					</DialogFooter>
+				</Dialog>
 			</Drawer>
 		</>
 	);

@@ -1,7 +1,7 @@
 import React from 'react';
 import DetailItem from './DetailItem';
 
-const PhoneDetail = ({ detailList }) => {
+const PhoneDetail = ({ detailList, subData }) => {
 	return (
 		<>
 			<div>
@@ -11,32 +11,36 @@ const PhoneDetail = ({ detailList }) => {
 				)}
 
 				{/* selfieCamera  */}
-				{detailList.selfieCamera && (
+				{detailList.selfie && (
 					<DetailItem
-						list={detailList.selfieCamera}
+						list={detailList.selfie}
 						title={'Selfie camera'}
 					/>
 				)}
 
 				{/* mainCamera */}
-				{detailList.mainCamera && (
+				{detailList.camera && (
 					<DetailItem
-						list={detailList.mainCamera}
+						list={detailList.camera}
 						title={'Main camera'}
 					/>
 				)}
 
 				{/* osAndCpu */}
-				{detailList.osAndCpu && (
+				{detailList.operatingSystemAndCPU && (
 					<DetailItem
-						list={detailList.osAndCpu}
+						list={detailList.operatingSystemAndCPU}
 						title={'Operating System, CPU'}
 					/>
 				)}
 				{/* memoryAndStorage */}
-				{detailList.memoryAndStorage && (
+				{detailList.ramRom && (
 					<DetailItem
-						list={detailList.memoryAndStorage}
+						list={
+							subData && subData.length > 0
+								? subData.concat(detailList.ramRom)
+								: detailList.ramRom
+						}
 						title={'Memory, Storage'}
 					/>
 				)}
@@ -50,16 +54,16 @@ const PhoneDetail = ({ detailList }) => {
 				)}
 
 				{/* battery */}
-				{detailList.battery && (
-					<DetailItem list={detailList.battery} title={'Battery'} />
+				{detailList.batteryAndCharger && (
+					<DetailItem
+						list={detailList.batteryAndCharger}
+						title={'Battery'}
+					/>
 				)}
 
 				{/* utilities */}
-				{detailList.utilities && (
-					<DetailItem
-						list={detailList.utilities}
-						title={'Utilities'}
-					/>
+				{detailList.utility && (
+					<DetailItem list={detailList.utility} title={'Utilities'} />
 				)}
 				{/* generalInformation */}
 				{detailList.generalInformation && (

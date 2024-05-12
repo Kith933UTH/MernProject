@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	Button,
 	Dialog,
@@ -15,16 +16,23 @@ import {
 	UserPlusIcon,
 	ArrowLeftEndOnRectangleIcon,
 } from '@heroicons/react/24/solid';
+import usersSlice, { signIn, signUp } from './UsersSlice';
+import notificationSlice from '../Notification/NotificationSlice';
+import Loading from '../Loading/Loading';
 
 const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-const phoneNumberRegex = /^0\d{9}$/;
 
 const SignInDialog = ({ open, handler }) => {
+	const dispatch = useDispatch();
+	const rememberEmail = localStorage.getItem('rememberEmail') ?? '';
 	const [isEmail, setIsEmail] = useState(true);
 	const [isValidPass, setIsValidPass] = useState(true);
+	const [isRemember, setIsRemember] = useState(rememberEmail !== '');
+
+	const [loading, setLoading] = useState(false);
 
 	const [inputValue, setInputValue] = useState({
-		email: '',
+		email: rememberEmail,
 		pass: '',
 	});
 
@@ -44,7 +52,38 @@ const SignInDialog = ({ open, handler }) => {
 		setIsValidPass(e.target.value !== '');
 	};
 
-	const handleSubmitSignIn = () => {};
+	const handleSubmitSignIn = (e) => {
+		e.preventDefault();
+		setLoading(true);
+		dispatch(
+			signIn({
+				email: inputValue.email,
+				password: inputValue.pass,
+			})
+		).then((res) => {
+			if (res?.error === undefined) {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'success',
+						message: 'Login success',
+					})
+				);
+				if (isRemember) {
+					localStorage.setItem('rememberEmail', inputValue.email);
+				} else {
+					localStorage.removeItem('rememberEmail');
+				}
+			} else {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: 'Wrong email or password!',
+					})
+				);
+			}
+			setLoading(false);
+		});
+	};
 
 	return (
 		<Dialog
@@ -112,6 +151,8 @@ const SignInDialog = ({ open, handler }) => {
 								containerProps={{
 									className: 'p-1',
 								}}
+								checked={isRemember}
+								onChange={() => setIsRemember(!isRemember)}
 								label={
 									<Typography className="text-text text-sm">
 										Remember me
@@ -123,14 +164,26 @@ const SignInDialog = ({ open, handler }) => {
 						<Button
 							onClick={handleSubmitSignIn}
 							type="submit"
-							className={`bg-highlight text-main text-base mt-6  flex justify-center items-center gap-2 ${
-								(!isEmail || !isValidPass) &&
-								'pointer-events-none opacity-50'
+							className={`bg-highlight text-main text-base mt-6  flex justify-center items-center gap-2 pointer-events-none opacity-50 ${
+								isEmail &&
+								isValidPass &&
+								inputValue.email !== '' &&
+								inputValue.pass !== '' &&
+								'pointer-events-auto opacity-100'
 							} `}
 							fullWidth
 						>
-							<ArrowLeftEndOnRectangleIcon className="w-5 h-5 text-main" />
-							Sign In
+							{loading ? (
+								<Loading
+									customStyle={'!min-h-5 !w-full !p-0'}
+									sizeStyle={'h-5 w-5'}
+								/>
+							) : (
+								<>
+									<ArrowLeftEndOnRectangleIcon className="w-5 h-5 text-main" />
+									Sign In
+								</>
+							)}
 						</Button>
 					</form>
 				</CardBody>
@@ -152,16 +205,19 @@ const SignInDialog = ({ open, handler }) => {
 };
 
 const SignUpDialog = ({ open, handler }) => {
+	const dispatch = useDispatch();
 	const [isValidName, setIsValidName] = useState(true);
-	const [isValidPhone, setIsValidPhone] = useState(true);
+	// const [isValidPhone, setIsValidPhone] = useState(true);
 	const [isValidEmail, setIsValidEmail] = useState(true);
 	const [isValidPass, setIsValidPass] = useState(true);
 	const [isValidRePass, setIsValidRePass] = useState(true);
 	const [isAcceptTerm, setIsAcceptTerm] = useState(false);
 
+	const [loading, setLoading] = useState(false);
+
 	const [inputValue, setInputValue] = useState({
 		name: '',
-		phone: '',
+		// phone: '',
 		email: '',
 		pass: '',
 		rePass: '',
@@ -174,23 +230,23 @@ const SignUpDialog = ({ open, handler }) => {
 		});
 		setIsValidName(e.target.value !== '');
 	};
-	const handleCheckPhone = (e) => {
-		if (e.target.value === '') {
-			setInputValue({
-				...inputValue,
-				phone: '',
-			});
-		}
-		if (Number.isInteger(parseInt(e.target.value.at(-1)))) {
-			setInputValue({
-				...inputValue,
-				phone: e.target.value,
-			});
-			setIsValidPhone(phoneNumberRegex.test(e.target.value));
-		} else {
-			setIsValidPhone(phoneNumberRegex.test(inputValue.phone));
-		}
-	};
+	// const handleCheckPhone = (e) => {
+	// 	if (e.target.value === '') {
+	// 		setInputValue({
+	// 			...inputValue,
+	// 			phone: '',
+	// 		});
+	// 	}
+	// 	if (Number.isInteger(parseInt(e.target.value.at(-1)))) {
+	// 		setInputValue({
+	// 			...inputValue,
+	// 			phone: e.target.value,
+	// 		});
+	// 		setIsValidPhone(phoneNumberRegex.test(e.target.value));
+	// 	} else {
+	// 		setIsValidPhone(phoneNumberRegex.test(inputValue.phone));
+	// 	}
+	// };
 
 	const handleCheckEmail = (e) => {
 		setInputValue({
@@ -218,7 +274,35 @@ const SignUpDialog = ({ open, handler }) => {
 		);
 	};
 
-	const handleSubmitSignIn = () => {};
+	const handleSubmitSignIn = (e) => {
+		e.preventDefault();
+		setLoading(true);
+		dispatch(
+			signUp({
+				username: inputValue.name,
+				email: inputValue.email,
+				password: inputValue.pass,
+			})
+		).then((res) => {
+			if (res?.error === undefined) {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'success',
+						message: 'Sign up success.',
+					})
+				);
+				handler('login');
+			} else {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: 'Account existed. Try another name or email.',
+					})
+				);
+			}
+			setLoading(false);
+		});
+	};
 
 	return (
 		<Dialog
@@ -258,7 +342,7 @@ const SignUpDialog = ({ open, handler }) => {
 						)}
 
 						{/* phone  */}
-						<input
+						{/* <input
 							name="text"
 							required={true}
 							spellCheck="false"
@@ -271,13 +355,13 @@ const SignUpDialog = ({ open, handler }) => {
 							placeholder="Phone number"
 							value={inputValue.phone}
 							onChange={handleCheckPhone}
-						/>
-						{!isValidPhone && (
+						/> */}
+						{/* {!isValidPhone && (
 							<Typography className="text-sm text-red-600 font-medium mt-1">
 								The phone number must start with 0 and have 10
 								digits
 							</Typography>
-						)}
+						)} */}
 
 						{/* email  */}
 						<input
@@ -375,7 +459,7 @@ const SignUpDialog = ({ open, handler }) => {
 							type="submit"
 							className={`bg-highlight text-main text-base mt-6  flex justify-center items-center gap-2 pointer-events-none opacity-50 ${
 								isValidName &&
-								isValidPhone &&
+								// isValidPhone &&
 								isValidEmail &&
 								isValidPass &&
 								isValidRePass &&
@@ -384,8 +468,17 @@ const SignUpDialog = ({ open, handler }) => {
 							} `}
 							fullWidth
 						>
-							<UserPlusIcon className="w-4 h-4 text-main" />
-							Sign Up
+							{loading ? (
+								<Loading
+									customStyle={'!min-h-5 !w-full !p-0'}
+									sizeStyle={'h-5 w-5'}
+								/>
+							) : (
+								<>
+									<UserPlusIcon className="w-4 h-4 text-main" />
+									Sign Up
+								</>
+							)}
 						</Button>
 					</form>
 				</CardBody>
@@ -406,8 +499,13 @@ const SignUpDialog = ({ open, handler }) => {
 };
 
 const AuthForm = () => {
+	const dispatch = useDispatch();
 	const [open, setOpen] = useState('');
-	const handleOpen = (value) => setOpen(value);
+	const handleOpen = (value) => {
+		setOpen(value);
+		dispatch(usersSlice.actions.setLoginDialog(false));
+	};
+	const openLoginDialog = useSelector((state) => state.users.openLoginDialog);
 
 	return (
 		<>
@@ -421,7 +519,10 @@ const AuthForm = () => {
 				</IconButton>
 			</Tooltip>
 
-			<SignInDialog open={open === 'login'} handler={handleOpen} />
+			<SignInDialog
+				open={openLoginDialog || open === 'login'}
+				handler={handleOpen}
+			/>
 			<SignUpDialog open={open === 'signup'} handler={handleOpen} />
 		</>
 	);

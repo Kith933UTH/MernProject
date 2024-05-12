@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import {
@@ -8,13 +8,47 @@ import {
 	ListItemPrefix,
 	Typography,
 } from '@material-tailwind/react';
-import { FormatNumber } from '../../utils';
-import cartSlice from '../Cart/CartSlice';
+import { FormatNumber, isTimestampPast } from '../../utils';
+import { decreaseQuantity, increaseQuantity } from '../Cart/CartSlice';
+import { CartItemSkeleton } from './CartItemSkeleton';
 
-const CartItem = ({ data }) => {
+const CartItem = ({ data, user, deleteHandler, isLoading }) => {
 	const dispatch = useDispatch();
+	const isEndDate = isTimestampPast(data.product.discount.discountEndDate);
 
-	return (
+	const [isEdit, setIsEdit] = useState(false);
+	const handleIncreaseQuantity = () => {
+		setIsEdit(true);
+		dispatch(
+			increaseQuantity({
+				...user,
+				idUpdate: data._id,
+				quantity: data.quantity < 5 ? data.quantity + 1 : data.quantity,
+			})
+		);
+	};
+	const handleDecreaseQuantity = () => {
+		setIsEdit(true);
+		dispatch(
+			decreaseQuantity({
+				...user,
+				idUpdate: data._id,
+				quantity: data.quantity > 1 ? data.quantity - 1 : data.quantity,
+			})
+		);
+	};
+	const handleRemove = () => {
+		deleteHandler({
+			id: data._id,
+			name: data.product.name,
+		});
+	};
+
+	useEffect(() => {
+		if (!isLoading) setIsEdit(false);
+	}, [isLoading]);
+
+	return !isEdit ? (
 		<>
 			<ListItem
 				className="p-0 active:bg-transparent focus:bg-transparent hover:bg-transparent mb-4"
@@ -22,11 +56,11 @@ const CartItem = ({ data }) => {
 				ripple={false}
 			>
 				{/* Cart item image  */}
-				<ListItemPrefix>
+				<ListItemPrefix className="bg-transparent">
 					<img
-						className="h-20 w-20 rounded-lg object-cover object-center shadow-xl shadow-blue-gray-900/50"
-						src={data.image}
-						alt={data.name}
+						className="h-20 w-20 rounded-lg object-contain object-center bg-transparent"
+						src={data.product.image.imageUrl}
+						alt={data.product.image.imageName}
 					/>
 				</ListItemPrefix>
 
@@ -38,17 +72,29 @@ const CartItem = ({ data }) => {
 								variant="paragraph"
 								className="uppercase font-medium text-sm text-main mb-3 cursor-default hover:underline"
 							>
-								{data.name}
+								{data.product.name}
 							</Typography>
 							<Typography
 								variant="paragraph"
 								className="uppercase text-xs font-semibold text-main mb-3 cursor-default flex gap-2"
 							>
+								{data.product?.ram && (
+									<span className="border-solid border-[1px] border-main p-1 rounded">
+										{data.product.ram}
+									</span>
+								)}
+								{data.product?.hardDrive && (
+									<span className="border-solid border-[1px] border-main p-1 rounded">
+										{data.product.hardDrive}
+									</span>
+								)}
+								{data.product?.rom && (
+									<span className="border-solid border-[1px] border-main p-1 rounded">
+										{data.product.rom}
+									</span>
+								)}
 								<span className="border-solid border-[1px] border-main p-1 rounded">
-									{data.color}
-								</span>
-								<span className="border-solid border-[1px] border-main p-1 rounded">
-									{data.variant}
+									{data.product.color}
 								</span>
 							</Typography>
 						</div>
@@ -56,11 +102,7 @@ const CartItem = ({ data }) => {
 						<IconButton
 							variant="text"
 							className="py-0 px-4 w-5 h-5 hover:bg-transparent hover:opacity-80"
-							onClick={() =>
-								dispatch(
-									cartSlice.actions.removeFromCart(data.id)
-								)
-							}
+							onClick={handleRemove}
 						>
 							<TrashIcon className="w-5 h-5 text-red-800" />
 						</IconButton>
@@ -75,13 +117,8 @@ const CartItem = ({ data }) => {
 							<IconButton
 								variant="text"
 								className="hover:bg-black/10"
-								onClick={() =>
-									dispatch(
-										cartSlice.actions.decreaseQuantity(
-											data.id
-										)
-									)
-								}
+								disabled={data.quantity <= 1}
+								onClick={handleDecreaseQuantity}
 							>
 								<MinusIcon className="w-4 h-4 text-main" />
 							</IconButton>
@@ -93,13 +130,8 @@ const CartItem = ({ data }) => {
 							<IconButton
 								variant="text"
 								className="hover:bg-black/10"
-								onClick={() =>
-									dispatch(
-										cartSlice.actions.increaseQuantity(
-											data.id
-										)
-									)
-								}
+								disabled={data.quantity >= 5}
+								onClick={handleIncreaseQuantity}
 							>
 								<PlusIcon className="w-4 h-4 text-main" />
 							</IconButton>
@@ -109,7 +141,13 @@ const CartItem = ({ data }) => {
 							className="text-main text-sm opacity-80 mr-4"
 						>
 							{FormatNumber(
-								(data.price * (100 - data.discount)) / 100
+								isEndDate
+									? data.product.price
+									: (data.product.price *
+											(100 -
+												data.product.discount
+													.discountPercentage)) /
+											100
 							)}
 						</Typography>
 						<Typography
@@ -117,8 +155,14 @@ const CartItem = ({ data }) => {
 							className="text-main text-sm font-semibold"
 						>
 							{FormatNumber(
-								((data.price * (100 - data.discount)) / 100) *
-									data.quantity
+								isEndDate
+									? data.product.price * data.quantity
+									: ((data.product.price *
+											(100 -
+												data.product.discount
+													.discountPercentage)) /
+											100) *
+											data.quantity
 							)}{' '}
 							<span className="hidden md:inline">VND</span>
 						</Typography>
@@ -127,6 +171,8 @@ const CartItem = ({ data }) => {
 			</ListItem>
 			<hr className="my-3" />
 		</>
+	) : (
+		<CartItemSkeleton />
 	);
 };
 

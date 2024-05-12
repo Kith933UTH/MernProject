@@ -1,106 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Typography } from '@material-tailwind/react';
-import { ScrollToTop } from '../../../utils';
+import {
+	FormatNumber,
+	ScrollToTop,
+	formatTimestampWithTime,
+} from '../../../utils';
 import { Pagination } from '../Pagination';
 import AdminWideLayout from '../../../layouts/AdminWideLayout';
+import { useSelector } from 'react-redux';
+import { getData } from '../../../api';
+import useSWR from 'swr';
+import SWRconfig from '../../../api/SWRconfig';
 
 const perPage = 10;
 
 const OrderList = () => {
-	const orderList = [
-		{
-			id: '01840SH24020736918',
-			status: 'completed',
-			total: '5.265.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH23020695187',
-			status: 'pending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH23020695156',
-			status: 'cancelled',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH230206951sg',
-			status: 'processing',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH230206951ga',
-			status: 'processing',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH230206951ew',
-			status: 'pending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH230206951kg',
-			status: 'pending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH230206951et',
-			status: 'pending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH230206951kj',
-			status: 'pending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH23020695eya',
-			status: 'pending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-		{
-			id: '00047SH23020695rey',
-			status: 'pending',
-			total: '12.765.000',
-			orderAt: '09:55 Tuesday, 13/02/2024',
-			email: 'nguyenkiet51569@gmail.com',
-			payment: 'COD',
-		},
-	];
+	const token = useSelector((state) => state.users.accessToken);
+
+	const ordersFetcher = (url) =>
+		getData(url, {
+			headers: { Authorization: 'Bearer ' + token },
+		});
+
+	const {
+		data: orderList,
+		error,
+		isLoading,
+	} = useSWR('/orders', ordersFetcher, SWRconfig);
+
+	const [data, setData] = useState(orderList);
 
 	const [active, setActive] = useState(1);
-	const lengthOfPage = Math.ceil(orderList.length / perPage);
+	const lengthOfPage = Math.ceil(data?.length / perPage);
 
 	const next = () => {
 		if (active === lengthOfPage) return;
@@ -116,12 +48,31 @@ const OrderList = () => {
 		ScrollToTop();
 	}, [active]);
 
+	//filter
+	const [searchValue, setSearchValue] = useState({ id: '', mail: '' });
 	const handleSubmitSearchByOrderID = (e) => {
-		console.log(e.target.value);
+		setSearchValue({ ...searchValue, id: e.target.value });
+		e.target.blur();
 	};
 	const handleSubmitSearchByCustomerEmail = (e) => {
-		console.log(e.target.value);
+		setSearchValue({ ...searchValue, mail: e.target.value });
+		e.target.blur();
 	};
+
+	useEffect(() => {
+		setActive(1);
+		setData(
+			orderList?.filter(
+				(item) =>
+					item._id
+						.toLowerCase()
+						.includes(searchValue.id.toLowerCase()) &&
+					item.user.email
+						.toLowerCase()
+						.includes(searchValue.mail.toLowerCase())
+			)
+		);
+	}, [searchValue, orderList]);
 
 	return (
 		<AdminWideLayout>
@@ -132,7 +83,8 @@ const OrderList = () => {
 					</Typography>
 				</div>
 				<div className="w-full bg-white rounded-md border-[1px] border-solid border-gray-300 shadow-sm shadow-gray-400">
-					<div className="grid grid-cols-[repeat(3,minmax(0,_1fr))_100px_100px] gap-4 p-4 border-b-[1px] border-solid border-gray-300 px-8">
+					{/* {!error && data?.length > 0 && ( */}
+					<div className="grid grid-cols-[repeat(3,minmax(0,_1fr))_150px] gap-8 p-4 border-b-[1px] border-solid border-gray-300 px-8">
 						<div className="flex flex-col gap-2">
 							<Typography className="text-sm font-bold">
 								Order ID
@@ -141,11 +93,13 @@ const OrderList = () => {
 								type="text"
 								placeholder="Order ID"
 								spellCheck="false"
+								defaultValue={searchValue.id}
 								className="h-min font-sans transition-all text-sm font-bold leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
 								onKeyDown={(e) =>
 									e.keyCode === 13 &&
 									handleSubmitSearchByOrderID(e)
 								}
+								onBlur={(e) => handleSubmitSearchByOrderID(e)}
 							></input>
 						</div>
 						<div className="flex flex-col gap-2">
@@ -156,9 +110,13 @@ const OrderList = () => {
 								type="text"
 								placeholder="Customer Email"
 								spellCheck="false"
+								defaultValue={searchValue.mail}
 								className="h-min font-sans transition-all text-sm font-bold leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
 								onKeyDown={(e) =>
 									e.keyCode === 13 &&
+									handleSubmitSearchByCustomerEmail(e)
+								}
+								onBlur={(e) =>
 									handleSubmitSearchByCustomerEmail(e)
 								}
 							></input>
@@ -167,58 +125,203 @@ const OrderList = () => {
 							Date
 						</Typography>
 						<Typography className="text-sm font-bold">
-							Status
-						</Typography>
-						<Typography className="text-sm font-bold">
 							Total
 						</Typography>
 					</div>
-					{orderList.length > 0 ? (
+					{/* )} */}
+
+					{isLoading && (
 						<>
-							{orderList
+							<div className="animate-pulse grid grid-cols-[repeat(3,minmax(0,_1fr))_100px] gap-4 p-4 border-b-[1px] border-solid border-gray-300 px-8">
+								<Typography
+									as="div"
+									variant="h1"
+									className="mb-4 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+							</div>
+							<div className="animate-pulse grid grid-cols-[repeat(3,minmax(0,_1fr))_100px] gap-4 p-4 border-b-[1px] border-solid border-gray-300 px-8">
+								<Typography
+									as="div"
+									variant="h1"
+									className="mb-4 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+							</div>
+							<div className="animate-pulse grid grid-cols-[repeat(3,minmax(0,_1fr))_100px] gap-4 p-4 border-b-[1px] border-solid border-gray-300 px-8">
+								<Typography
+									as="div"
+									variant="h1"
+									className="mb-4 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+							</div>
+							<div className="animate-pulse grid grid-cols-[repeat(3,minmax(0,_1fr))_100px] gap-4 p-4 border-b-[1px] border-solid border-gray-300 px-8">
+								<Typography
+									as="div"
+									variant="h1"
+									className="mb-4 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+							</div>
+							<div className="animate-pulse grid grid-cols-[repeat(3,minmax(0,_1fr))_100px] gap-4 p-4 border-b-[1px] border-solid border-gray-300 px-8">
+								<Typography
+									as="div"
+									variant="h1"
+									className="mb-4 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+								<Typography
+									as="div"
+									variant="paragraph"
+									className="mb-2 h-3 rounded-full bg-gray-300"
+								>
+									&nbsp;
+								</Typography>
+							</div>
+						</>
+					)}
+
+					{!error && data && data?.length > 0 ? (
+						<>
+							{data
 								.map((order, index) =>
 									index < active * perPage &&
 									index >= (active - 1) * perPage ? (
 										<div
-											key={order.id}
-											className="grid grid-cols-[repeat(3,minmax(0,_1fr))_100px_100px] gap-4 p-4 border-b-[1px] border-solid border-gray-300 px-8 content-center"
+											key={order._id}
+											className="grid grid-cols-[repeat(3,minmax(0,_1fr))_150px] gap-8 p-4 border-b-[1px] border-solid border-gray-300 px-8 content-center"
 										>
 											<Link
 												to={
 													'/admin/orders/' +
-													order.id.toString()
+													order._id.toString()
 												}
 											>
 												<Typography className="text-sm font-semibold hover:underline ">
-													{order.id}
+													#{order._id.toString()}
+												</Typography>
+											</Link>
+											<Link
+												to={
+													'/admin/customers/' +
+													order.user._id.toString()
+												}
+											>
+												<Typography className="text-sm font-semibold hover:underline text-blue-900">
+													{order.user.email}
 												</Typography>
 											</Link>
 											<Typography className="text-sm">
-												{order.email}
+												{formatTimestampWithTime(
+													order.createdAt
+												)}
 											</Typography>
 											<Typography className="text-sm">
-												{order.orderAt}
-											</Typography>
-											{order.status === 'completed' ? (
-												<Typography className="text-xs h-min rounded-full bg-green-600 text-white w-min px-2 py-1">
-													Completed
-												</Typography>
-											) : order.status === 'pending' ? (
-												<Typography className="text-xs h-min rounded-full bg-gray-400 text-white w-min px-2 py-1">
-													Pending
-												</Typography>
-											) : order.status ===
-											  'processing' ? (
-												<Typography className="text-xs h-min rounded-full bg-gray-400 text-white w-min px-2 py-1">
-													Processing
-												</Typography>
-											) : (
-												<Typography className="text-xs h-min rounded-full bg-red-600 text-white w-min px-2 py-1">
-													Cancelled
-												</Typography>
-											)}
-											<Typography className="text-sm">
-												{order.total}
+												{FormatNumber(order.total)} VND
 											</Typography>
 										</div>
 									) : null
@@ -232,9 +335,11 @@ const OrderList = () => {
 							/>
 						</>
 					) : (
-						<Typography className="text-lg font-medium my-2">
-							No orders yet.
-						</Typography>
+						!isLoading && (
+							<Typography className="text-lg font-medium my-2 text-center">
+								No orders match.
+							</Typography>
+						)
 					)}
 				</div>
 			</div>

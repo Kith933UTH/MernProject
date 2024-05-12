@@ -6,17 +6,18 @@ import {
 	HeartIcon,
 	XMarkIcon,
 	ClipboardDocumentListIcon,
+	AdjustmentsVerticalIcon,
 } from '@heroicons/react/24/outline';
 import SearchDrawer from './SearchDrawer';
 import Cart from '../Cart/Cart';
 import HeaderNavbar from '../Navbar/HeaderNavbar';
 import AuthForm from '../Users/AuthForm';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
-	const isLogin = false;
-
+	const user = useSelector((state) => state.users);
 	//Nav handler
-	const [openNav, setOpenNav] = useState(false);
+	const [openNav, setOpenNav] = useState(true);
 	const closeNavMobileSection = useCallback(() => setOpenNav(false), []);
 	React.useEffect(() => {
 		window.addEventListener('resize', () => {
@@ -42,55 +43,83 @@ const Header = () => {
 						{/* Search button  */}
 						<SearchDrawer />
 
-						{/* Wish list  */}
-						<Tooltip
-							content="Wishlist"
-							placement="bottom"
-							className="bg-main"
-						>
-							<IconButton variant="text" color="white">
-								<HeartIcon className="h-6 w-6" />
-							</IconButton>
-						</Tooltip>
-
-						{/* Cart  */}
-						<Cart />
-
 						{/* user  */}
-						{!isLogin ? (
+						{user.accessToken === '' ? (
 							<AuthForm />
-						) : (
-							<Link to="/user/order">
+						) : user.userInfo.role === 'Admin' ? (
+							<Link to="admin">
 								<Tooltip
-									content="Your order"
+									content="Admin Page"
 									placement="bottom"
 									className="bg-main"
 								>
 									<IconButton variant="text" color="white">
-										<ClipboardDocumentListIcon className="h-6 w-6" />
+										<AdjustmentsVerticalIcon className="h-6 w-6" />
 									</IconButton>
 								</Tooltip>
 							</Link>
+						) : (
+							<>
+								{/* Wish list  */}
+								<Link to="/wishlist">
+									<Tooltip
+										content="Wishlist"
+										placement="bottom"
+										className="bg-main"
+									>
+										<IconButton
+											variant="text"
+											color="white"
+										>
+											<HeartIcon className="h-6 w-6" />
+										</IconButton>
+									</Tooltip>
+								</Link>
+
+								{/* Cart  */}
+								<Cart />
+
+								<Link to="/user/order">
+									<Tooltip
+										content="Your order"
+										placement="bottom"
+										className="bg-main"
+									>
+										<IconButton
+											variant="text"
+											color="white"
+										>
+											<ClipboardDocumentListIcon className="h-6 w-6" />
+										</IconButton>
+									</Tooltip>
+								</Link>
+							</>
 						)}
 
 						{/* nav mobile  */}
-						<IconButton
-							variant="text"
-							className="text-text"
-							onClick={() => setOpenNav(!openNav)}
+						<Tooltip
+							content="Category"
+							placement="bottom"
+							className="bg-main"
 						>
-							{openNav ? (
-								<XMarkIcon
-									className="h-6 w-6"
-									strokeWidth={2}
-								/>
-							) : (
-								<Bars3Icon
-									className="h-6 w-6"
-									strokeWidth={2}
-								/>
-							)}
-						</IconButton>
+							<IconButton
+								variant="text"
+								className="text-text"
+								onClick={() => setOpenNav(!openNav)}
+							>
+								{openNav ? (
+									<XMarkIcon
+										className="h-6 w-6"
+										strokeWidth={2}
+									/>
+								) : (
+									<Bars3Icon
+										className="h-6 w-6"
+										strokeWidth={2}
+									/>
+								)}
+							</IconButton>
+						</Tooltip>
 					</div>
 				</div>
 			</header>

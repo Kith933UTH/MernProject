@@ -3,12 +3,13 @@ import React from 'react';
 
 const DetailItem = ({ list, title }) => {
 	const len = list.length;
+	const filteredData = list.filter((item) => item.value !== '');
 	return (
 		<div className="w-full mb-3">
 			<Typography className="text-highlight text-base font-semibold bg-main py-1 px-4 rounded-xl">
 				{title}
 			</Typography>
-			{list.map((item, index) => {
+			{filteredData.map((item, index) => {
 				return (
 					<div
 						className={`grid grid-cols-3 gap-4 pl-4 py-1 ${
@@ -16,11 +17,11 @@ const DetailItem = ({ list, title }) => {
 								? 'border-b-[1px] border-gray-800 border-solid'
 								: ''
 						}`}
-						key={item.type}
+						key={item.title}
 					>
 						<div className="col-span-1">
 							<Typography className="text-text text-sm">
-								{item.type}:
+								{item.title}:
 							</Typography>
 						</div>
 						<div className="col-span-2">

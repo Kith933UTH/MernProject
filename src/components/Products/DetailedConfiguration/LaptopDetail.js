@@ -1,7 +1,7 @@
 import React from 'react';
 import DetailItem from './DetailItem';
 
-const LaptopDetail = ({ detailList }) => {
+const LaptopDetail = ({ detailList, subData }) => {
 	return (
 		<>
 			<div>
@@ -14,9 +14,15 @@ const LaptopDetail = ({ detailList }) => {
 				)}
 
 				{/* ram, hard drive */}
-				{detailList.ramAndHardDrive && (
+				{detailList.ramMemoryAndHardDrive && (
 					<DetailItem
-						list={detailList.ramAndHardDrive}
+						list={
+							subData && subData.length > 0
+								? subData.concat(
+										detailList.ramMemoryAndHardDrive
+								  )
+								: detailList.ramMemoryAndHardDrive
+						}
 						title={'RAM, Hard Drive'}
 					/>
 				)}
@@ -27,16 +33,16 @@ const LaptopDetail = ({ detailList }) => {
 				)}
 
 				{/* graphicsAndSound */}
-				{detailList.graphicsAndSound && (
+				{detailList.graphicsAndAudio && (
 					<DetailItem
-						list={detailList.graphicsAndSound}
+						list={detailList.graphicsAndAudio}
 						title={'Graphics, Sound'}
 					/>
 				)}
 				{/* connectionPortsAndExpansionFeatures */}
-				{detailList.connectionPortsAndExpansionFeatures && (
+				{detailList.connectionPortAndExpansionFeature && (
 					<DetailItem
-						list={detailList.connectionPortsAndExpansionFeatures}
+						list={detailList.connectionPortAndExpansionFeature}
 						title={'Connection, Features'}
 					/>
 				)}

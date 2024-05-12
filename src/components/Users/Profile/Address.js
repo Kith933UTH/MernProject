@@ -11,8 +11,19 @@ import {
 	MenuHandler,
 	MenuList,
 	MenuItem,
+	DialogBody,
+	DialogFooter,
 } from '@material-tailwind/react';
-import { PencilSquareIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
+import {
+	PencilSquareIcon,
+	PlusCircleIcon,
+	TrashIcon,
+} from '@heroicons/react/24/outline';
+import { updateData } from '../../../api';
+import notificationSlice from '../../Notification/NotificationSlice';
+import { useDispatch } from 'react-redux';
+import usersSlice from '../UsersSlice';
+import Loading from '../../Loading/Loading';
 
 const AddressSelect = ({ title, value, data, handler, disabled }) => {
 	return (
@@ -46,7 +57,8 @@ const AddressSelect = ({ title, value, data, handler, disabled }) => {
 	);
 };
 
-const AddAddressDialog = ({ open, handler }) => {
+const AddAddressDialog = ({ open, handler, data, token, mutate }) => {
+	const dispatch = useDispatch();
 	const [address, setAddress] = useState({
 		province: { name: '' },
 		district: { name: '' },
@@ -55,6 +67,7 @@ const AddAddressDialog = ({ open, handler }) => {
 		defaultAddress: false,
 	});
 	const [isValidStreet, setIsValidStreet] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	const districtList = useMemo(() => {
 		return District.filter(
@@ -93,7 +106,64 @@ const AddAddressDialog = ({ open, handler }) => {
 		setIsValidStreet(e.target.value !== '' && e.target.value.length >= 10);
 	};
 
-	const handleSubmitSignIn = () => {};
+	const handleSubmitCreateAddress = (e) => {
+		e.preventDefault();
+		setLoading(true);
+		const newAddress = `${address.street}, ${address.commune.name}, ${address.district.name}, ${address.province.name}`;
+
+		updateData(
+			'users/' + data._id,
+			{
+				username: data.username,
+				email: data.email,
+				phoneNumber: data.phoneNumber,
+				address: address.defaultAddress
+					? [
+							...data.address.map((item) => {
+								return { ...item, defaultAddress: false };
+							}),
+							{ address: newAddress, defaultAddress: true },
+					  ]
+					: [
+							...data.address,
+							{ address: newAddress, defaultAddress: false },
+					  ],
+			},
+			{
+				headers: {
+					Authorization: 'Bearer ' + token,
+				},
+			}
+		)
+			.then((results) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'success',
+						message: 'Updated success',
+					})
+				);
+				setAddress({
+					province: { name: '' },
+					district: { name: '' },
+					commune: { name: '' },
+					street: '',
+					defaultAddress: false,
+				});
+				dispatch(usersSlice.actions.setToken(results));
+				mutate();
+				handler();
+				// dispatch(refreshToken());
+			})
+			.catch((error) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: error?.response.data.message || 'Error',
+					})
+				);
+			})
+			.finally(() => setLoading(false));
+	};
 
 	return (
 		<>
@@ -203,17 +273,25 @@ const AddAddressDialog = ({ open, handler }) => {
 									<span>Cancel</span>
 								</Button>
 								<Button
-									onClick={handleSubmitSignIn}
+									onClick={handleSubmitCreateAddress}
 									type="submit"
 									className={`bg-highlight px-4 py-2 text-main flex justify-center items-center gap-2 pointer-events-none hover:opacity-50 opacity-50 ${
 										address.province.name !== '' &&
 										address.district.name !== '' &&
 										address.commune.name !== '' &&
+										address.street !== '' &&
 										isValidStreet &&
 										'pointer-events-auto opacity-100'
 									} `}
 								>
-									Save
+									{loading ? (
+										<Loading
+											customStyle={'!min-h-6 !w-8 !p-0'}
+											sizeStyle={'h-4 w-4'}
+										/>
+									) : (
+										<span>Save</span>
+									)}
 								</Button>
 							</div>
 						</form>
@@ -224,13 +302,13 @@ const AddAddressDialog = ({ open, handler }) => {
 	);
 };
 
-const EditAddressDialog = ({ open, handler, data }) => {
+const EditAddressDialog = ({ open, handler, data, addressIndex, submit }) => {
 	const [address, setAddress] = useState({
 		province: data.province,
 		district: data.district,
 		commune: data.commune,
 		street: data.street,
-		defaultAddress: data.defaultAddress,
+		defaultAddress: false,
 	});
 	const [isValidStreet, setIsValidStreet] = useState(true);
 
@@ -271,7 +349,11 @@ const EditAddressDialog = ({ open, handler, data }) => {
 		setIsValidStreet(e.target.value !== '' && e.target.value.length >= 10);
 	};
 
-	const handleSubmitSignIn = () => {};
+	const handleSubmitUpdateAddress = (e) => {
+		e.preventDefault();
+		const newAddress = `${address.street}, ${address.commune.name}, ${address.district.name}, ${address.province.name}`;
+		submit(newAddress, address.defaultAddress, addressIndex);
+	};
 
 	return (
 		<>
@@ -348,44 +430,56 @@ const EditAddressDialog = ({ open, handler, data }) => {
 										10 characters.
 									</Typography>
 								)}
-								<Checkbox
-									name="rate"
-									color="light-green"
-									className="hover:before:opacity-0 border-highlight w-4 h-4"
-									containerProps={{
-										className: 'p-1',
-									}}
-									label={
-										<Typography className="text-highlight text-base ml-2">
-											Set as default address
-										</Typography>
-									}
-									checked={address.defaultAddress}
-									onChange={() =>
-										setAddress({
-											...address,
-											defaultAddress:
-												!address.defaultAddress,
-										})
-									}
-								/>
+								{!data.defaultAddress && (
+									<Checkbox
+										name="rate"
+										color="light-green"
+										className="hover:before:opacity-0 border-highlight w-4 h-4"
+										containerProps={{
+											className: 'p-1',
+										}}
+										label={
+											<Typography className="text-highlight text-base ml-2">
+												Set as default address
+											</Typography>
+										}
+										checked={address.defaultAddress}
+										onChange={() =>
+											setAddress({
+												...address,
+												defaultAddress:
+													!address.defaultAddress,
+											})
+										}
+									/>
+								)}
 							</div>
 							<div className="flex gap-4 mt-6 justify-end">
 								<Button
 									variant="text"
 									color="red"
-									onClick={handler}
+									onClick={() => {
+										handler();
+										setAddress({
+											province: data.province,
+											district: data.district,
+											commune: data.commune,
+											street: data.street,
+											defaultAddress: data.defaultAddress,
+										});
+									}}
 									className=""
 								>
 									<span>Cancel</span>
 								</Button>
 								<Button
-									onClick={handleSubmitSignIn}
+									onClick={handleSubmitUpdateAddress}
 									type="submit"
 									className={`bg-highlight px-4 py-2 text-main flex justify-center items-center gap-2 pointer-events-none hover:opacity-50 opacity-50 ${
 										address.province.name !== '' &&
 										address.district.name !== '' &&
 										address.commune.name !== '' &&
+										address.street !== '' &&
 										isValidStreet &&
 										'pointer-events-auto opacity-100'
 									} `}
@@ -401,32 +495,180 @@ const EditAddressDialog = ({ open, handler, data }) => {
 	);
 };
 
-const AddressItem = ({ address }) => {
-	const province = Province.find(
-		(item) => item.idProvince === address.provinceId
+const DeleteAddressDialog = ({ open, handler, addressIndex, submit }) => {
+	const handleSubmitDeleteAddress = (e) => {
+		e.preventDefault();
+		submit(addressIndex);
+	};
+
+	return (
+		<>
+			<Button
+				variant="text"
+				className="flex gap-2 items-center text-red-700 py-2 px-2 mt-2 text-sm normal-case"
+				color="red"
+				onClick={handler}
+			>
+				<TrashIcon className="text-red-700 h-6 w-6" />
+			</Button>
+
+			<Dialog
+				size="xs"
+				open={open}
+				handler={handler}
+				className="shadow-md shadow-gray-700 bg-main *:selection:text-gray-900 *:selection:bg-highlight z-50"
+			>
+				{/* <DialogHeader className="justify-center text-text text-center">
+					Are you sure remove this address?
+				</DialogHeader> */}
+				<DialogBody className="text-center font-medium pt-8 text-xl text-text">
+					Are you sure remove this address?
+				</DialogBody>
+				<DialogFooter>
+					<Button
+						variant="text"
+						color="gray"
+						onClick={handler}
+						className="mr-1 text-text"
+					>
+						<span>Cancel</span>
+					</Button>
+					<Button
+						variant="gradient"
+						color="red"
+						onClick={handleSubmitDeleteAddress}
+					>
+						<span>Continue</span>
+					</Button>
+				</DialogFooter>
+			</Dialog>
+		</>
 	);
-	const district = District.find(
-		(item) => item.idDistrict === address.districtId
+};
+
+const AddressItem = ({ address, data, token, mutate }) => {
+	const dispatch = useDispatch();
+	const addressIndex = data.address.indexOf(
+		data.address.find((x) => x.address === address.address)
 	);
-	const commune = Commune.find(
-		(item) => item.idCommune === address.communeId
-	);
+	const addressSplit = address.address.split(', ');
+
+	const province = Province.find((item) => item.name === addressSplit[3]);
+	const district = District.find((item) => item.name === addressSplit[2]);
+	const commune = Commune.find((item) => item.name === addressSplit[1]);
 
 	const [openEditAddress, setOpenEditAddress] = useState(false);
 	const handleOpenEditAddress = () => setOpenEditAddress(!openEditAddress);
 
+	const [openDeleteAddress, setOpenDeleteAddress] = useState(false);
+	const handleOpenDeleteAddress = () =>
+		setOpenDeleteAddress(!openDeleteAddress);
+
+	const handleUpdateAddress = (newAddress, isDefault, index) => {
+		updateData(
+			'users/' + data._id,
+			{
+				username: data.username,
+				email: data.email,
+				phoneNumber: data.phoneNumber,
+				address: isDefault
+					? data.address.map((item, i) => {
+							if (i === index) {
+								return {
+									address: newAddress,
+									defaultAddress: true,
+								};
+							} else {
+								return { ...item, defaultAddress: false };
+							}
+					  })
+					: [
+							...data.address.map((item, i) => {
+								if (i === index) {
+									return {
+										address: newAddress,
+										defaultAddress: false,
+									};
+								} else {
+									return item;
+								}
+							}),
+					  ],
+			},
+			{
+				headers: {
+					Authorization: 'Bearer ' + token,
+				},
+			}
+		)
+			.then((results) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'success',
+						message: 'Updated success',
+					})
+				);
+				dispatch(usersSlice.actions.setToken(results));
+				mutate();
+				handleOpenEditAddress();
+			})
+			.catch((error) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: error?.response.data.message || 'Error',
+					})
+				);
+			});
+	};
+
+	const handleDeleteAddress = (index) => {
+		updateData(
+			'users/' + data._id,
+			{
+				username: data.username,
+				email: data.email,
+				phoneNumber: data.phoneNumber,
+				address: data.address
+					.map((item, i) => {
+						if (i === index) {
+							return null;
+						} else {
+							return item;
+						}
+					})
+					.filter((item) => item !== null),
+			},
+			{
+				headers: {
+					Authorization: 'Bearer ' + token,
+				},
+			}
+		)
+			.then((results) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'success',
+						message: 'Deleted success',
+					})
+				);
+				dispatch(usersSlice.actions.setToken(results));
+				mutate();
+				handleOpenDeleteAddress();
+			})
+			.catch((error) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: error?.response.data.message || 'Error',
+					})
+				);
+			});
+	};
 	return (
 		<div className="flex justify-between py-4 border-solid border-b-[1px] border-gray-700">
 			<div>
-				<Typography className="text-base">
-					{address.street +
-						', ' +
-						commune.name +
-						', ' +
-						district.name +
-						', ' +
-						province.name}
-				</Typography>
+				<Typography className="text-base">{address.address}</Typography>
 				{address.defaultAddress ? (
 					<div className="bg-highlight px-2 py-1 text-background text-sm rounded-sm w-max mt-2">
 						Default address
@@ -435,7 +677,7 @@ const AddressItem = ({ address }) => {
 					''
 				)}
 			</div>
-			<div>
+			<div className="flex gap-2">
 				<EditAddressDialog
 					open={openEditAddress}
 					handler={handleOpenEditAddress}
@@ -443,16 +685,26 @@ const AddressItem = ({ address }) => {
 						province,
 						district,
 						commune,
-						street: address.street,
+						street: addressSplit[0],
 						defaultAddress: address.defaultAddress,
 					}}
+					addressIndex={addressIndex}
+					submit={handleUpdateAddress}
 				/>
+				{!address.defaultAddress && (
+					<DeleteAddressDialog
+						open={openDeleteAddress}
+						handler={handleOpenDeleteAddress}
+						addressIndex={addressIndex}
+						submit={handleDeleteAddress}
+					/>
+				)}
 			</div>
 		</div>
 	);
 };
 
-const Address = ({ data }) => {
+const Address = ({ data, token, mutate }) => {
 	const [openAddAddress, setOpenAddAddress] = useState(false);
 	const handleOpenAddAddress = () => setOpenAddAddress(!openAddAddress);
 	return (
@@ -460,21 +712,21 @@ const Address = ({ data }) => {
 			<Typography className="text-text text-base font-semibold uppercase mb-2">
 				DELIVERY ADDRESS
 			</Typography>
-			{data?.map((address) => (
+			{data.address.map((address) => (
 				<AddressItem
-					key={
-						'address' +
-						address.provinceId +
-						address.districtId +
-						address.communeId +
-						address.street
-					}
+					key={address.address}
 					address={address}
+					data={data}
+					token={token}
+					mutate={mutate}
 				/>
 			))}
 			<AddAddressDialog
 				open={openAddAddress}
 				handler={handleOpenAddAddress}
+				data={data}
+				token={token}
+				mutate={mutate}
 			/>
 		</div>
 	);

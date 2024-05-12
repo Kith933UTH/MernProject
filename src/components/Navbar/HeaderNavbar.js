@@ -70,7 +70,7 @@ function NavItemWithMenu({ data, isMobile, closeNav }) {
 						</Typography>
 					</Typography>
 				</MenuHandler>
-				<MenuList className="bg-transparent backdrop-blur-none p-0 border-none shadow-none hidden max-w-screen-xl rounded-xl lg:block">
+				<MenuList className="bg-main hidden max-w-screen-xl rounded-xl lg:block">
 					<ul className="grid grid-cols-3 gap-3 outline-none outline-0">
 						{renderItems}
 					</ul>

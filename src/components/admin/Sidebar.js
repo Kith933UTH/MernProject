@@ -4,7 +4,7 @@ import { Typography } from '@material-tailwind/react';
 import {
 	HomeIcon,
 	FolderPlusIcon,
-	HashtagIcon,
+	// HashtagIcon,
 	UsersIcon,
 	ClipboardDocumentIcon,
 } from '@heroicons/react/24/solid';
@@ -36,12 +36,12 @@ const adminNavigateList = [
 				icon: <FolderPlusIcon className="w-4 h-4" />,
 				end: true,
 			},
-			{
-				title: 'New attribute',
-				path: '/admin/attributes',
-				icon: <HashtagIcon className="w-4 h-4" />,
-				end: true,
-			},
+			// {
+			// 	title: 'New attribute',
+			// 	path: '/admin/attributes',
+			// 	icon: <HashtagIcon className="w-4 h-4" />,
+			// 	end: true,
+			// },
 		],
 	},
 	{
@@ -54,7 +54,7 @@ const adminNavigateList = [
 			},
 			{
 				title: 'Phone',
-				path: '/admin/products/phones',
+				path: '/admin/products/smartPhones',
 				icon: <BsFillPhoneFill />,
 			},
 			{

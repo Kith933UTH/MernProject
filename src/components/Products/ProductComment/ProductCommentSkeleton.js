@@ -1,9 +1,9 @@
 import React from 'react';
 import { Typography } from '@material-tailwind/react';
 
-const ProductReviewSkeleton = () => {
+const ProductCommentSkeleton = () => {
 	return (
-		<div className="w-full h-max border-solid border-[1px] border-gray-700 py-4 rounded-xl">
+		<div className="w-full mt-4 h-max border-solid border-[1px] border-gray-700 py-4 rounded-xl">
 			<div className="flex flex-col gap-2 px-4 ">
 				<div className="py-4 md:px-2 border-solid border-b-[1px] border-gray-700">
 					<Typography
@@ -100,4 +100,4 @@ const ProductReviewSkeleton = () => {
 	);
 };
 
-export default ProductReviewSkeleton;
+export default ProductCommentSkeleton;

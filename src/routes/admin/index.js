@@ -1,13 +1,13 @@
 import Dashboard from '../../components/Admin/Dashboard';
 import ChooseNewProduct from '../../components/Admin/Products/ChooseNewProduct';
-import ChooseNewAttribute from '../../components/Admin/Attributes/ChooseNewAttribute';
+// import ChooseNewAttribute from '../../components/Admin/Attributes/ChooseNewAttribute';
 import ProductsList from '../../components/Admin/Products/ProductsList';
 import NewProduct from '../../components/Admin/Products/NewProduct';
 
 //edit
 import EditLaptop from '../../components/Admin/Products/Laptop/EditLaptop';
 import EditPhone from '../../components/Admin/Products/Phone/EditPhone';
-import EditTablet from '../../components/Admin/Products/Tablet/EditPhone';
+import EditTablet from '../../components/Admin/Products/Tablet/EditTablet';
 import EditSmartwatch from '../../components/Admin/Products/Smartwatch/EditSmartwatch';
 import EditCharger from '../../components/Admin/Products/Charger/EditCharger';
 import EditCable from '../../components/Admin/Products/Cable/EditCable';
@@ -16,15 +16,15 @@ import EditMouse from '../../components/Admin/Products/Mouse/EditMouse';
 import EditKeyboard from '../../components/Admin/Products/Keyboard/EditKeyboard';
 
 //attributes
-import LaptopAttributes from '../../components/Admin/Attributes/LaptopAttributes';
-import PhoneAttributes from '../../components/Admin/Attributes/PhoneAttributes';
-import TabletAttributes from '../../components/Admin/Attributes/TabletAttributes';
-import SmartwatchAttributes from '../../components/Admin/Attributes/SmartwatchAttributes';
-import ChargerAttributes from '../../components/Admin/Attributes/ChargerAttributes';
-import CableAttributes from '../../components/Admin/Attributes/CableAttributes';
-import HeadphoneAttributes from '../../components/Admin/Attributes/HeadphoneAttributes';
-import MouseAttributes from '../../components/Admin/Attributes/MouseAttributes';
-import KeyboardAttributes from '../../components/Admin/Attributes/KeyboardAttributes';
+// import LaptopAttributes from '../../components/Admin/Attributes/LaptopAttributes';
+// import PhoneAttributes from '../../components/Admin/Attributes/PhoneAttributes';
+// import TabletAttributes from '../../components/Admin/Attributes/TabletAttributes';
+// import SmartwatchAttributes from '../../components/Admin/Attributes/SmartwatchAttributes';
+// import ChargerAttributes from '../../components/Admin/Attributes/ChargerAttributes';
+// import CableAttributes from '../../components/Admin/Attributes/CableAttributes';
+// import HeadphoneAttributes from '../../components/Admin/Attributes/HeadphoneAttributes';
+// import MouseAttributes from '../../components/Admin/Attributes/MouseAttributes';
+// import KeyboardAttributes from '../../components/Admin/Attributes/KeyboardAttributes';
 
 //orders
 import OrderList from '../../components/Admin/Orders/OrderList';
@@ -55,28 +55,44 @@ const AdminRoute = [
 							<ProductsList title={'Laptop'} url={'laptops'} />
 						),
 					},
-					{ path: 'new', element: <NewProduct title={'Laptop'} /> },
 					{
-						path: 'attributes',
-						element: <LaptopAttributes />,
+						path: 'new',
+						element: (
+							<NewProduct title={'Laptop'} url={'laptops'} />
+						),
 					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <LaptopAttributes />,
+					// },
 					{ path: ':productId', element: <EditLaptop /> },
 				],
 			},
 			{
-				path: 'phones',
+				path: 'smartPhones',
 				children: [
 					{
 						index: true,
 						element: (
-							<ProductsList title={'Phone'} url={'phones'} />
+							<ProductsList
+								title={'Smartphones'}
+								url={'smartPhones'}
+							/>
 						),
 					},
-					{ path: 'new', element: <NewProduct title={'Phone'} /> },
 					{
-						path: 'attributes',
-						element: <PhoneAttributes />,
+						path: 'new',
+						element: (
+							<NewProduct
+								title={'Smartphones'}
+								url={'smartPhones'}
+							/>
+						),
 					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <PhoneAttributes />,
+					// },
 
 					{ path: ':productId', element: <EditPhone /> },
 				],
@@ -90,11 +106,16 @@ const AdminRoute = [
 							<ProductsList title={'Tablet'} url={'tablets'} />
 						),
 					},
-					{ path: 'new', element: <NewProduct title={'Tablet'} /> },
 					{
-						path: 'attributes',
-						element: <TabletAttributes />,
+						path: 'new',
+						element: (
+							<NewProduct title={'Tablet'} url={'tablets'} />
+						),
 					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <TabletAttributes />,
+					// },
 
 					{ path: ':productId', element: <EditTablet /> },
 				],
@@ -113,12 +134,17 @@ const AdminRoute = [
 					},
 					{
 						path: 'new',
-						element: <NewProduct title={'Smartwatch'} />,
+						element: (
+							<NewProduct
+								title={'Smartwatch'}
+								url={'smartwatches'}
+							/>
+						),
 					},
-					{
-						path: 'attributes',
-						element: <SmartwatchAttributes />,
-					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <SmartwatchAttributes />,
+					// },
 
 					{
 						path: ':productId',
@@ -135,11 +161,16 @@ const AdminRoute = [
 							<ProductsList title={'Charger'} url={'chargers'} />
 						),
 					},
-					{ path: 'new', element: <NewProduct title={'Charger'} /> },
 					{
-						path: 'attributes',
-						element: <ChargerAttributes />,
+						path: 'new',
+						element: (
+							<NewProduct title={'Charger'} url={'chargers'} />
+						),
 					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <ChargerAttributes />,
+					// },
 
 					{ path: ':productId', element: <EditCharger /> },
 				],
@@ -153,11 +184,14 @@ const AdminRoute = [
 							<ProductsList title={'Cable'} url={'cables'} />
 						),
 					},
-					{ path: 'new', element: <NewProduct title={'Cable'} /> },
 					{
-						path: 'attributes',
-						element: <CableAttributes />,
+						path: 'new',
+						element: <NewProduct title={'Cable'} url={'cables'} />,
 					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <CableAttributes />,
+					// },
 
 					{ path: ':productId', element: <EditCable /> },
 				],
@@ -176,12 +210,17 @@ const AdminRoute = [
 					},
 					{
 						path: 'new',
-						element: <NewProduct title={'Headphone'} />,
+						element: (
+							<NewProduct
+								title={'Headphone'}
+								url={'headphones'}
+							/>
+						),
 					},
-					{
-						path: 'attributes',
-						element: <HeadphoneAttributes />,
-					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <HeadphoneAttributes />,
+					// },
 
 					{
 						path: ':productId',
@@ -198,11 +237,14 @@ const AdminRoute = [
 							<ProductsList title={'Mouse'} url={'mouses'} />
 						),
 					},
-					{ path: 'new', element: <NewProduct title={'Mouse'} /> },
 					{
-						path: 'attributes',
-						element: <MouseAttributes />,
+						path: 'new',
+						element: <NewProduct title={'Mouse'} url={'mouses'} />,
 					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <MouseAttributes />,
+					// },
 
 					{
 						path: ':productId',
@@ -222,11 +264,16 @@ const AdminRoute = [
 							/>
 						),
 					},
-					{ path: 'new', element: <NewProduct title={'Keyboard'} /> },
 					{
-						path: 'attributes',
-						element: <KeyboardAttributes />,
+						path: 'new',
+						element: (
+							<NewProduct title={'Keyboard'} url={'keyboards'} />
+						),
 					},
+					// {
+					// 	path: 'attributes',
+					// 	element: <KeyboardAttributes />,
+					// },
 
 					{
 						path: ':productId',
@@ -236,15 +283,15 @@ const AdminRoute = [
 			},
 		],
 	},
-	{
-		path: 'attributes',
-		children: [
-			{
-				index: true,
-				element: <ChooseNewAttribute />,
-			},
-		],
-	},
+	// {
+	// 	path: 'attributes',
+	// 	children: [
+	// 		{
+	// 			index: true,
+	// 			element: <ChooseNewAttribute />,
+	// 		},
+	// 	],
+	// },
 	{
 		path: 'customers',
 		children: [

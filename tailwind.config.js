@@ -25,6 +25,8 @@ module.exports = withMT({
 			text: '#d5d5d5',
 			admin: '#008060',
 			strongAdmin: '#006e52',
+			rose: '#fecdd3',
+			stone: '#d6d3d1',
 		},
 		screens: {
 			tablet: '960px',

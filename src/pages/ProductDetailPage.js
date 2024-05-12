@@ -5,11 +5,7 @@ import ProductDetail from '../components/Products/ProductDetail';
 const ProductDetailPage = ({ cateName, catePath }) => {
 	const { productId } = useParams();
 	return (
-		<ProductDetail
-			data={productId}
-			cateName={cateName}
-			catePath={catePath}
-		/>
+		<ProductDetail id={productId} cateName={cateName} catePath={catePath} />
 	);
 };
 
