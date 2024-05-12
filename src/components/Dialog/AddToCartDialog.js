@@ -200,8 +200,8 @@ const AddToCartDialog = ({ icon, buttonStyle, data }) => {
 												return (
 													item.ram ===
 														chooseVariant.ram &&
-													item.hardDrive ===
-														chooseVariant.hardDrive
+													item.rom ===
+														chooseVariant.rom
 												);
 											}
 											return true;

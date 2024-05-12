@@ -42,8 +42,12 @@ const Checkout = () => {
 		setOrderInfo((prev) => {
 			return {
 				...prev,
-				address: data?.address?.filter((item) => item.defaultAddress)[0]
-					.address,
+				address:
+					data?.address && data.address.length > 0
+						? data?.address?.filter(
+								(item) => item.defaultAddress
+						  )[0].address
+						: '',
 				phoneNumber: data?.phoneNumber ? data.phoneNumber : '',
 			};
 		});
