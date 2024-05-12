@@ -993,7 +993,7 @@ const HighLightImages = ({ data, productId, detailId, mutate }) => {
 						})
 					);
 				})
-				.setLoading(() => setLoading(false));
+				.finally(() => setLoading(false));
 		}
 	};
 	return (
