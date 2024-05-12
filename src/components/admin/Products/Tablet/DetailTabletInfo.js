@@ -27,13 +27,13 @@ export const DetailTabletInfo = {
 		{ title: 'Feature', value: '' },
 	],
 	connection: [
-		{ title: 'SIM', value: '' },
+		// { title: 'SIM', value: '' },
+		{ title: 'Headphone jack', value: '' },
 		{ title: 'Mobile network', value: '' },
 		{ title: 'WIFI', value: '' },
 		{ title: 'GPS', value: '' },
 		{ title: 'Bluetooth', value: '' },
 		{ title: 'Connection/charging port', value: '' },
-		{ title: 'Headphone jack', value: '' },
 		{ title: 'Other connections', value: '' },
 	],
 	utility: [

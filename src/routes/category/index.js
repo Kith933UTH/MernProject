@@ -40,7 +40,7 @@ const SubCateRoute = CateList.filter((cate) => cate.children).map((cate) => {
 					element: (
 						<ProductDetailPage
 							cateName={subCate.title}
-							catePath={cate.path}
+							catePath={subCate.path}
 						/>
 					),
 				},
