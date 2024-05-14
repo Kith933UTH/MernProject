@@ -19,7 +19,7 @@ export function SearchProductCard({ data }) {
 			? 'laptops'
 			: data.productType === 'SmartPhone'
 			? 'smartPhones'
-			: data.productType === 'tablet'
+			: data.productType === 'Tablet'
 			? 'tablets'
 			: data.productType === 'SmartWatch'
 			? 'smartWatches'

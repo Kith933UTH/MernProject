@@ -6,8 +6,8 @@ import {
 	MenuList,
 	Typography,
 } from '@material-tailwind/react';
-import React, { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/headericon.png';
 import {
 	ArrowRightStartOnRectangleIcon,
@@ -18,6 +18,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../Users/UsersSlice';
+import Search from './Search';
 
 const Header = () => {
 	const dispatch = useDispatch();
@@ -25,27 +26,36 @@ const Header = () => {
 	const searchInputRef = useRef();
 	const [searchValue, setSearchValue] = useState('');
 	const [isSearchInputFocus, setIsSearchInputFocus] = useState(false);
+	const [openSearch, setOpenSearch] = useState(false);
+
+	const location = useLocation();
+
+	useEffect(() => {
+		let timeOut;
+		if (isSearchInputFocus) setOpenSearch(true);
+		else {
+			timeOut = setTimeout(() => setOpenSearch(false), 100);
+		}
+		return () => clearTimeout(timeOut);
+	}, [location, isSearchInputFocus]);
 
 	//input
 	const handleSearchInputChange = (e) => {
-		setSearchValue(e.target.value.toString());
-	};
-
-	//submit search
-	const handleSubmitSearchAction = () => {
-		if (searchValue !== '') {
-		}
+		setSearchValue(e.target.value.toString().trim());
 	};
 
 	//focus
-	const handleSearchInputFocus = () => {
-		setIsSearchInputFocus(!isSearchInputFocus);
+	const handleSearchInputFocus = (value) => {
+		setIsSearchInputFocus(value);
+		if (value) setOpenSearch(true);
+		// else setOpenSearch(false);
 	};
 
 	const handleLogout = () => {
 		dispatch(logOut());
 		navigate('/');
 	};
+
 	return (
 		<div className="flex justify-between w-full h-full px-4 bg-white">
 			{/* logo  */}
@@ -62,7 +72,7 @@ const Header = () => {
 				</div>
 			</Link>
 			{/* search  */}
-			<div className="flex items-center justify-between w-[550px]">
+			<div className="flex items-center justify-between w-[550px] relative">
 				<div
 					className={`overflow-hidden px-3 h-min gap-2 w-full flex border-2 border-transparent border-solid bg-gray-200 ${
 						isSearchInputFocus && '!border-admin'
@@ -74,19 +84,19 @@ const Header = () => {
 						spellCheck="false"
 						className="h-min flex-1 font-sans transition-all text-sm leading-4 outline-none shadow-none bg-transparent py-2 text-main placeholder:text-gray-700"
 						value={searchValue}
-						onFocus={handleSearchInputFocus}
+						onFocus={() => handleSearchInputFocus(true)}
 						ref={searchInputRef}
-						onBlur={handleSearchInputFocus}
+						onBlur={() => handleSearchInputFocus(false)}
 						onChange={handleSearchInputChange}
-						onKeyDown={(e) =>
-							e.keyCode === 13 && handleSubmitSearchAction()
-						}
+						// onKeyDown={(e) =>
+						// 	e.keyCode === 13 && handleSubmitSearchAction()
+						// }
 					></input>
-					<MagnifyingGlassIcon
-						onClick={handleSubmitSearchAction}
-						className="w-5 cursor-pointer text-main"
-					/>
+					<MagnifyingGlassIcon className="w-5 text-main" />
 				</div>
+				{searchValue !== '' && openSearch && (
+					<Search searchKey={searchValue} />
+				)}
 			</div>
 			{/* admin avt menu */}
 			<div className="flex justify-center items-center mr-4">

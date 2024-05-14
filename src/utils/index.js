@@ -183,3 +183,15 @@ export function isTimestampPast(timestamp) {
 
 	return timestampDate < currentDate;
 }
+
+export function debounce(callback, delay) {
+	let timerId;
+
+	return function (...args) {
+		clearTimeout(timerId);
+
+		timerId = setTimeout(() => {
+			callback.apply(this, args);
+		}, delay);
+	};
+}

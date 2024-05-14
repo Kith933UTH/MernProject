@@ -11,7 +11,7 @@ function Footer() {
 						className="text-xl font-bold cursor-pointer py-1.5 px-0"
 						onClick={() => window.scrollTo(0, 0)}
 					>
-						&copy; 2023 TechShop
+						&copy; 2024 TechShop
 					</Typography>
 					<hr className="my-1 border-blue-gray-50 w-[90%] mx-auto sm:hidden" />
 					<ul className="flex flex-wrap items-center gap-2 sm:gap-x-8 flex-1 justify-between px-2 sm:px-0 sm:justify-end">
